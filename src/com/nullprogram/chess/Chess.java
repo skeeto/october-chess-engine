@@ -5,10 +5,11 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 
 import com.nullprogram.chess.gui.BoardPanel;
+import com.nullprogram.chess.boards.StandardBoard;
 
 public class Chess {
     public static void main(String[] args) {
-        Board board = new Board();
+        Board board = new StandardBoard();
         BoardPanel display = new BoardPanel(board);
 
         JFrame frame = new JFrame("Chess");

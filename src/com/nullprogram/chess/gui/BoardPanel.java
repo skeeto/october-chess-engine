@@ -3,9 +3,11 @@ package com.nullprogram.chess.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import com.nullprogram.chess.Board;
+import com.nullprogram.chess.Piece;
 
 public class BoardPanel extends JPanel {
 
@@ -41,6 +43,11 @@ public class BoardPanel extends JPanel {
                     g.setColor(dark);
                 }
                 g.fillRect(x * size, y * size, size, size);
+                Piece p = board.getPiece(x, y);
+                if (p != null) {
+                    BufferedImage tile = p.getImage(size);
+                    g.drawImage(tile, x * size, y * size, this);
+                }
             }
         }
     }

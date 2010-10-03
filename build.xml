@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<project name="chess" default="jar">
+  <property name="jar" value="chess.jar"/>
+  <property name="src.dir" value="src"/>
+  <property name="build.dir" value="build"/>
+  <property name="test.dir" value="test"/>
+  <property name="build.classes.dir" value="${build.dir}/classes"/>
+  <property name="test.classes.dir" value="${build.dir}/test"/>
+
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="checkstyletask.properties"/>
+
+  <target name="init">
+    <mkdir dir="${build.classes.dir}"/>
+  </target>
+
+  <target name="compile" depends="init"
+	  description="Compile all source files.">
+    <javac srcdir="${src.dir}" destdir="${build.classes.dir}"
+	   optimize="on" debug="on" deprecation="on"
+	   includeantruntime="false">
+      <compilerarg value="-Xlint"/>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile"
+	  description="Generate the jarfile distributable.">
+    <jar destfile="${jar}" basedir="${build.classes.dir}">
+      <manifest>
+        <attribute name="Main-Class"
+		   value="com.nullprogram.chess.Chess"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="run" depends="jar" description="Run the application.">
+    <java jar="${jar}" fork="true"/>
+  </target>
+
+  <target name="clean" description="Delete all generated files.">
+    <delete dir="${build.dir}"/>
+    <delete file="${jar}"/>
+  </target>
+
+  <target name="format" description="Run the indenter on all source files.">
+    <for param="file">
+      <path>
+        <fileset dir="${src.dir}" includes="**/*.java"/>
+        <fileset dir="${test.dir}" includes="**/*.java"/>
+      </path>
+      <sequential>
+        <exec executable="astyle">
+          <arg value="--mode=java"/>
+          <arg value="--suffix=none"/>
+          <arg value="@{file}"/>
+        </exec>
+      </sequential>
+    </for>
+  </target>
+
+  <target name="check">
+    <checkstyle config="doc/sun_checks.xml">
+      <fileset dir="src" includes="**/*.java"/>
+      <fileset dir="test" includes="**/*.java"/>
+    </checkstyle>
+  </target>
+
+  <!-- JUnit -->
+
+  <target name="test-init" depends="init">
+    <mkdir dir="${test.classes.dir}"/>
+  </target>
+
+  <target name="test-compile" depends="test-init,compile">
+    <javac srcdir="${test.dir}" destdir="${test.classes.dir}"
+	   classpath="${build.classes.dir}" includeantruntime="yes">
+      <compilerarg value="-Xlint"/>
+    </javac>
+  </target>
+
+  <target name="test" depends="test-compile" description="Run all tests.">
+    <junit>
+      <classpath>
+	<pathelement path="${build.classes.dir}"/>
+	<pathelement path="${test.classes.dir}"/>
+      </classpath>
+      <batchtest>
+	<formatter type="brief" usefile="false"/>
+	<fileset dir="${test.classes.dir}"/>
+      </batchtest>
+    </junit>
+  </target>
+</project>

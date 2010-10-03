@@ -8,8 +8,11 @@ public class Board {
     private Piece[][] board;
     private int width, height;
 
+    static final int DEFAULT_WIDTH = 8;
+    static final int DEFAULT_HEIGHT = 8;
+
     public Board() {
-        this(8, 8);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public Board(int width, int height) {

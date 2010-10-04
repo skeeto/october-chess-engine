@@ -30,23 +30,31 @@ public class BoardPanel extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        int sizeX = getWidth() / board.getWidth();
-        int sizeY = getHeight() / board.getHeight();
+        int h = board.getHeight();
+        int w = board.getWidth();
+        int sizeX = getWidth() / w;
+        int sizeY = getHeight() / h;
         int size = Math.min(sizeX, sizeY);
 
-        for (int y = 0; y < board.getHeight(); y++) {
-            for (int x = 0; x < board.getWidth(); x++) {
+        // Draw the background
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
                 if ((x + y) % 2 == 0) {
                     g.setColor(light);
                 } else {
                     g.setColor(dark);
                 }
                 g.fillRect(x * size, y * size, size, size);
+            }
+        }
+
+        // Place the pieces
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
                 Piece p = board.getPiece(x, y);
                 if (p != null) {
                     BufferedImage tile = p.getImage(size);
-                    g.drawImage(tile, x * size, y * size, this);
+                    g.drawImage(tile, x * size, (h - y - 1) * size, this);
                 }
             }
         }

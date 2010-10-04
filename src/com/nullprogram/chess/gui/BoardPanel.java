@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
+import com.nullprogram.chess.Position;
 
 public class BoardPanel extends JPanel {
 
@@ -51,7 +52,7 @@ public class BoardPanel extends JPanel {
         // Place the pieces
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                Piece p = board.getPiece(x, y);
+                Piece p = board.getPiece(new Position(x, y));
                 if (p != null) {
                     BufferedImage tile = p.getImage(size);
                     g.drawImage(tile, x * size, (h - y - 1) * size, this);

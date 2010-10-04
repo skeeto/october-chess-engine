@@ -34,15 +34,21 @@ public class Board {
     }
 
     public void setPiece(int x, int y, Piece p) {
-        board[x][y] = p;
+        setPiece(new Position(x, y), p);
     }
 
-    public Piece getPiece(int x, int y) {
-        return board[x][y];
+    public void setPiece(Position pos, Piece p) {
+        board[pos.x][pos.y] = p;
+        p.setPosition(pos);
     }
 
-    public void move (int x0, int y0, int x1, int y1) {
-        board[x1][y1] = board[x0][y0];
-        board[x0][y0] = null;
+    public Piece getPiece(Position pos) {
+        return board[pos.x][pos.y];
+    }
+
+    public void move (Position a, Position b) {
+        board[b.x][b.y] = board[a.x][a.y];
+        board[a.x][a.y] = null;
+        getPiece(b).setPosition(b);
     }
 }

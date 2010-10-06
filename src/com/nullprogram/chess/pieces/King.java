@@ -10,7 +10,7 @@ import com.nullprogram.chess.PositionList;
  * This class describes the movement and capture behavior of the Chess
  * king.
  *
- * TODO: check
+ * TODO: check, castling
  */
 public class King extends Piece {
     public King(Side side) {

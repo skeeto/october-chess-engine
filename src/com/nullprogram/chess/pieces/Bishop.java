@@ -4,6 +4,12 @@ import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.PositionList;
 
+/**
+ * The Chess bishop.
+ *
+ * This class describes the movement and capture behavior of the Chess
+ * bishop.
+ */
 public class Bishop extends Piece {
 
     public Bishop(Side side) {

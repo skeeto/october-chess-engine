@@ -49,7 +49,7 @@ public class Bishop extends Piece {
         x = p.getPosition().x;
         y = p.getPosition().y;
         while (x < p.getBoard().getWidth() &&
-               y < p.getBoard().getHeight()) {
+                y < p.getBoard().getHeight()) {
             x++;
             y++;
             Position pos = new Position(x, y);

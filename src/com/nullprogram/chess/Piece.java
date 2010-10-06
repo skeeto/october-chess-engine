@@ -21,7 +21,7 @@ public abstract class Piece {
         this.side = side;
     }
 
-    public abstract ArrayList<Position> getMoves();
+    public abstract PositionList getMoves();
 
     public void setPosition(Position pos) {
         this.pos = pos;

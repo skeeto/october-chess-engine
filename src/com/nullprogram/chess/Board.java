@@ -48,13 +48,56 @@ public abstract class Board {
         getPiece(b).setPosition(b);
     }
 
+    /**
+     * Return true if position has no piece on it.
+     *
+     * @param pos position to be tested
+     */
     public Boolean isEmpty(Position pos) {
         return (getPiece(pos) == null);
     }
 
+    /**
+     * Return true if position has no piece of same side on it.
+     *
+     * @param pos  position to be tested
+     * @param side side of the piece wanting to move
+     */
+    public Boolean isEmpty(Position pos, Piece.Side side) {
+        Piece p = getPiece(pos);
+        if (p == null) {
+            return true;
+        }
+        return p.getSide() != side;
+    }
+
+    /**
+     * Return true if position is on the board.
+     *
+     * @param pos position to be tested
+     */
     public Boolean inRange(Position pos) {
         return
             (pos.x >= 0)    && (pos.y >= 0) &&
             (pos.x < width) && (pos.y < height);
+    }
+
+    /**
+     * Return true if position is in range <i>and</i> empty.
+     *
+     * @param pos position to be tested
+     */
+    public Boolean isFree(Position pos) {
+        return inRange(pos) && isEmpty(pos);
+    }
+
+    /**
+     * Return true if position is in range and empty of given side.
+     *
+     * @param pos  position to be tested
+     * @param side side of the piece wanting to move
+     */
+    public Boolean isFree(Position pos, Piece.Side side) {
+        return inRange(pos) && isEmpty(pos, side);
     }
 }

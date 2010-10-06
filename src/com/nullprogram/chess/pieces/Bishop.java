@@ -1,17 +1,16 @@
 package com.nullprogram.chess.pieces;
 
-import java.util.ArrayList;
-
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Position;
+import com.nullprogram.chess.PositionList;
 
 public class Bishop extends Piece {
     public Bishop(Side side) {
         super(side);
     }
 
-    public ArrayList<Position> getMoves() {
-        ArrayList<Position> list = new ArrayList<Position>();
+    public PositionList getMoves() {
+        PositionList list = new PositionList(getBoard());
         return list;
     }
 }

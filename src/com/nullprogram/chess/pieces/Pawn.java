@@ -2,28 +2,26 @@ package com.nullprogram.chess.pieces;
 
 import java.util.ArrayList;
 
-import com.nullprogram.chess.Position;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Board;
+import com.nullprogram.chess.Position;
+import com.nullprogram.chess.PositionList;
 
 public class Pawn extends Piece {
     public Pawn(Side side) {
         super(side);
     }
 
-    public ArrayList<Position> getMoves() {
-        ArrayList<Position> list = new ArrayList<Position>();
-        Board b = getBoard();
+    public PositionList getMoves() {
+        PositionList list = new PositionList(getBoard());
         Position pos = getPosition();
         int dir = direction();
-        Position first = new Position(pos.x, pos.y + 1 * dir);
-        if (b.isEmpty(first) && b.inRange(first)) {
-            list.add(first);
+        list.addMove(new Position(pos.x, pos.y + 1 * dir));
+        if (!moved()) {
+            list.addMove(new Position(pos.x, pos.y + 2 * dir));
         }
-        Position second = new Position(pos.x, pos.y + 2 * dir);
-        if (!moved() && b.isEmpty(first) && b.inRange(first)) {
-            list.add(second);
-        }
+        list.addCapture(new Position(pos.x - 1, pos.y + 1 * dir), getSide());
+        list.addCapture(new Position(pos.x + 1, pos.y + 1 * dir), getSide());
         return list;
     }
 

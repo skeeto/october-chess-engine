@@ -97,8 +97,9 @@ public class BoardPanel extends JPanel implements MouseListener {
         int size = getTileSize();
         int x = pos.x * size;
         int y = (board.getHeight() - 1 - pos.y) * size;
+        int padding = 2;
         int thickness = 3;
-        for (int i = 0; i < thickness; i++) {
+        for (int i = padding; i < thickness + padding; i++) {
             g.drawRect(x + i, y + i,
                        size - 1 - i * 2, size - 1 - i * 2);
         }

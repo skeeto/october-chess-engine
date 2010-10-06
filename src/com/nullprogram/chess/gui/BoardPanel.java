@@ -1,5 +1,7 @@
 package com.nullprogram.chess.gui;
 
+import java.util.ArrayList;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
@@ -23,6 +25,8 @@ public class BoardPanel extends JPanel implements MouseListener {
     private Color dark = new Color(0xC0, 0x56, 0x0);
     private Color light = new Color(0xFF, 0xA8, 0x58);
     private Color selColor = new Color(0x00, 0xFF, 0xFF);
+    private Color moveColor = new Color(0x7F, 0x00, 0x00);
+
     static final int MIN_SIZE = 25;
     static final int PREF_SIZE = 50;
 
@@ -75,13 +79,28 @@ public class BoardPanel extends JPanel implements MouseListener {
         // Draw selected square
         if (selected != null) {
             g.setColor(selColor);
-            int x = selected.x * size;
-            int y = (board.getHeight() - 1 - selected.y) * size;
-            int thickness = 3;
-            for (int i = 0; i < thickness; i++) {
-                g.drawRect(x + i, y + i,
-                           size - 1 - i * 2, size - 1 - i * 2);
+            highlight(g, selected);
+
+            // Draw piece moves
+            Piece p = board.getPiece(selected);
+            if (p != null) {
+                ArrayList<Position> moves = p.getMoves();
+                g.setColor(moveColor);
+                for (Position pos : moves) {
+                    highlight(g, pos);
+                }
             }
+        }
+    }
+
+    private void highlight(Graphics g, Position pos) {
+        int size = getTileSize();
+        int x = pos.x * size;
+        int y = (board.getHeight() - 1 - pos.y) * size;
+        int thickness = 3;
+        for (int i = 0; i < thickness; i++) {
+            g.drawRect(x + i, y + i,
+                       size - 1 - i * 2, size - 1 - i * 2);
         }
     }
 

@@ -9,7 +9,9 @@ public class StandardBoard extends Board {
     static final int HEIGHT = 8;
 
     public StandardBoard() {
-        super();
+        setWidth(WIDTH);
+        setHeight(HEIGHT);
+        clear();
         // Set up a standard board
         for (int x = 0; x < WIDTH; x++) {
             setPiece(x, 1, new Pawn(Piece.Side.WHITE));

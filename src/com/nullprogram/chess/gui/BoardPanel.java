@@ -104,7 +104,7 @@ public class BoardPanel extends JPanel implements MouseListener {
         }
     }
 
-    public void mouseClicked(MouseEvent e) {
+    public void mouseReleased(MouseEvent e) {
         selected = getPixelPosition(e.getPoint());
         repaint();
     }
@@ -123,7 +123,7 @@ public class BoardPanel extends JPanel implements MouseListener {
         // Do nothing
     }
 
-    public void mouseReleased(MouseEvent e) {
+    public void mouseClicked(MouseEvent e) {
         // Do nothing
     }
 

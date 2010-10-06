@@ -13,6 +13,7 @@ import com.nullprogram.chess.PositionList;
  * TODO: check, castling
  */
 public class King extends Piece {
+
     public King(Side side) {
         super(side);
     }

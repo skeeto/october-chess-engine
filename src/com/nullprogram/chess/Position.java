@@ -11,6 +11,10 @@ public class Position {
         this.y = y;
     }
 
+    public Position(Position pos, int deltax, int deltay) {
+        this(pos.x + deltax, pos.y + deltay);
+    }
+
     public String toString() {
         return "(" + x + ", " + y + ")";
     }

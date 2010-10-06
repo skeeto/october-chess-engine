@@ -10,4 +10,8 @@ public class Position {
         this.x = x;
         this.y = y;
     }
+
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }

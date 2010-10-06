@@ -4,6 +4,9 @@ import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.pieces.*;
 
+/**
+ * The board for a standard game of chess.
+ */
 public class StandardBoard extends Board {
     static final int WIDTH = 8;
     static final int HEIGHT = 8;

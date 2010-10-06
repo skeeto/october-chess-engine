@@ -7,7 +7,16 @@ import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.PositionList;
 
+/**
+ * The Chess pawn.
+ *
+ * This class describes the movement and capture behavior of the pawn
+ * chess piece.
+ *
+ * TODO: en passant
+ */
 public class Pawn extends Piece {
+
     public Pawn(Side side) {
         super(side);
     }
@@ -26,6 +35,9 @@ public class Pawn extends Piece {
         return list;
     }
 
+    /**
+     * Determine if the pawn has moved or not yet.
+     */
     private Boolean moved() {
         Side side = getSide();
         Position pos = getPosition();
@@ -33,6 +45,9 @@ public class Pawn extends Piece {
                  (side == Side.BLACK && pos.y == 6));
     }
 
+    /**
+     * Determine direction of this pawn's movement.
+     */
     private int direction() {
         if (getSide() == Side.WHITE) {
             return 1;

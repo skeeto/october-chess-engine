@@ -22,7 +22,7 @@ public class Pawn extends Piece {
         }
         Position second = new Position(pos.x, pos.y + 2 * dir);
         if (!moved() && b.isEmpty(first) && b.inRange(first)) {
-            list.add(first);
+            list.add(second);
         }
         return list;
     }
@@ -30,7 +30,7 @@ public class Pawn extends Piece {
     private Boolean moved() {
         Side side = getSide();
         Position pos = getPosition();
-        return !((side == Side.WHITE && pos.x == 1) ||
+        return !((side == Side.WHITE && pos.y == 1) ||
                  (side == Side.BLACK && pos.y == 6));
     }
 

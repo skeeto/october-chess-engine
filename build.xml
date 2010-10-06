@@ -4,6 +4,7 @@
   <property name="src.dir" value="src"/>
   <property name="build.dir" value="build"/>
   <property name="test.dir" value="test"/>
+  <property name="doc.dir" value="doc"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="test.classes.dir" value="${build.dir}/test"/>
 
@@ -42,6 +43,7 @@
 
   <target name="clean" description="Delete all generated files.">
     <delete dir="${build.dir}"/>
+    <delete dir="${doc.dir}/javadoc"/>
     <delete file="${jar}"/>
   </target>
 
@@ -65,6 +67,12 @@
     <checkstyle config="doc/sun_checks.xml">
       <fileset dir="src" includes="**/*.java"/>
     </checkstyle>
+  </target>
+
+  <target name="javadoc" description="Generate Javadoc HTML.">
+    <javadoc destdir="${doc.dir}/javadoc">
+      <fileset dir="src" includes="**/*.java"/>
+    </javadoc>
   </target>
 
   <!-- JUnit -->

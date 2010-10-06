@@ -64,7 +64,6 @@
   <target name="check">
     <checkstyle config="doc/sun_checks.xml">
       <fileset dir="src" includes="**/*.java"/>
-      <fileset dir="test" includes="**/*.java"/>
     </checkstyle>
   </target>
 

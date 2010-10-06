@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Position;
+import com.nullprogram.chess.PositionList;
 
 public class BoardPanel extends JPanel implements MouseListener {
 
@@ -21,6 +22,7 @@ public class BoardPanel extends JPanel implements MouseListener {
 
     private Board board;
     private Position selected = null;
+    private PositionList moves = null;
 
     private Color dark = new Color(0xC0, 0x56, 0x0);
     private Color light = new Color(0xFF, 0xA8, 0x58);
@@ -29,6 +31,13 @@ public class BoardPanel extends JPanel implements MouseListener {
 
     static final int MIN_SIZE = 25;
     static final int PREF_SIZE = 50;
+
+    private enum Mode {
+        WAIT, PLAYER;
+    }
+
+    private Mode mode = Mode.WAIT;
+    private Piece.Side side;
 
     public BoardPanel(Board board) {
         this.board = board;
@@ -92,9 +101,7 @@ public class BoardPanel extends JPanel implements MouseListener {
             highlight(g, selected);
 
             // Draw piece moves
-            Piece p = board.getPiece(selected);
-            if (p != null) {
-                ArrayList<Position> moves = p.getMoves();
+            if (moves != null) {
                 g.setColor(moveColor);
                 for (Position pos : moves) {
                     highlight(g, pos);
@@ -122,7 +129,31 @@ public class BoardPanel extends JPanel implements MouseListener {
     }
 
     public void mouseReleased(MouseEvent e) {
-        selected = getPixelPosition(e.getPoint());
+        Position pos = getPixelPosition(e.getPoint());
+        if (pos != null) {
+            if (pos.equals(selected)) {
+                // Delected
+                selected = null;
+                moves = null;
+            } else if (moves != null && moves.contains(pos)) {
+                // Move selected piece
+                moves.contains(pos);
+                // XXX this is temporary
+                board.move(selected, pos);
+                // XXX
+                selected = null;
+                moves = null;
+            } else {
+                // Select this position
+                selected = pos;
+                Piece p = board.getPiece(selected);
+                if (p != null) {
+                    moves = p.getMoves();
+                } else {
+                    moves = null;
+                }
+            }
+        }
         repaint();
     }
 
@@ -136,6 +167,16 @@ public class BoardPanel extends JPanel implements MouseListener {
         return new Position((int)(p.getX()) / getTileSize(),
                             board.getWidth() - 1 -
                             (int)(p.getY()) / getTileSize());
+    }
+
+    /**
+     * Tell the BoardPanel to get a move from the player.
+     *
+     * @param side the side who is making the move
+     */
+    public void setActive(Piece.Side side) {
+        this.side = side;
+        this.mode = Mode.PLAYER;
     }
 
     public void mouseExited(MouseEvent e) {

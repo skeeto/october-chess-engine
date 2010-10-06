@@ -18,7 +18,6 @@ public class Rook extends Piece {
 
     public PositionList getMoves() {
         PositionList list = new PositionList(getBoard());
-        Position pos = getPosition();
         list = getMoves(this, list);
         return list;
     }
@@ -71,7 +70,7 @@ public class Rook extends Piece {
         }
         x = p.getPosition().x;
         y = p.getPosition().y;
-        while (y < p.getBoard().getWidth()) {
+        while (y < p.getBoard().getHeight()) {
             y++;
             Position pos = new Position(x, y);
             if (!list.addMove(pos, p.getSide())) {

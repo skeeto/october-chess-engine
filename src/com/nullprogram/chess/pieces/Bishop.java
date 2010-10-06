@@ -29,6 +29,7 @@ public class Bishop extends Piece {
      *
      * @param p     the piece being tested
      * @param list  list to be appended to
+     * @return      the modified list
      */
     public static PositionList getMoves(Piece p, PositionList list) {
         // Scan each direction and stop looking when we run into something.

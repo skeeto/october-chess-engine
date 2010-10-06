@@ -16,9 +16,10 @@ public class Pawn extends Piece {
         PositionList list = new PositionList(getBoard());
         Position pos = getPosition();
         int dir = direction();
-        list.addMove(new Position(pos.x, pos.y + 1 * dir));
-        if (!moved()) {
-            list.addMove(new Position(pos.x, pos.y + 2 * dir));
+        if (list.addMove(new Position(pos.x, pos.y + 1 * dir))) {
+            if (!moved()) {
+                list.addMove(new Position(pos.x, pos.y + 2 * dir));
+            }
         }
         list.addCapture(new Position(pos.x - 1, pos.y + 1 * dir), getSide());
         list.addCapture(new Position(pos.x + 1, pos.y + 1 * dir), getSide());

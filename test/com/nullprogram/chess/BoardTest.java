@@ -1,6 +1,7 @@
 package com.nullprogram.chess;
 
 import junit.framework.TestCase;
+import com.nullprogram.chess.boards.EmptyBoard;
 
 public class BoardTest extends TestCase {
 
@@ -12,7 +13,7 @@ public class BoardTest extends TestCase {
     }
 
     public void setUp() {
-        board = new Board(SIZE, SIZE);
+        board = new EmptyBoard(SIZE, SIZE);
     }
 
     public void testGetWidth() {

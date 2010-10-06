@@ -3,30 +3,25 @@ package com.nullprogram.chess;
 /**
  * Board data structure.
  */
-public class Board {
+public abstract class Board {
 
     private Piece[][] board;
     private int width, height;
-
-    static final int DEFAULT_WIDTH = 8;
-    static final int DEFAULT_HEIGHT = 8;
-
-    public Board() {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-    }
-
-    public Board(int width, int height) {
-        this.width = width;
-        this.height = height;
-        clear();
-    }
 
     public void clear() {
         board = new Piece[width][height];
     }
 
+    protected void setWidth(int width) {
+        this.width = width;
+    }
+
     public int getWidth() {
         return width;
+    }
+
+    protected void setHeight(int height) {
+        this.height = height;
     }
 
     public int getHeight() {
@@ -40,6 +35,7 @@ public class Board {
     public void setPiece(Position pos, Piece p) {
         board[pos.x][pos.y] = p;
         p.setPosition(pos);
+        p.setBoard(this);
     }
 
     public Piece getPiece(Position pos) {
@@ -50,5 +46,15 @@ public class Board {
         board[b.x][b.y] = board[a.x][a.y];
         board[a.x][a.y] = null;
         getPiece(b).setPosition(b);
+    }
+
+    public Boolean isEmpty(Position pos) {
+        return (getPiece(pos) == null);
+    }
+
+    public Boolean inRange(Position pos) {
+        return
+            (pos.x >= 0)    && (pos.y >= 0) &&
+            (pos.x < width) && (pos.y < height);
     }
 }

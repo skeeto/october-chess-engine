@@ -12,6 +12,7 @@ public abstract class Piece {
 
     private Side side;
     private Position pos;
+    private Board board;
 
     protected Piece() {
     }
@@ -28,6 +29,18 @@ public abstract class Piece {
 
     public Position getPosition() {
         return pos;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setSide(Side side) {
+        this.side = side;
     }
 
     public Side getSide() {

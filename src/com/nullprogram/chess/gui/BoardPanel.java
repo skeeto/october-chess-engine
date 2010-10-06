@@ -39,6 +39,11 @@ public class BoardPanel extends JPanel implements MouseListener {
         addMouseListener(this);
     }
 
+    /**
+     * Get the current pixel size of a tile.
+     *
+     * @return the current size in pixel of one tile.
+     */
     private int getTileSize() {
         int h = board.getHeight();
         int w = board.getWidth();
@@ -47,6 +52,11 @@ public class BoardPanel extends JPanel implements MouseListener {
         return Math.min(sizeX, sizeY);
     }
 
+    /**
+     * Standard painting method.
+     *
+     * @param g the drawing surface
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         int h = board.getHeight();
@@ -93,6 +103,12 @@ public class BoardPanel extends JPanel implements MouseListener {
         }
     }
 
+    /**
+     * Highlight the given tile on the board using the current color.
+     *
+     * @param g   the drawing surface
+     * @param pos position to highlight
+     */
     private void highlight(Graphics g, Position pos) {
         int size = getTileSize();
         int x = pos.x * size;
@@ -110,6 +126,12 @@ public class BoardPanel extends JPanel implements MouseListener {
         repaint();
     }
 
+    /**
+     * Determine which tile a pixel point belongs to.
+     *
+     * @param p the point
+     * @return  the position on the board
+     */
     private Position getPixelPosition(Point p) {
         return new Position((int)(p.getX()) / getTileSize(),
                             board.getWidth() - 1 -

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<project name="chess" default="jar">
-  <property name="jar" value="chess.jar"/>
+<project name="Chess" default="jar">
+  <property name="jar" value="${ant.project.name}.jar"/>
   <property name="src.dir" value="src"/>
   <property name="build.dir" value="build"/>
   <property name="test.dir" value="test"/>

@@ -11,16 +11,19 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
+import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
+import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.PositionList;
 
-public class BoardPanel extends JPanel implements MouseListener {
+public class BoardPanel extends JPanel implements MouseListener, Player {
 
     private static final long serialVersionUID = 1L;
 
     private Board board;
+    private Game game;
     private Position selected = null;
     private PositionList moves = null;
 
@@ -129,6 +132,10 @@ public class BoardPanel extends JPanel implements MouseListener {
     }
 
     public void mouseReleased(MouseEvent e) {
+        if (mode == Mode.WAIT) {
+            return;
+        }
+
         Position pos = getPixelPosition(e.getPoint());
         if (pos != null) {
             if (pos.equals(selected)) {
@@ -138,15 +145,13 @@ public class BoardPanel extends JPanel implements MouseListener {
             } else if (moves != null && moves.contains(pos)) {
                 // Move selected piece
                 moves.contains(pos);
-                // XXX this is temporary
-                board.move(selected, pos);
-                // XXX
+                game.move(selected, pos);
                 selected = null;
                 moves = null;
             } else {
                 // Select this position
                 Piece p = board.getPiece(pos);
-                if (p != null) {
+                if (p != null && p.getSide() == side) {
                     selected = pos;
                     moves = p.getMoves();
                 }
@@ -175,6 +180,10 @@ public class BoardPanel extends JPanel implements MouseListener {
     public void setActive(Piece.Side side) {
         this.side = side;
         this.mode = Mode.PLAYER;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public void mouseExited(MouseEvent e) {

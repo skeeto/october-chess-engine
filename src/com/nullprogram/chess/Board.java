@@ -16,6 +16,27 @@ public abstract class Board {
     }
 
     /**
+     * Determine if board is in a state of checkmate.
+     *
+     * @return true if board is in a state of checkmate
+     */
+    public abstract Boolean checkmate();
+
+    /**
+     * Determine if board is in a state of stalemate.
+     *
+     * @return true if board is in a state of stalemate
+     */
+    public abstract Boolean stalemate();
+
+    /**
+     * Determine if board is in a state of check.
+     *
+     * @return true if board is in a state of check
+     */
+    public abstract Boolean check();
+
+    /**
      * Set the width of the board.
      *
      * @param width the new width

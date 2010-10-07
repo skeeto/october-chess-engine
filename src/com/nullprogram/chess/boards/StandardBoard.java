@@ -37,4 +37,34 @@ public class StandardBoard extends Board {
         setPiece(4, 0, new King(Piece.Side.WHITE));
         setPiece(4, 7, new King(Piece.Side.BLACK));
     }
+
+    /**
+     * Determine if board is in a state of checkmate.
+     *
+     * @return true if board is in a state of checkmate
+     */
+    public Boolean checkmate() {
+        // TODO: check for checkmate
+        return false;
+    }
+
+    /**
+     * Determine if board is in a state of stalemate.
+     *
+     * @return true if board is in a state of stalemate
+     */
+    public Boolean stalemate() {
+        // TODO: check for stalemate
+        return false;
+    }
+
+    /**
+     * Determine if board is in a state of check.
+     *
+     * @return true if board is in a state of check
+     */
+    public Boolean check() {
+        // TODO: check for check
+        return false;
+    }
 }

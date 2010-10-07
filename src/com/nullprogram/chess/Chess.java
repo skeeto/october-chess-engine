@@ -19,5 +19,8 @@ public class Chess {
         frame.add(display);
         frame.pack();
         frame.setVisible(true);
+
+        // Set up a hot-seat game
+        Game game = new Game(board, display, display);
     }
 }

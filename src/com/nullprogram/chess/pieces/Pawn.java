@@ -1,9 +1,6 @@
 package com.nullprogram.chess.pieces;
 
-import java.util.ArrayList;
-
 import com.nullprogram.chess.Piece;
-import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.PositionList;
 
@@ -17,36 +14,58 @@ import com.nullprogram.chess.PositionList;
  */
 public class Pawn extends Piece {
 
-    public Pawn(Side side) {
+    /**
+     * Row for white pawns.
+     */
+    static final int WHITE_ROW = 1;
+
+    /**
+     * Row for black pawns.
+     */
+    static final int BLACK_ROW = 6;
+
+    /**
+     * Create a new pawn on the given side.
+     *
+     * @param side piece owner
+     */
+    public Pawn(final Side side) {
         super(side);
     }
 
-    public PositionList getMoves() {
+    /** {@inheritDoc} */
+    public final PositionList getMoves() {
         PositionList list = new PositionList(getBoard());
         Position pos = getPosition();
         int dir = direction();
-        if (list.addMove(new Position(pos.x, pos.y + 1 * dir))) {
+        if (list.addMove(new Position(pos.getX(), pos.getY() + 1 * dir))) {
             if (!moved()) {
-                list.addMove(new Position(pos.x, pos.y + 2 * dir));
+                list.addMove(new Position(pos.getX(), pos.getY() + 2 * dir));
             }
         }
-        list.addCapture(new Position(pos.x - 1, pos.y + 1 * dir), getSide());
-        list.addCapture(new Position(pos.x + 1, pos.y + 1 * dir), getSide());
+        list.addCapture(new Position(pos.getX() - 1, pos.getY() + 1 * dir),
+                        getSide());
+        list.addCapture(new Position(pos.getX() + 1, pos.getY() + 1 * dir),
+                        getSide());
         return list;
     }
 
     /**
      * Determine if the pawn has moved or not yet.
+     *
+     * @return true if piece has moved
      */
     private Boolean moved() {
         Side side = getSide();
         Position pos = getPosition();
-        return !((side == Side.WHITE && pos.y == 1) ||
-                 (side == Side.BLACK && pos.y == 6));
+        return !((side == Side.WHITE && pos.getY() == WHITE_ROW)
+                 || (side == Side.BLACK && pos.getY() == BLACK_ROW));
     }
 
     /**
      * Determine direction of this pawn's movement.
+     *
+     * @return direction for this pawn
      */
     private int direction() {
         if (getSide() == Side.WHITE) {

@@ -1,7 +1,5 @@
 package com.nullprogram.chess.gui;
 
-import java.util.ArrayList;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
@@ -18,32 +16,116 @@ import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.PositionList;
 
+/**
+ * Displays a board and exposes local players.
+ *
+ * This swing element displays a game board and can also behave as a
+ * player as needed.
+ */
 public class BoardPanel extends JPanel implements MouseListener, Player {
 
+    /**
+     * Version for object serialization.
+     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * The board being displayed.
+     */
     private Board board;
+
+    /**
+     * The game engine used when the board is behaving as a player.
+     */
     private Game game;
+
+    /**
+     * The currently selected tile.
+     */
     private Position selected = null;
+
+    /**
+     * The list of moves for the selected tile.
+     */
     private PositionList moves = null;
 
-    private Color dark = new Color(0xC0, 0x56, 0x0);
-    private Color light = new Color(0xFF, 0xA8, 0x58);
-    private Color selColor = new Color(0x00, 0xFF, 0xFF);
-    private Color moveColor = new Color(0x7F, 0x00, 0x00);
+    /**
+     * The color for the dark tiles on the board.
+     */
+    static final Color DARK = new Color(0xC0, 0x56, 0x0);
 
+    /**
+     * The color for the light tiles on the board.
+     */
+    static final Color LIGHT = new Color(0xFF, 0xA8, 0x58);
+
+    /**
+     * Border color for a selected tile.
+     */
+    static final Color SELECTED = new Color(0x00, 0xFF, 0xFF);
+
+    /**
+     * Border color for a highlighted movement tile.
+     */
+    static final Color MOVEMENT = new Color(0x7F, 0x00, 0x00);
+
+    /**
+     * Padding between the highlight and tile border.
+     */
+    static final int PADDING = 2;
+
+    /**
+     * Thickness of highlighting.
+     */
+    static final int THICKNESS = 3;
+
+    /**
+     * Minimum size of a tile, in pixels.
+     */
     static final int MIN_SIZE = 25;
+
+    /**
+     * Preferred size of a tile, in pixels.
+     */
     static final int PREF_SIZE = 50;
 
+    /**
+     * The interaction modes.
+     */
     private enum Mode {
-        WAIT, PLAYER;
+        /**
+         * Don't interact with the player.
+         */
+        WAIT,
+        /**
+         * Interact with the player.
+         */
+        PLAYER;
     }
 
+    /**
+     * The current interaction mode.
+     */
     private Mode mode = Mode.WAIT;
+
+    /**
+     * Current player making a move, when interactive.
+     */
     private Piece.Side side;
 
-    public BoardPanel(Board board) {
-        this.board = board;
+    /**
+     * Hidden constructor.
+     */
+    protected BoardPanel() {
+    }
+
+    /**
+     * Create a new display for given board.
+     *
+     * @param displayBoard the board to be displayed
+     */
+    public BoardPanel(final Board displayBoard) {
+        board = displayBoard;
         setPreferredSize(new Dimension(PREF_SIZE * board.getWidth(),
                                        PREF_SIZE * board.getHeight()));
         setMinimumSize(new Dimension(MIN_SIZE * board.getWidth(),
@@ -69,7 +151,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
      *
      * @param g the drawing surface
      */
-    public void paintComponent(Graphics g) {
+    public final void paintComponent(final Graphics g) {
         super.paintComponent(g);
         int h = board.getHeight();
         int w = board.getWidth();
@@ -79,9 +161,9 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 if ((x + y) % 2 == 0) {
-                    g.setColor(light);
+                    g.setColor(LIGHT);
                 } else {
-                    g.setColor(dark);
+                    g.setColor(DARK);
                 }
                 g.fillRect(x * size, y * size, size, size);
             }
@@ -100,12 +182,12 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
 
         // Draw selected square
         if (selected != null) {
-            g.setColor(selColor);
+            g.setColor(SELECTED);
             highlight(g, selected);
 
             // Draw piece moves
             if (moves != null) {
-                g.setColor(moveColor);
+                g.setColor(MOVEMENT);
                 for (Position pos : moves) {
                     highlight(g, pos);
                 }
@@ -119,19 +201,18 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
      * @param g   the drawing surface
      * @param pos position to highlight
      */
-    private void highlight(Graphics g, Position pos) {
+    private void highlight(final Graphics g, final Position pos) {
         int size = getTileSize();
-        int x = pos.x * size;
-        int y = (board.getHeight() - 1 - pos.y) * size;
-        int padding = 2;
-        int thickness = 3;
-        for (int i = padding; i < thickness + padding; i++) {
+        int x = pos.getX() * size;
+        int y = (board.getHeight() - 1 - pos.getY()) * size;
+        for (int i = PADDING; i < THICKNESS + PADDING; i++) {
             g.drawRect(x + i, y + i,
                        size - 1 - i * 2, size - 1 - i * 2);
         }
     }
 
-    public void mouseReleased(MouseEvent e) {
+    /** {@inheritDoc} */
+    public final void mouseReleased(final MouseEvent e) {
         if (mode == Mode.WAIT) {
             return;
         }
@@ -144,7 +225,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
                 moves = null;
             } else if (moves != null && moves.contains(pos)) {
                 // Move selected piece
-                moves.contains(pos);
+                mode = Mode.WAIT;
                 game.move(selected, pos);
                 selected = null;
                 moves = null;
@@ -166,39 +247,48 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
      * @param p the point
      * @return  the position on the board
      */
-    private Position getPixelPosition(Point p) {
-        return new Position((int)(p.getX()) / getTileSize(),
-                            board.getWidth() - 1 -
-                            (int)(p.getY()) / getTileSize());
+    private Position getPixelPosition(final Point p) {
+        return new Position((int) (p.getX()) / getTileSize(),
+                            board.getWidth() - 1
+                            - (int) (p.getY()) / getTileSize());
     }
 
     /**
      * Tell the BoardPanel to get a move from the player.
      *
-     * @param side the side who is making the move
+     * @param currentSide the side who is making the move
      */
-    public void setActive(Piece.Side side) {
-        this.side = side;
-        this.mode = Mode.PLAYER;
+    public final void setActive(final Piece.Side currentSide) {
+        side = currentSide;
+        mode = Mode.PLAYER;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    /**
+     * Set the current game for this player.
+     *
+     * @param currentGame the game for this player
+     */
+    public final void setGame(final Game currentGame) {
+        game = currentGame;
     }
 
-    public void mouseExited(MouseEvent e) {
+    /** {@inheritDoc} */
+    public void mouseExited(final MouseEvent e) {
         // Do nothing
     }
 
-    public void mouseEntered(MouseEvent e) {
+    /** {@inheritDoc} */
+    public void mouseEntered(final MouseEvent e) {
         // Do nothing
     }
 
-    public void mouseClicked(MouseEvent e) {
+    /** {@inheritDoc} */
+    public void mouseClicked(final MouseEvent e) {
         // Do nothing
     }
 
-    public void mousePressed(MouseEvent e) {
+    /** {@inheritDoc} */
+    public void mousePressed(final MouseEvent e) {
         // Do nothing
     }
 }

@@ -1,7 +1,6 @@
 package com.nullprogram.chess.pieces;
 
 import com.nullprogram.chess.Piece;
-import com.nullprogram.chess.Position;
 import com.nullprogram.chess.PositionList;
 
 /**
@@ -12,11 +11,17 @@ import com.nullprogram.chess.PositionList;
  */
 public class Queen extends Piece {
 
-    public Queen(Side side) {
+    /**
+     * Create a new queen on the given side.
+     *
+     * @param side piece owner
+     */
+    public Queen(final Side side) {
         super(side);
     }
 
-    public PositionList getMoves() {
+    /** {@inheritDoc} */
+    public final PositionList getMoves() {
         PositionList list = new PositionList(getBoard());
         // Take advantage of the Bishop and Rook implementations
         list = Rook.getMoves(this, list);

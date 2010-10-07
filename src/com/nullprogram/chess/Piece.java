@@ -1,6 +1,5 @@
 package com.nullprogram.chess;
 
-import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 import com.nullprogram.chess.pieces.ImageServer;
 
@@ -13,11 +12,29 @@ public abstract class Piece {
      * The side of the piece: white or black.
      */
     public enum Side {
-        WHITE, BLACK;
+        /**
+         * The lighter colored side of the board.
+         */
+        WHITE,
+        /**
+         * The darker colored side of the board.
+         */
+        BLACK;
     }
 
+    /**
+     * The side this piece belongs to.
+     */
     private Side side;
+
+    /**
+     * The position of this piece.
+     */
     private Position pos;
+
+    /**
+     * The board this piece is on.
+     */
     private Board board;
 
     /**
@@ -29,10 +46,10 @@ public abstract class Piece {
     /**
      * Create a new piece on the given side.
      *
-     * @param side the side of the piece
+     * @param owner the side of the piece
      */
-    protected Piece(Side side) {
-        this.side = side;
+    protected Piece(final Side owner) {
+        side = owner;
     }
 
     /**
@@ -45,10 +62,10 @@ public abstract class Piece {
     /**
      * Update the piece's current position on the board.
      *
-     * @param pos new position
+     * @param position new position
      */
-    public void setPosition(Position pos) {
-        this.pos = pos;
+    public final void setPosition(final Position position) {
+        pos = position;
     }
 
     /**
@@ -56,7 +73,7 @@ public abstract class Piece {
      *
      * @return the piece position
      */
-    public Position getPosition() {
+    public final Position getPosition() {
         return pos;
     }
 
@@ -65,10 +82,10 @@ public abstract class Piece {
      *
      * This is used in determining moves.
      *
-     * @param board the current board
+     * @param surface the current board
      */
-    public void setBoard(Board board) {
-        this.board = board;
+    public final void setBoard(final Board surface) {
+        board = surface;
     }
 
     /**
@@ -76,17 +93,17 @@ public abstract class Piece {
      *
      * @return the piece's board
      */
-    public Board getBoard() {
+    public final Board getBoard() {
         return board;
     }
 
     /**
      * Set the side for this piece.
      *
-     * @param side the new side
+     * @param owner side the new side
      */
-    public void setSide(Side side) {
-        this.side = side;
+    public final void setSide(final Side owner) {
+        side = owner;
     }
 
     /**
@@ -94,7 +111,7 @@ public abstract class Piece {
      *
      * @return the piece's side
      */
-    public Side getSide() {
+    public final Side getSide() {
         return side;
     }
 
@@ -106,7 +123,7 @@ public abstract class Piece {
      * @param size the square size of the image to return
      * @return     image for this piece
      */
-    public BufferedImage getImage(int size) {
+    public final BufferedImage getImage(final int size) {
         String name = this.getClass().getSimpleName();
         return ImageServer.getTile(name + "-" + side, size);
     }

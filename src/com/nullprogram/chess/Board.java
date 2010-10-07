@@ -5,14 +5,21 @@ package com.nullprogram.chess;
  */
 public abstract class Board {
 
+    /**
+     * The internal board array.
+     */
     private Piece[][] board;
-    private int width, height;
+
+    /**
+     * The size of this game board.
+     */
+    private int boardWidth, boardHeight;
 
     /**
      * Create a new Piece array, effectively clearing the board.
      */
-    public void clear() {
-        board = new Piece[width][height];
+    public final void clear() {
+        board = new Piece[boardWidth][boardHeight];
     }
 
     /**
@@ -41,8 +48,8 @@ public abstract class Board {
      *
      * @param width the new width
      */
-    protected void setWidth(int width) {
-        this.width = width;
+    protected final void setWidth(final int width) {
+        boardWidth = width;
     }
 
     /**
@@ -50,8 +57,8 @@ public abstract class Board {
      *
      * @return the width of the board
      */
-    public int getWidth() {
-        return width;
+    public final int getWidth() {
+        return boardWidth;
     }
 
     /**
@@ -59,8 +66,8 @@ public abstract class Board {
      *
      * @param height the new height
      */
-    protected void setHeight(int height) {
-        this.height = height;
+    protected final void setHeight(final int height) {
+        boardHeight = height;
     }
 
     /**
@@ -68,8 +75,8 @@ public abstract class Board {
      *
      * @return the height of the board
      */
-    public int getHeight() {
-        return height;
+    public final int getHeight() {
+        return boardHeight;
     }
 
     /**
@@ -79,7 +86,7 @@ public abstract class Board {
      * @param y vertical part of the position
      * @param p the piece object to be placed
      */
-    public void setPiece(int x, int y, Piece p) {
+    public final void setPiece(final int x, final int y, final Piece p) {
         setPiece(new Position(x, y), p);
     }
 
@@ -89,8 +96,8 @@ public abstract class Board {
      * @param pos the position on the board
      * @param p   the piece object to be placed
      */
-    public void setPiece(Position pos, Piece p) {
-        board[pos.x][pos.y] = p;
+    public final void setPiece(final Position pos, final Piece p) {
+        board[pos.getX()][pos.getY()] = p;
         p.setPosition(pos);
         p.setBoard(this);
     }
@@ -101,8 +108,8 @@ public abstract class Board {
      * @param pos the position on the board
      * @return    the Piece at the position
      */
-    public Piece getPiece(Position pos) {
-        return board[pos.x][pos.y];
+    public final Piece getPiece(final Position pos) {
+        return board[pos.getX()][pos.getY()];
     }
 
     /**
@@ -111,9 +118,9 @@ public abstract class Board {
      * @param a origin
      * @param b destination
      */
-    public void move(Position a, Position b) {
-        board[b.x][b.y] = board[a.x][a.y];
-        board[a.x][a.y] = null;
+    public final void move(final Position a, final Position b) {
+        board[b.getX()][b.getY()] = board[a.getX()][a.getY()];
+        board[a.getX()][a.getY()] = null;
         getPiece(b).setPosition(b);
     }
 
@@ -123,7 +130,7 @@ public abstract class Board {
      * @param pos position to be tested
      * @return    emptiness of position
      */
-    public Boolean isEmpty(Position pos) {
+    public final Boolean isEmpty(final Position pos) {
         return (getPiece(pos) == null);
     }
 
@@ -134,7 +141,7 @@ public abstract class Board {
      * @param side side of the piece wanting to move
      * @return    emptiness of position
      */
-    public Boolean isEmpty(Position pos, Piece.Side side) {
+    public final Boolean isEmpty(final Position pos, final Piece.Side side) {
         Piece p = getPiece(pos);
         if (p == null) {
             return true;
@@ -148,10 +155,9 @@ public abstract class Board {
      * @param pos position to be tested
      * @return    validity of position
      */
-    public Boolean inRange(Position pos) {
-        return
-            (pos.x >= 0)    && (pos.y >= 0) &&
-            (pos.x < width) && (pos.y < height);
+    public final Boolean inRange(final Position pos) {
+        return (pos.getX() >= 0) && (pos.getY() >= 0)
+               && (pos.getX() < boardWidth) && (pos.getY() < boardHeight);
     }
 
     /**
@@ -160,7 +166,7 @@ public abstract class Board {
      * @param pos position to be tested
      * @return    validity of position
      */
-    public Boolean isFree(Position pos) {
+    public final Boolean isFree(final Position pos) {
         return inRange(pos) && isEmpty(pos);
     }
 
@@ -171,7 +177,7 @@ public abstract class Board {
      * @param side side of the piece wanting to move
      * @return     validity of position
      */
-    public Boolean isFree(Position pos, Piece.Side side) {
+    public final Boolean isFree(final Position pos, final Piece.Side side) {
         return inRange(pos) && isEmpty(pos, side);
     }
 }

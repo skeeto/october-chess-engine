@@ -12,21 +12,37 @@ import com.nullprogram.chess.PositionList;
  */
 public class Knight extends Piece {
 
-    public Knight(Side side) {
+    /**
+     * Short segment of movement.
+     */
+    static final int NEAR = 1;
+
+    /**
+     * Long segment of movement.
+     */
+    static final int FAR = 2;
+
+    /**
+     * Create a new knight on the given side.
+     *
+     * @param side piece owner
+     */
+    public Knight(final Side side) {
         super(side);
     }
 
-    public PositionList getMoves() {
+    /** {@inheritDoc} */
+    public final PositionList getMoves() {
         PositionList list = new PositionList(getBoard());
         Position pos = getPosition();
-        list.addMove(new Position(pos,  1,  2), getSide());
-        list.addMove(new Position(pos,  2,  1), getSide());
-        list.addMove(new Position(pos, -2,  1), getSide());
-        list.addMove(new Position(pos, -2, -1), getSide());
-        list.addMove(new Position(pos,  2, -1), getSide());
-        list.addMove(new Position(pos,  1, -2), getSide());
-        list.addMove(new Position(pos, -1, -2), getSide());
-        list.addMove(new Position(pos, -1,  2), getSide());
+        list.addMove(new Position(pos,  NEAR,  FAR), getSide());
+        list.addMove(new Position(pos,  FAR,  NEAR), getSide());
+        list.addMove(new Position(pos, -FAR,  NEAR), getSide());
+        list.addMove(new Position(pos, -FAR, -NEAR), getSide());
+        list.addMove(new Position(pos,  FAR, -NEAR), getSide());
+        list.addMove(new Position(pos,  NEAR, -FAR), getSide());
+        list.addMove(new Position(pos, -NEAR, -FAR), getSide());
+        list.addMove(new Position(pos, -NEAR,  FAR), getSide());
         return list;
     }
 }

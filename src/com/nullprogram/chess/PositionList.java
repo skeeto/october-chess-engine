@@ -9,19 +9,32 @@ import java.util.ArrayList;
  */
 public class PositionList extends ArrayList<Position> {
 
+    /**
+     * Versioning for object serialization.
+     */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * The board used to verify positions before adding them.
+     */
     private Board board;
 
-    public PositionList(Board board) {
-        this.board = board;
+    /**
+     * Create a new position list relative to a board.
+     *
+     * @param verifyBoard the board to be used
+     */
+    public PositionList(final Board verifyBoard) {
+        board = verifyBoard;
     }
 
     /**
      * Add position to list if piece can legally move there (no capture).
      *
      * @param pos position to be added
+     * @return    true if position was added
      */
-    public boolean addMove(Position pos) {
+    public final boolean addMove(final Position pos) {
         if (board.isFree(pos)) {
             super.add(pos);
             return true;
@@ -34,8 +47,9 @@ public class PositionList extends ArrayList<Position> {
      *
      * @param pos  position to be added
      * @param side side of the piece making the move
+     * @return     true if position was added
      */
-    public boolean addMove(Position pos, Piece.Side side) {
+    public final boolean addMove(final Position pos, final Piece.Side side) {
         if (board.isFree(pos, side)) {
             super.add(pos);
             return true;
@@ -48,8 +62,10 @@ public class PositionList extends ArrayList<Position> {
      *
      * @param pos  position to be added
      * @param side side of the piece making the move
+     * @return     true if position was added
      */
-    public boolean addCapture(Position pos, Piece.Side side) {
+    public final boolean addCapture(final Position pos,
+                                    final Piece.Side side) {
         if (board.isFree(pos, side) && !board.isFree(pos)) {
             super.add(pos);
             return true;

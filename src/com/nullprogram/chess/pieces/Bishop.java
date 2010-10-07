@@ -12,11 +12,17 @@ import com.nullprogram.chess.PositionList;
  */
 public class Bishop extends Piece {
 
-    public Bishop(Side side) {
+    /**
+     * Create bishop with given side.
+     *
+     * @param side piece side
+     */
+    public Bishop(final Side side) {
         super(side);
     }
 
-    public PositionList getMoves() {
+    /** {@inheritDoc} */
+    public final PositionList getMoves() {
         PositionList list = new PositionList(getBoard());
         list = getMoves(this, list);
         return list;
@@ -31,10 +37,11 @@ public class Bishop extends Piece {
      * @param list  list to be appended to
      * @return      the modified list
      */
-    public static PositionList getMoves(Piece p, PositionList list) {
+    public static final PositionList getMoves(final Piece p,
+            final PositionList list) {
         // Scan each direction and stop looking when we run into something.
-        int x = p.getPosition().x;
-        int y = p.getPosition().y;
+        int x = p.getPosition().getX();
+        int y = p.getPosition().getY();
         while (x >= 0 && y >= 0) {
             x--;
             y--;
@@ -46,10 +53,10 @@ public class Bishop extends Piece {
                 break;
             }
         }
-        x = p.getPosition().x;
-        y = p.getPosition().y;
-        while (x < p.getBoard().getWidth() &&
-                y < p.getBoard().getHeight()) {
+        x = p.getPosition().getX();
+        y = p.getPosition().getY();
+        while (x < p.getBoard().getWidth()
+                && y < p.getBoard().getHeight()) {
             x++;
             y++;
             Position pos = new Position(x, y);
@@ -60,8 +67,8 @@ public class Bishop extends Piece {
                 break;
             }
         }
-        x = p.getPosition().x;
-        y = p.getPosition().y;
+        x = p.getPosition().getX();
+        y = p.getPosition().getY();
         while (x >= 0 && y < p.getBoard().getHeight()) {
             x--;
             y++;
@@ -73,8 +80,8 @@ public class Bishop extends Piece {
                 break;
             }
         }
-        x = p.getPosition().x;
-        y = p.getPosition().y;
+        x = p.getPosition().getX();
+        y = p.getPosition().getY();
         while (x < p.getBoard().getWidth() && y >= 0) {
             x++;
             y--;

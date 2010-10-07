@@ -15,11 +15,17 @@ import com.nullprogram.chess.PositionList;
  */
 public class King extends Piece {
 
-    public King(Side side) {
+    /**
+     * Create a new king on the given side.
+     *
+     * @param side piece owner
+     */
+    public King(final Side side) {
         super(side);
     }
 
-    public PositionList getMoves() {
+    /** {@inheritDoc} */
+    public final PositionList getMoves() {
         PositionList list = new PositionList(getBoard());
         Position pos = getPosition();
         for (int y = -1; y <= 1; y++) {

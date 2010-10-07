@@ -19,12 +19,12 @@ public interface Player {
      *
      * @param side the player's side
      */
-    public void setActive(Piece.Side side);
+    void setActive(Piece.Side side);
 
     /**
      * Set the game the player belongs to.
      *
      * @param game the player's game
      */
-    public void setGame(Game game);
+    void setGame(Game game);
 }

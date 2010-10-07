@@ -7,37 +7,78 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Serves cached images of requsted size.
+ *
+ * This will cache the recent requests so it's not hitting the disk
+ * every time the display needs an image.
+ */
 public class ImageServer {
 
+    /**
+     * Hidden constructor.
+     */
+    protected ImageServer() {
+    }
+
+    /**
+     * The image cache.
+     */
     private static WeakHashMap<CacheKey, BufferedImage> cache
     = new WeakHashMap<CacheKey, BufferedImage>();
 
+    /**
+     * A key to an image in the cache.
+     */
     private static class CacheKey {
-        String name;
-        int size;
 
-        public CacheKey(String name, int size) {
-            this.name = name;
-            this.size = size;
+        /**
+         * File name of the image.
+         */
+        private String filename;
+
+        /**
+         * Requested size of the image.
+         */
+        private int size;
+
+        /**
+         * Create a new key with given name and size.
+         *
+         * @param name    filename
+         * @param reqSize requested size
+         */
+        public CacheKey(final String name, final int reqSize) {
+            filename = name;
+            size = size;
         }
 
+        /** {@inheritDoc} */
         public int hashCode() {
-            return name.hashCode() ^ size;
+            return filename.hashCode() ^ size;
         }
 
-        public boolean equals(Object that) {
+        /** {@inheritDoc} */
+        public final boolean equals(final Object that) {
             if (this == that) {
                 return true;
             }
             if (!(that instanceof CacheKey)) {
                 return false;
             }
-            CacheKey key = (CacheKey)that;
+            CacheKey key = (CacheKey) that;
             return key.hashCode() == hashCode();
         }
     }
 
-    public static BufferedImage getTile(String name, int size) {
+    /**
+     * Return named image scaled to given size.
+     *
+     * @param name name of the image
+     * @param size size of the returned image
+     * @return     the requested image
+     */
+    public static BufferedImage getTile(final String name, final int size) {
         CacheKey key = new CacheKey(name, size);
         BufferedImage cached = cache.get(key);
         if (cached != null) {

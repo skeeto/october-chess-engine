@@ -12,11 +12,17 @@ import com.nullprogram.chess.PositionList;
  */
 public class Rook extends Piece {
 
-    public Rook(Side side) {
+    /**
+     * Create a new rook on the given side.
+     *
+     * @param side piece owner
+     */
+    public Rook(final Side side) {
         super(side);
     }
 
-    public PositionList getMoves() {
+    /** {@inheritDoc} */
+    public final PositionList getMoves() {
         PositionList list = new PositionList(getBoard());
         list = getMoves(this, list);
         return list;
@@ -31,10 +37,11 @@ public class Rook extends Piece {
      * @param list  list to be appended to
      * @return      the modified list
      */
-    public static PositionList getMoves(Piece p, PositionList list) {
+    public static PositionList getMoves(final Piece p,
+                                        final PositionList list) {
         // Scan each direction and stop looking when we run into something.
-        int x = p.getPosition().x;
-        int y = p.getPosition().y;
+        int x = p.getPosition().getX();
+        int y = p.getPosition().getY();
         while (x >= 0) {
             x--;
             Position pos = new Position(x, y);
@@ -45,8 +52,8 @@ public class Rook extends Piece {
                 break;
             }
         }
-        x = p.getPosition().x;
-        y = p.getPosition().y;
+        x = p.getPosition().getX();
+        y = p.getPosition().getY();
         while (x < p.getBoard().getWidth()) {
             x++;
             Position pos = new Position(x, y);
@@ -57,8 +64,8 @@ public class Rook extends Piece {
                 break;
             }
         }
-        x = p.getPosition().x;
-        y = p.getPosition().y;
+        x = p.getPosition().getX();
+        y = p.getPosition().getY();
         while (y >= 0) {
             y--;
             Position pos = new Position(x, y);
@@ -69,8 +76,8 @@ public class Rook extends Piece {
                 break;
             }
         }
-        x = p.getPosition().x;
-        y = p.getPosition().y;
+        x = p.getPosition().getX();
+        y = p.getPosition().getY();
         while (y < p.getBoard().getHeight()) {
             y++;
             Position pos = new Position(x, y);

@@ -48,7 +48,7 @@ public class Bishop extends Piece {
             x--;
             y--;
             Position pos = new Position(x, y);
-            if (!list.addMove(new Move(home, pos))) {
+            if (!list.addCapture(new Move(home, pos))) {
                 break;
             }
             if (!p.getBoard().isFree(pos)) {

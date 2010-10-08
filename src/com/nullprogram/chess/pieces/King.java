@@ -70,7 +70,7 @@ public class King extends Piece {
                     && (board.getPiece(new Position(Q_BISHOP, home)) == null)
                     && (board.getPiece(new Position(QUEEN, home)) == null)) {
                 /* castle queen-side */
-                Move king = new Move(pos, new Position(pos, -2, 0));
+                Move king = new Move(pos, new Position(pos, -1 * 2, 0));
                 king.setNext(new Move(qRookPos, new Position(pos, -1, 0)));
                 list.add(king);
             }

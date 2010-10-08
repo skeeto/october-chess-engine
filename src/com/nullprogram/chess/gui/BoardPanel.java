@@ -53,12 +53,12 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
     /**
      * The color for the dark tiles on the board.
      */
-    static final Color DARK = new Color(0xC0, 0x56, 0x0);
+    static final Color DARK = new Color(0xD1, 0x8B, 0x47);
 
     /**
      * The color for the light tiles on the board.
      */
-    static final Color LIGHT = new Color(0xFF, 0xA8, 0x58);
+    static final Color LIGHT = new Color(0xFF, 0xCE, 0x9E);
 
     /**
      * Border color for a selected tile.

@@ -1,6 +1,7 @@
 package com.nullprogram.chess.boards;
 
 import com.nullprogram.chess.Board;
+import com.nullprogram.chess.Piece;
 
 /**
  * An empty Chess board.
@@ -36,30 +37,18 @@ public class EmptyBoard extends Board {
         clear();
     }
 
-    /**
-     * Determine if board is in a state of checkmate.
-     *
-     * @return true if board is in a state of checkmate
-     */
+    /** {@inheritDoc} */
     public final Boolean checkmate() {
         return false;
     }
 
-    /**
-     * Determine if board is in a state of stalemate.
-     *
-     * @return true if board is in a state of stalemate
-     */
+    /** {@inheritDoc} */
     public final Boolean stalemate() {
         return false;
     }
 
-    /**
-     * Determine if board is in a state of check.
-     *
-     * @return true if board is in a state of check
-     */
-    public final Boolean check() {
+    /** {@inheritDoc} */
+    public final Boolean check(final Piece.Side side) {
         return false;
     }
 }

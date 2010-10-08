@@ -2,6 +2,7 @@ package com.nullprogram.chess.boards;
 
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
+import com.nullprogram.chess.Position;
 import com.nullprogram.chess.pieces.Pawn;
 import com.nullprogram.chess.pieces.Rook;
 import com.nullprogram.chess.pieces.Knight;
@@ -126,8 +127,24 @@ public class StandardBoard extends Board {
     }
 
     /** {@inheritDoc} */
-    public final Boolean check() {
-        /* TODO: check for check */
+    public final Boolean check(final Piece.Side side) {
+        Piece.Side attacker;
+        if (side == Piece.Side.WHITE) {
+            attacker = Piece.Side.BLACK;
+        } else {
+            attacker = Piece.Side.WHITE;
+        }
+        Position kingPos = findKing(side);
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getWidth(); x++) {
+                Piece p = getPiece(new Position(x, y));
+                if ((p != null)
+                        && (p.getSide() == attacker)
+                        && p.getMoves().containsDest(kingPos)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 }

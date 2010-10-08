@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import com.nullprogram.chess.pieces.King;
+
 /**
  * Board data structure.
  */
@@ -42,9 +44,40 @@ public abstract class Board {
     /**
      * Determine if board is in a state of check.
      *
-     * @return true if board is in a state of check
+     * @param side side to check for check
+     * @return     true if board is in a state of check
      */
-    public abstract Boolean check();
+    public abstract Boolean check(Piece.Side side);
+
+    /**
+     * Determine if board is in a state of check.
+     *
+     * @return     true if board is in a state of check
+     */
+    public final Boolean check() {
+        return check(Piece.Side.WHITE) || check(Piece.Side.BLACK);
+    }
+
+    /**
+     * Find the king belonging to the given side.
+     *
+     * @param side whose king
+     * @return     the king's board position
+     */
+    public final Position findKing(final Piece.Side side) {
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getWidth(); x++) {
+                Position pos = new Position(x, y);
+                Piece p = getPiece(pos);
+                if (p != null
+                        && (p instanceof King)
+                        && (p.getSide() == side)) {
+                    return pos;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Set the width of the board.

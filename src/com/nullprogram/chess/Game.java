@@ -70,6 +70,7 @@ public class Game {
     public final void move(final Move move) {
         board.move(move);
         if (board.checkmate() || board.stalemate()) {
+            System.out.println("Game over!");
             done = true;
             return;
         }

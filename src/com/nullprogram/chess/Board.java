@@ -30,16 +30,18 @@ public abstract class Board {
     /**
      * Determine if board is in a state of checkmate.
      *
+     * @param       side side to be checked
      * @return true if board is in a state of checkmate
      */
-    public abstract Boolean checkmate();
+    public abstract Boolean checkmate(Piece.Side side);
 
     /**
      * Determine if board is in a state of stalemate.
      *
+     * @param       side side to be checked
      * @return true if board is in a state of stalemate
      */
-    public abstract Boolean stalemate();
+    public abstract Boolean stalemate(Piece.Side side);
 
     /**
      * Determine if board is in a state of check.
@@ -56,6 +58,24 @@ public abstract class Board {
      */
     public final Boolean check() {
         return check(Piece.Side.WHITE) || check(Piece.Side.BLACK);
+    }
+
+    /**
+     * Determine if board is in checkmate.
+     *
+     * @return     true if board is in checkmate
+     */
+    public final Boolean checkmate() {
+        return checkmate(Piece.Side.WHITE) || checkmate(Piece.Side.BLACK);
+    }
+
+    /**
+     * Determine if board is in stalemate.
+     *
+     * @return     true if board is in stalemate
+     */
+    public final Boolean stalemate() {
+        return stalemate(Piece.Side.WHITE) || stalemate(Piece.Side.BLACK);
     }
 
     /**

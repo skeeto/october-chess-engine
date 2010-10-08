@@ -1,12 +1,8 @@
-* checkmate
-* stalemate
-* check
+* pawn upgrades
 * castling
-  * check
   * move through check
 * AI
 * multiplayer
 * menu
 * status line
-* moves list
 * save/load game

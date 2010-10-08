@@ -95,8 +95,13 @@ public class ImageServer {
             g.drawImage(orig, 0, 0, size, size, null);
             g.dispose();
         } catch (java.io.IOException e) {
-            // TODO: handle it
-            System.out.println("Failed to fetch image: " + name);
+            String message = "Failed to read image: " + name;
+            System.out.println(message);
+            System.exit(1);
+        } catch (IllegalArgumentException e) {
+            String message = "Failed to find image: " + name;
+            System.out.println(message);
+            System.exit(1);
         }
         cache.put(key, image);
         return image;

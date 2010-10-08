@@ -57,7 +57,7 @@ public abstract class Piece {
      *
      * @return list of moves
      */
-    public abstract PositionList getMoves();
+    public abstract MoveList getMoves();
 
     /**
      * Update the piece's current position on the board.

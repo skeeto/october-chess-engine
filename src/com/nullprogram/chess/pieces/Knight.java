@@ -2,7 +2,8 @@ package com.nullprogram.chess.pieces;
 
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Position;
-import com.nullprogram.chess.PositionList;
+import com.nullprogram.chess.Move;
+import com.nullprogram.chess.MoveList;
 
 /**
  * The Chess knight.
@@ -32,17 +33,17 @@ public class Knight extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final PositionList getMoves() {
-        PositionList list = new PositionList(getBoard());
+    public final MoveList getMoves() {
+        MoveList list = new MoveList(getBoard());
         Position pos = getPosition();
-        list.addMove(new Position(pos,  NEAR,  FAR), getSide());
-        list.addMove(new Position(pos,  FAR,  NEAR), getSide());
-        list.addMove(new Position(pos, -FAR,  NEAR), getSide());
-        list.addMove(new Position(pos, -FAR, -NEAR), getSide());
-        list.addMove(new Position(pos,  FAR, -NEAR), getSide());
-        list.addMove(new Position(pos,  NEAR, -FAR), getSide());
-        list.addMove(new Position(pos, -NEAR, -FAR), getSide());
-        list.addMove(new Position(pos, -NEAR,  FAR), getSide());
+        list.addCapture(new Move(pos, new Position(pos,  NEAR,  FAR)));
+        list.addCapture(new Move(pos, new Position(pos,  FAR,  NEAR)));
+        list.addCapture(new Move(pos, new Position(pos, -FAR,  NEAR)));
+        list.addCapture(new Move(pos, new Position(pos, -FAR, -NEAR)));
+        list.addCapture(new Move(pos, new Position(pos,  FAR, -NEAR)));
+        list.addCapture(new Move(pos, new Position(pos,  NEAR, -FAR)));
+        list.addCapture(new Move(pos, new Position(pos, -NEAR, -FAR)));
+        list.addCapture(new Move(pos, new Position(pos, -NEAR,  FAR)));
         return list;
     }
 }

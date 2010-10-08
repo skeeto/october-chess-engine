@@ -2,7 +2,8 @@ package com.nullprogram.chess.pieces;
 
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Position;
-import com.nullprogram.chess.PositionList;
+import com.nullprogram.chess.Move;
+import com.nullprogram.chess.MoveList;
 
 /**
  * The Chess pawn.
@@ -34,19 +35,17 @@ public class Pawn extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final PositionList getMoves() {
-        PositionList list = new PositionList(getBoard());
+    public final MoveList getMoves() {
+        MoveList list = new MoveList(getBoard());
         Position pos = getPosition();
         int dir = direction();
-        if (list.addMove(new Position(pos.getX(), pos.getY() + 1 * dir))) {
+        if (list.addMove(new Move(pos, new Position(pos, 0, 1 * dir)))) {
             if (!moved()) {
-                list.addMove(new Position(pos.getX(), pos.getY() + 2 * dir));
+                list.addMove(new Move(pos, new Position(pos, 0, 2 * dir)));
             }
         }
-        list.addCapture(new Position(pos.getX() - 1, pos.getY() + 1 * dir),
-                        getSide());
-        list.addCapture(new Position(pos.getX() + 1, pos.getY() + 1 * dir),
-                        getSide());
+        list.addCaptureOnly(new Move(pos, new Position(pos, -1, 1 * dir)));
+        list.addCaptureOnly(new Move(pos, new Position(pos,  1, 1 * dir)));
         return list;
     }
 

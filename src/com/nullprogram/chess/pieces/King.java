@@ -2,7 +2,8 @@ package com.nullprogram.chess.pieces;
 
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Position;
-import com.nullprogram.chess.PositionList;
+import com.nullprogram.chess.Move;
+import com.nullprogram.chess.MoveList;
 
 /**
  * The Chess king.
@@ -25,13 +26,13 @@ public class King extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final PositionList getMoves() {
-        PositionList list = new PositionList(getBoard());
+    public final MoveList getMoves() {
+        MoveList list = new MoveList(getBoard());
         Position pos = getPosition();
         for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {
                 if (x != 0 || y != 0) {
-                    list.addMove(new Position(pos, x, y), getSide());
+                    list.addCapture(new Move(pos, new Position(pos, x, y)));
                 }
             }
         }

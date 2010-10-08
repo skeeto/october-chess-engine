@@ -13,8 +13,9 @@ import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Player;
+import com.nullprogram.chess.Move;
+import com.nullprogram.chess.MoveList;
 import com.nullprogram.chess.Position;
-import com.nullprogram.chess.PositionList;
 
 /**
  * Displays a board and exposes local players.
@@ -47,7 +48,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
     /**
      * The list of moves for the selected tile.
      */
-    private PositionList moves = null;
+    private MoveList moves = null;
 
     /**
      * The color for the dark tiles on the board.
@@ -188,8 +189,8 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
             // Draw piece moves
             if (moves != null) {
                 g.setColor(MOVEMENT);
-                for (Position pos : moves) {
-                    highlight(g, pos);
+                for (Move move : moves) {
+                    highlight(g, move.getDest());
                 }
             }
         }
@@ -223,7 +224,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
                 // Delected
                 selected = null;
                 moves = null;
-            } else if (moves != null && moves.contains(pos)) {
+            } else if (moves != null && moves.containsDest(pos)) {
                 // Move selected piece
                 mode = Mode.WAIT;
                 game.move(selected, pos);

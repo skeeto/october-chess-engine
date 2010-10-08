@@ -16,16 +16,6 @@ import com.nullprogram.chess.MoveList;
 public class Pawn extends Piece {
 
     /**
-     * Row for white pawns.
-     */
-    static final int WHITE_ROW = 1;
-
-    /**
-     * Row for black pawns.
-     */
-    static final int BLACK_ROW = 6;
-
-    /**
      * Create a new pawn on the given side.
      *
      * @param side piece owner
@@ -47,18 +37,6 @@ public class Pawn extends Piece {
         list.addCaptureOnly(new Move(pos, new Position(pos, -1, 1 * dir)));
         list.addCaptureOnly(new Move(pos, new Position(pos,  1, 1 * dir)));
         return list;
-    }
-
-    /**
-     * Determine if the pawn has moved or not yet.
-     *
-     * @return true if piece has moved
-     */
-    private Boolean moved() {
-        Side side = getSide();
-        Position pos = getPosition();
-        return !((side == Side.WHITE && pos.getY() == WHITE_ROW)
-                 || (side == Side.BLACK && pos.getY() == BLACK_ROW));
     }
 
     /**

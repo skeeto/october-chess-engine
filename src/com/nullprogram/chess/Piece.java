@@ -37,6 +37,9 @@ public abstract class Piece {
      */
     private Board board;
 
+    /** True if piece has been moved in this game. */
+    private Boolean moved = false;
+
     /**
      * When creating a piece, you must always choose a side.
      */
@@ -126,5 +129,23 @@ public abstract class Piece {
     public final BufferedImage getImage(final int size) {
         String name = this.getClass().getSimpleName();
         return ImageServer.getTile(name + "-" + side, size);
+    }
+
+    /**
+     * Return true if piece has moved.
+     *
+     * @return true if piece has moved
+     */
+    public final Boolean moved() {
+        return moved;
+    }
+
+    /**
+     * Set if piece has moved.
+     *
+     * @param set value of new movement state
+     */
+    public final void moved(final Boolean set) {
+        moved = set;
     }
 }

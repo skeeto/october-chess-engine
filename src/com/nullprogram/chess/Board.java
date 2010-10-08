@@ -123,6 +123,7 @@ public abstract class Board {
         board[b.getX()][b.getY()] = board[a.getX()][a.getY()];
         board[a.getX()][a.getY()] = null;
         getPiece(b).setPosition(b);
+        getPiece(b).moved(true);
         if (move.getNext() != null) {
             move(move.getNext());
         }

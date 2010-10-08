@@ -1,12 +1,9 @@
 package com.nullprogram.chess.boards;
 
-import com.nullprogram.chess.Board;
-import com.nullprogram.chess.Piece;
-
 /**
  * An empty Chess board.
  */
-public class EmptyBoard extends Board {
+public class EmptyBoard extends StandardBoard {
 
     /**
      * Default board width.
@@ -35,20 +32,5 @@ public class EmptyBoard extends Board {
         setWidth(width);
         setHeight(height);
         clear();
-    }
-
-    /** {@inheritDoc} */
-    public final Boolean checkmate() {
-        return false;
-    }
-
-    /** {@inheritDoc} */
-    public final Boolean stalemate() {
-        return false;
-    }
-
-    /** {@inheritDoc} */
-    public final Boolean check(final Piece.Side side) {
-        return false;
     }
 }

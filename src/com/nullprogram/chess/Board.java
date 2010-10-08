@@ -113,15 +113,19 @@ public abstract class Board {
     }
 
     /**
-     * Move the piece at the first position to the second position.
+     * Perform the given move action.
      *
-     * @param a origin
-     * @param b destination
+     * @param move the move
      */
-    public final void move(final Position a, final Position b) {
+    public final void move(final Move move) {
+        Position a = move.getOrigin();
+        Position b = move.getDest();
         board[b.getX()][b.getY()] = board[a.getX()][a.getY()];
         board[a.getX()][a.getY()] = null;
         getPiece(b).setPosition(b);
+        if (move.getNext() != null) {
+            move(move.getNext());
+        }
     }
 
     /**

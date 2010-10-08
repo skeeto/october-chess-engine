@@ -75,12 +75,28 @@ public class MoveList extends ArrayList<Move> {
      * @param pos destination position
      * @return    true if destination is present in list
      */
-    public final boolean containsDest(Position pos) {
+    public final boolean containsDest(final Position pos) {
         for (Move move : this) {
             if (pos.equals(move.getDest())) {
                 return true;
             }
         }
         return false;
+    }
+
+
+    /**
+     * Get the move containing the destination.
+     *
+     * @param dest destination position
+     * @return     move containing given destination
+     */
+    public final Move getMoveByDest(final Position dest) {
+        for (Move move : this) {
+            if (dest.equals(move.getDest())) {
+                return move;
+            }
+        }
+        return null;
     }
 }

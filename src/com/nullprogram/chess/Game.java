@@ -65,11 +65,10 @@ public class Game {
      * This should not be called by the same thread that called
      * setActive() in the player.
      *
-     * @param orig originating position
-     * @param dest destination position
+     * @param move the move action to take
      */
-    public final void move(final Position orig, final Position dest) {
-        board.move(orig, dest);
+    public final void move(final Move move) {
+        board.move(move);
         if (board.checkmate() || board.stalemate()) {
             done = true;
             return;

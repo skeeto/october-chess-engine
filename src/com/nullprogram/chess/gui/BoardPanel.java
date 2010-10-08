@@ -227,7 +227,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
             } else if (moves != null && moves.containsDest(pos)) {
                 // Move selected piece
                 mode = Mode.WAIT;
-                game.move(selected, pos);
+                game.move(moves.getMoveByDest(pos));
                 selected = null;
                 moves = null;
             } else {

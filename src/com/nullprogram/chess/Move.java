@@ -5,6 +5,9 @@ package com.nullprogram.chess;
  *
  * This is actually a linked list able to describe several movement
  * actions at once that make up a single turn (castling, for example).
+ *
+ * If destination position is null, it means to remove the piece in
+ * the origin position.
  */
 public class Move {
 

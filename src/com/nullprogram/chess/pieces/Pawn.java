@@ -1,6 +1,7 @@
 package com.nullprogram.chess.pieces;
 
 import com.nullprogram.chess.Piece;
+import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.Move;
 import com.nullprogram.chess.MoveList;
@@ -10,8 +11,6 @@ import com.nullprogram.chess.MoveList;
  *
  * This class describes the movement and capture behavior of the pawn
  * chess piece.
- *
- * TODO: en passant
  */
 public class Pawn extends Piece {
 
@@ -28,6 +27,7 @@ public class Pawn extends Piece {
     public final MoveList getMoves() {
         MoveList list = new MoveList(getBoard());
         Position pos = getPosition();
+        Board board = getBoard();
         int dir = direction();
         if (list.addMove(new Move(pos, new Position(pos, 0, 1 * dir)))) {
             if (!moved()) {
@@ -36,6 +36,26 @@ public class Pawn extends Piece {
         }
         list.addCaptureOnly(new Move(pos, new Position(pos, -1, 1 * dir)));
         list.addCaptureOnly(new Move(pos, new Position(pos,  1, 1 * dir)));
+
+        /* check for en passant */
+        Move last = board.last();
+        if (last != null) {
+            Position left = new Position(pos, -1, 0);
+            Position right = new Position(pos, 1, 0);
+            if (left.equals(last.getDest())
+                    && (board.getPiece(left) instanceof Pawn)) {
+                /* en passant to the left */
+                Move passant = new Move(pos, new Position(pos, -1, dir));
+                passant.setNext(new Move(left, null));
+                list.addMove(passant);
+            } else if (right.equals(last.getDest())
+                       && (board.getPiece(right) instanceof Pawn)) {
+                /* en passant to the right */
+                Move passant = new Move(pos, new Position(pos, 1, dir));
+                passant.setNext(new Move(right, null));
+                list.addMove(passant);
+            }
+        }
         return list;
     }
 

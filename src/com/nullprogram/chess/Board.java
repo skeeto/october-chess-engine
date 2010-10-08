@@ -15,6 +15,9 @@ public abstract class Board {
      */
     private int boardWidth, boardHeight;
 
+    /** Moves taken in this game so far. */
+    private MoveList moves = new MoveList(this);
+
     /**
      * Create a new Piece array, effectively clearing the board.
      */
@@ -98,8 +101,10 @@ public abstract class Board {
      */
     public final void setPiece(final Position pos, final Piece p) {
         board[pos.getX()][pos.getY()] = p;
-        p.setPosition(pos);
-        p.setBoard(this);
+        if (p != null) {
+            p.setPosition(pos);
+            p.setBoard(this);
+        }
     }
 
     /**
@@ -118,15 +123,41 @@ public abstract class Board {
      * @param move the move
      */
     public final void move(final Move move) {
+        moves.add(move);
+        execMove(move);
+    }
+
+    /**
+     * Actually execute the move.
+     *
+     * @param move the move
+     */
+    private void execMove(final Move move) {
         Position a = move.getOrigin();
         Position b = move.getDest();
-        board[b.getX()][b.getY()] = board[a.getX()][a.getY()];
-        board[a.getX()][a.getY()] = null;
-        getPiece(b).setPosition(b);
-        getPiece(b).moved(true);
-        if (move.getNext() != null) {
-            move(move.getNext());
+        if (b != null) {
+            board[b.getX()][b.getY()] = board[a.getX()][a.getY()];
+            board[a.getX()][a.getY()] = null;
+            getPiece(b).setPosition(b);
+            getPiece(b).moved(true);
+        } else {
+            setPiece(a, null);
         }
+        if (move.getNext() != null) {
+            execMove(move.getNext());
+        }
+    }
+
+    /**
+     * Return the last move made.
+     *
+     * @return the previous move
+     */
+    public final Move last() {
+        if (moves.isEmpty()) {
+            return null;
+        }
+        return moves.get(moves.size() - 1);
     }
 
     /**

@@ -41,6 +41,7 @@ public class King extends Piece {
     /** {@inheritDoc} */
     public final MoveList getMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
+        Boolean inCheck = null;  // expensive test: do it only 0 or 1 times!
         Position pos = getPosition();
         for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {
@@ -68,9 +69,12 @@ public class King extends Piece {
                     && (board.getPiece(new Position(Q_BISHOP, home)) == null)
                     && (board.getPiece(new Position(QUEEN, home)) == null)) {
                 /* castle queen-side */
-                Move king = new Move(pos, new Position(pos, -1 * 2, 0));
-                king.setNext(new Move(qRookPos, new Position(pos, -1, 0)));
-                list.add(king);
+                inCheck = check && getBoard().check(getSide());
+                if (!inCheck) {
+                    Move king = new Move(pos, new Position(pos, -1 * 2, 0));
+                    king.setNext(new Move(qRookPos, new Position(pos, -1, 0)));
+                    list.add(king);
+                }
             }
             Position kRookPos = new Position(board.getWidth() - 1, home);
             Piece kRook = board.getPiece(kRookPos);
@@ -80,9 +84,14 @@ public class King extends Piece {
                     && (board.getPiece(new Position(K_KNIGHT, home)) == null)
                     && (board.getPiece(new Position(K_BISHOP, home)) == null)) {
                 /* castle king-side */
-                Move king = new Move(pos, new Position(pos, 2, 0));
-                king.setNext(new Move(kRookPos, new Position(pos, 1, 0)));
-                list.add(king);
+                if (inCheck == null) {
+                    inCheck = check && getBoard().check(getSide());
+                }
+                if (!inCheck) {
+                    Move king = new Move(pos, new Position(pos, 2, 0));
+                    king.setNext(new Move(kRookPos, new Position(pos, 1, 0)));
+                    list.add(king);
+                }
             }
         }
         return list;

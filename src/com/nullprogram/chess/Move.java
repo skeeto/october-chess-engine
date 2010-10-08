@@ -20,6 +20,9 @@ public class Move {
     /** Linked list entry for next part of this move. */
     private Move next;
 
+    /** Piece that was capture: used for undoing a move.  */
+    private Piece captured;
+
     /**
      * Create a new move to move a piece from one position to another.
      *
@@ -66,5 +69,23 @@ public class Move {
      */
     public final Position getDest() {
         return destination;
+    }
+
+    /**
+     * Set the piece that was captured by this move.
+     *
+     * @param p piece that was captured
+     */
+    public final void setCaptured(final Piece p) {
+        captured = p;
+    }
+
+    /**
+     * Set the piece that was captured by this move.
+     *
+     * @return piece that was captured
+     */
+    public final Piece getCaptured() {
+        return captured;
     }
 }

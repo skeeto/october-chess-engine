@@ -84,7 +84,6 @@ public class MoveList extends ArrayList<Move> {
         return false;
     }
 
-
     /**
      * Get the move containing the destination.
      *
@@ -98,5 +97,31 @@ public class MoveList extends ArrayList<Move> {
             }
         }
         return null;
+    }
+
+    /**
+     * Stack behavior: pop off the last element on return it.
+     *
+     * @return move popped off the stack
+     */
+    public final Move pop() {
+        if (isEmpty()) {
+            return null;
+        }
+        Move last = get(size() - 1);
+        remove(size() - 1);
+        return last;
+    }
+
+    /**
+     * Stack behavior: peek at last element.
+     *
+     * @return move at the top of the stack
+     */
+    public final Move peek() {
+        if (isEmpty()) {
+            return null;
+        }
+        return get(size() - 1);
     }
 }

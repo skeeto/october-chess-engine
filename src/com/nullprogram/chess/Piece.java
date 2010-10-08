@@ -37,8 +37,8 @@ public abstract class Piece {
      */
     private Board board;
 
-    /** True if piece has been moved in this game. */
-    private Boolean moved = false;
+    /** Movement counter. */
+    private int moved = 0;
 
     /**
      * When creating a piece, you must always choose a side.
@@ -137,15 +137,20 @@ public abstract class Piece {
      * @return true if piece has moved
      */
     public final Boolean moved() {
-        return moved;
+        return moved != 0;
     }
 
     /**
-     * Set if piece has moved.
-     *
-     * @param set value of new movement state
+     * Increase piece movement counter.
      */
-    public final void moved(final Boolean set) {
-        moved = set;
+    public final void incMoved() {
+        moved++;
+    }
+
+    /**
+     * Decrease piece movement counter.
+     */
+    public final void decMoved() {
+        moved--;
     }
 }

@@ -166,19 +166,51 @@ public abstract class Board {
      * @param move the move
      */
     private void execMove(final Move move) {
+        if (move == null) {
+            return;
+        }
         Position a = move.getOrigin();
         Position b = move.getDest();
         if (b != null) {
-            board[b.getX()][b.getY()] = board[a.getX()][a.getY()];
-            board[a.getX()][a.getY()] = null;
+            move.setCaptured(getPiece(b));
+            setPiece(b, getPiece(a));
+            setPiece(a, null);
             getPiece(b).setPosition(b);
-            getPiece(b).moved(true);
+            getPiece(b).incMoved();
         } else {
+            move.setCaptured(getPiece(a));
             setPiece(a, null);
         }
-        if (move.getNext() != null) {
-            execMove(move.getNext());
+        execMove(move.getNext());
+    }
+
+    /**
+     * Undo the last move.
+     */
+    public final void undo() {
+        execUndo(moves.pop());
+    }
+
+    /**
+     * Actually perform the undo action.
+     *
+     * @param move the move
+     */
+    private void execUndo(final Move move) {
+        if (move == null) {
+            return;
         }
+        Position a = move.getOrigin();
+        Position b = move.getDest();
+        if (b != null) {
+            setPiece(a, getPiece(b));
+            setPiece(b, move.getCaptured());
+            getPiece(a).setPosition(a);
+            getPiece(a).decMoved();
+        } else {
+            setPiece(a, move.getCaptured());
+        }
+        execUndo(move.getNext());
     }
 
     /**
@@ -187,10 +219,7 @@ public abstract class Board {
      * @return the previous move
      */
     public final Move last() {
-        if (moves.isEmpty()) {
-            return null;
-        }
-        return moves.get(moves.size() - 1);
+        return moves.peek();
     }
 
     /**

@@ -23,8 +23,8 @@ public class Bishop extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves() {
-        MoveList list = new MoveList(getBoard());
+    public final MoveList getMoves(final boolean check) {
+        MoveList list = new MoveList(getBoard(), check);
         list = getMoves(this, list);
         return list;
     }

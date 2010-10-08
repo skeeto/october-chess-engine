@@ -33,8 +33,8 @@ public class Knight extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves() {
-        MoveList list = new MoveList(getBoard());
+    public final MoveList getMoves(final boolean check) {
+        MoveList list = new MoveList(getBoard(), check);
         Position pos = getPosition();
         list.addCapture(new Move(pos, new Position(pos,  NEAR,  FAR)));
         list.addCapture(new Move(pos, new Position(pos,  FAR,  NEAR)));

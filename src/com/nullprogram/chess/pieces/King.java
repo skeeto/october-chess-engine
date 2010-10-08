@@ -11,8 +11,6 @@ import com.nullprogram.chess.MoveList;
  *
  * This class describes the movement and capture behavior of the Chess
  * king.
- *
- * TODO: check
  */
 public class King extends Piece {
 
@@ -41,8 +39,8 @@ public class King extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves() {
-        MoveList list = new MoveList(getBoard());
+    public final MoveList getMoves(final boolean check) {
+        MoveList list = new MoveList(getBoard(), check);
         Position pos = getPosition();
         for (int y = -1; y <= 1; y++) {
             for (int x = -1; x <= 1; x++) {

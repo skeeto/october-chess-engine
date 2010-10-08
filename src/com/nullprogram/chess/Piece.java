@@ -58,9 +58,10 @@ public abstract class Piece {
     /**
      * Get the moves for this piece.
      *
-     * @return list of moves
+     * @param checkCheck check for check
+     * @return           list of moves
      */
-    public abstract MoveList getMoves();
+    public abstract MoveList getMoves(boolean checkCheck);
 
     /**
      * Update the piece's current position on the board.

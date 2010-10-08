@@ -15,13 +15,27 @@ public class MoveList extends ArrayList<Move> {
     /** The board used to verify positions before adding them. */
     private Board board;
 
+    /** Should we check for check when verifying moves. */
+    private boolean check;
+
     /**
      * Create a new move list relative to a board.
      *
      * @param verifyBoard the board to be used
      */
     public MoveList(final Board verifyBoard) {
+        this(verifyBoard, true);
+    }
+
+    /**
+     * Create a new move list relative to a board.
+     *
+     * @param checkCheck  check for check
+     * @param verifyBoard the board to be used
+     */
+    public MoveList(final Board verifyBoard, final boolean checkCheck) {
         board = verifyBoard;
+        check = checkCheck;
     }
 
     /**
@@ -31,7 +45,8 @@ public class MoveList extends ArrayList<Move> {
      * @return     true if position was added
      */
     public final boolean addMove(final Move move) {
-        if (board.isFree(move.getDest())) {
+        if (board.isFree(move.getDest())
+                && !causesCheck(move)) {
             super.add(move);
             return true;
         }
@@ -46,7 +61,8 @@ public class MoveList extends ArrayList<Move> {
      */
     public final boolean addCapture(final Move move) {
         Piece p = board.getPiece(move.getOrigin());
-        if (board.isFree(move.getDest(), p.getSide())) {
+        if (board.isFree(move.getDest(), p.getSide())
+                && !causesCheck(move)) {
             super.add(move);
             return true;
         }
@@ -62,11 +78,29 @@ public class MoveList extends ArrayList<Move> {
     public final boolean addCaptureOnly(final Move move) {
         Piece p = board.getPiece(move.getOrigin());
         if (board.isFree(move.getDest(), p.getSide())
-                && !board.isFree(move.getDest())) {
+                && !board.isFree(move.getDest())
+                && !causesCheck(move)) {
             super.add(move);
             return true;
         }
         return false;
+    }
+
+    /**
+     * Determine if move will cause check for the same side.
+     *
+     * @param move move to be tested
+     * @return     true if move causes check
+     */
+    private boolean causesCheck(final Move move) {
+        if (!check) {
+            return false;
+        }
+        Piece p = board.getPiece(move.getOrigin());
+        board.move(move);
+        boolean ret = board.check(p.getSide());
+        board.undo();
+        return ret;
     }
 
     /**

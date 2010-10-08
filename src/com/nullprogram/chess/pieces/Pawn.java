@@ -24,8 +24,8 @@ public class Pawn extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves() {
-        MoveList list = new MoveList(getBoard());
+    public final MoveList getMoves(final boolean check) {
+        MoveList list = new MoveList(getBoard(), check);
         Position pos = getPosition();
         Board board = getBoard();
         int dir = direction();

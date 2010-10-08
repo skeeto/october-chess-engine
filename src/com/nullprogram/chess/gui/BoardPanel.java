@@ -235,7 +235,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
                 Piece p = board.getPiece(pos);
                 if (p != null && p.getSide() == side) {
                     selected = pos;
-                    moves = p.getMoves();
+                    moves = p.getMoves(true);
                 }
             }
         }

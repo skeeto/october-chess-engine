@@ -17,6 +17,13 @@ import com.nullprogram.chess.pieces.Bishop;
 import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.King;
 
+/**
+ * Minimax Chess AI player.
+ *
+ * This employs the dumb minimax algorithm to search the game tree for
+ * moves. The board is currently only evaluated only by the pieces
+ * present, not their positions.
+ */
 public class Minimax implements Player, Runnable {
 
     /** Board the AI will be playing on. */
@@ -34,7 +41,26 @@ public class Minimax implements Player, Runnable {
     /** Maximum search depth. */
     static final double INF = 10000;
 
+    /** Values of each piece. */
     private HashMap<Class, Double> values;
+
+    /** Value of a pawn. */
+    static final double PAWN_VALUE = 1.0;
+
+    /** Value of a knight. */
+    static final double KNIGHT_VALUE = 3.0;
+
+    /** Value of a bishop. */
+    static final double BISHOP_VALUE = 3.0;
+
+    /** Value of a rook. */
+    static final double ROOK_VALUE = 5.0;
+
+    /** Value of a queen. */
+    static final double QUEEN_VALUE = 9.0;
+
+    /** Value of a king. */
+    static final double KING_VALUE = 1000.0;
 
     /**
      * Hidden constructor.
@@ -45,23 +71,23 @@ public class Minimax implements Player, Runnable {
     /**
      * Create a new AI for the given board.
      *
-     * @param displayBoard the board to be displayed
+     * @param gameBoard the board to be displayed
      */
     public Minimax(final Board gameBoard) {
         board = gameBoard;
         values = new HashMap<Class, Double>();
 
         /* Piece values */
-        values.put((new Pawn(side)).getClass(),   1.0);
-        values.put((new Knight(side)).getClass(), 3.0);
-        values.put((new Bishop(side)).getClass(), 3.0);
-        values.put((new Rook(side)).getClass(),   5.0);
-        values.put((new Queen(side)).getClass(),  9.0);
-        values.put((new King(side)).getClass(),   1000.0);
+        values.put((new Pawn(side)).getClass(),   PAWN_VALUE);
+        values.put((new Knight(side)).getClass(), KNIGHT_VALUE);
+        values.put((new Bishop(side)).getClass(), BISHOP_VALUE);
+        values.put((new Rook(side)).getClass(),   ROOK_VALUE);
+        values.put((new Queen(side)).getClass(),  QUEEN_VALUE);
+        values.put((new King(side)).getClass(),   KING_VALUE);
     }
 
     /** {@inheritDoc} */
-    public void setGame(Game currentGame) {
+    public final void setGame(final Game currentGame) {
         game = currentGame;
     }
 
@@ -72,7 +98,7 @@ public class Minimax implements Player, Runnable {
     }
 
     /** {@inheritDoc} */
-    public void run() {
+    public final void run() {
         /* AI needs to eventually be running this on a copy of the board. */
         System.out.println("AI thread ... GO!");
         MoveList list = new MoveList(board, false);
@@ -98,6 +124,7 @@ public class Minimax implements Player, Runnable {
                 best = v;
             } else if (v == best) {
                 /* randomize this eventually */
+                best = v;
             }
             board.undo();
         }
@@ -110,9 +137,10 @@ public class Minimax implements Player, Runnable {
      *
      * @param b     board to search
      * @param depth current depth
+     * @param s     side for current move
      * @return      best valuation found at lowest depth
      */
-    private double search(Board b, Piece.Side s, int depth) {
+    private double search(final Board b, final Piece.Side s, final int depth) {
         if (depth == 0) {
             return valuate(b);
         }
@@ -138,6 +166,7 @@ public class Minimax implements Player, Runnable {
                             best = value;
                         } else if (value == best) {
                             /* randomize this eventually */
+                            best = value;
                         }
                         b.undo();
                     }
@@ -156,7 +185,7 @@ public class Minimax implements Player, Runnable {
      * @param b board to be valuated
      * @return  valuation of this board
      */
-    private double valuate(Board b) {
+    private double valuate(final Board b) {
         double value = 0;
         for (int y = 0; y < b.getHeight(); y++) {
             for (int x = 0; x < b.getWidth(); x++) {

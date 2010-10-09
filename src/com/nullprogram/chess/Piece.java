@@ -158,9 +158,10 @@ public abstract class Piece {
     /**
      * Return the opposing side.
      *
-     * @return the opposing side
+     * @param s the side to be opposed
+     * @return  the opposing side
      */
-    public static Side opposite(Side s) {
+    public static Side opposite(final Side s) {
         if (s == Side.BLACK) {
             return Side.WHITE;
         } else {

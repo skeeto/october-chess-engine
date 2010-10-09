@@ -4,6 +4,7 @@ package com.nullprogram.chess;
  * Represents a position on a Chess board.
  */
 public class Position implements Comparable<Position> {
+
     /**
      * The board coordinates of this position, starting at the white
      * queenside rook.

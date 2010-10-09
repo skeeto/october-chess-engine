@@ -21,9 +21,7 @@ public class ImageServer {
     protected ImageServer() {
     }
 
-    /**
-     * The image cache.
-     */
+    /** The image cache. */
     private static WeakHashMap<CacheKey, BufferedImage> cache
     = new WeakHashMap<CacheKey, BufferedImage>();
 

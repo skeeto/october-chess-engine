@@ -125,7 +125,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
         int w = board.getWidth();
         int size = getTileSize();
 
-        // Draw the background
+        /* Draw the background */
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 if ((x + y) % 2 == 0) {
@@ -137,7 +137,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
             }
         }
 
-        // Place the pieces
+        /* Place the pieces */
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 Piece p = board.getPiece(new Position(x, y));
@@ -148,7 +148,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
             }
         }
 
-        // Draw last move
+        /* Draw last move */
         Move last = board.last();
         if (last != null) {
             g.setColor(LAST);
@@ -156,12 +156,12 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
             highlight(g, last.getDest());
         }
 
-        // Draw selected square
+        /* Draw selected square */
         if (selected != null) {
             g.setColor(SELECTED);
             highlight(g, selected);
 
-            // Draw piece moves
+            /* Draw piece moves */
             if (moves != null) {
                 g.setColor(MOVEMENT);
                 for (Move move : moves) {
@@ -216,17 +216,17 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
         Position pos = getPixelPosition(e.getPoint());
         if (pos != null) {
             if (pos.equals(selected)) {
-                // Delected
+                /* Deselect */
                 selected = null;
                 moves = null;
             } else if (moves != null && moves.containsDest(pos)) {
-                // Move selected piece
+                /* Move selected piece */
                 mode = Mode.WAIT;
                 game.move(moves.getMoveByDest(pos));
                 selected = null;
                 moves = null;
             } else {
-                // Select this position
+                /* Select this position */
                 Piece p = board.getPiece(pos);
                 if (p != null && p.getSide() == side) {
                     selected = pos;
@@ -271,21 +271,21 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
 
     /** {@inheritDoc} */
     public void mouseExited(final MouseEvent e) {
-        // Do nothing
+        /* Do nothing */
     }
 
     /** {@inheritDoc} */
     public void mouseEntered(final MouseEvent e) {
-        // Do nothing
+        /* Do nothing */
     }
 
     /** {@inheritDoc} */
     public void mouseClicked(final MouseEvent e) {
-        // Do nothing
+        /* Do nothing */
     }
 
     /** {@inheritDoc} */
     public void mousePressed(final MouseEvent e) {
-        // Do nothing
+        /* Do nothing */
     }
 }

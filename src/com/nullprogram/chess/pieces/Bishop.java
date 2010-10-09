@@ -40,7 +40,7 @@ public class Bishop extends Piece {
      */
     public static final MoveList getMoves(final Piece p,
                                           final MoveList list) {
-        // Scan each direction and stop looking when we run into something.
+        /* Scan each direction and stop looking when we run into something. */
         Position home = p.getPosition();
         int x = home.getX();
         int y = home.getY();

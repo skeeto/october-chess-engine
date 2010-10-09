@@ -13,29 +13,19 @@ public class Game {
     /** Display frame. */
     private ChessFrame frame;
 
-    /**
-     * The board being used for this game.
-     */
+    /** The board being used for this game. */
     private Board board;
 
-    /**
-     * The player playing white.
-     */
+    /** The player playing white. */
     private Player white;
 
-    /**
-     * The player playing black.
-     */
+    /** The player playing black. */
     private Player black;
 
-    /**
-     * Whose turn it is right now.
-     */
+    /** Whose turn it is right now. */
     private Piece.Side turn;
 
-    /**
-     * Set to true when the board is in a completed state.
-     */
+    /** Set to true when the board is in a completed state. */
     private Boolean done;
 
     /**

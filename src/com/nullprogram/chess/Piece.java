@@ -22,19 +22,13 @@ public abstract class Piece {
         BLACK;
     }
 
-    /**
-     * The side this piece belongs to.
-     */
+    /** The side this piece belongs to. */
     private Side side;
 
-    /**
-     * The position of this piece.
-     */
+    /** The position of this piece. */
     private Position pos;
 
-    /**
-     * The board this piece is on.
-     */
+    /** The board this piece is on. */
     private Board board;
 
     /** Movement counter. */

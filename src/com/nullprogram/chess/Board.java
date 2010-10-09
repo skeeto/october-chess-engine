@@ -4,17 +4,17 @@ import com.nullprogram.chess.pieces.King;
 
 /**
  * Board data structure.
+ *
+ * After the initial setup, the board <i>must</i> only be modified
+ * through move transaction. This allows undo() and copy(), which many
+ * other things depends on, to work properly.
  */
 public abstract class Board {
 
-    /**
-     * The internal board array.
-     */
+    /** The internal board array. */
     private Piece[][] board;
 
-    /**
-     * The size of this game board.
-     */
+    /** The size of this game board. */
     private int boardWidth, boardHeight;
 
     /** Moves taken in this game so far. */

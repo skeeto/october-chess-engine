@@ -2,6 +2,8 @@ package com.nullprogram.chess.ai;
 
 import java.util.HashMap;
 
+import javax.swing.JProgressBar;
+
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
@@ -34,6 +36,9 @@ public class Minimax implements Player, Runnable {
 
     /** Side this AI plays. */
     private Piece.Side side;
+
+    /** Used to display AI's progress. */
+    private JProgressBar progress;
 
     /** Maximum search depth. */
     static final int MAX_DEPTH = 3;
@@ -72,8 +77,9 @@ public class Minimax implements Player, Runnable {
      * Create a new AI for the given board.
      *
      * @param gameBoard the board to be displayed
+     * @param status    GUI progress bar
      */
-    public Minimax(final Board gameBoard) {
+    public Minimax(final Board gameBoard, final JProgressBar status) {
         board = gameBoard;
         values = new HashMap<Class, Double>();
 
@@ -84,6 +90,8 @@ public class Minimax implements Player, Runnable {
         values.put((new Rook(side)).getClass(),   ROOK_VALUE);
         values.put((new Queen(side)).getClass(),  QUEEN_VALUE);
         values.put((new King(side)).getClass(),   KING_VALUE);
+
+        progress = status;
     }
 
     /** {@inheritDoc} */
@@ -100,7 +108,6 @@ public class Minimax implements Player, Runnable {
     /** {@inheritDoc} */
     public final void run() {
         /* AI needs to eventually be running this on a copy of the board. */
-        System.out.println("AI thread ... GO!");
         MoveList list = new MoveList(board, false);
         for (int y = 0; y < board.getHeight(); y++) {
             for (int x = 0; x < board.getWidth(); x++) {
@@ -116,7 +123,11 @@ public class Minimax implements Player, Runnable {
         /* Evaluate the tree under each move. */
         double best = 0;
         Move selected = null;
-        for (Move move : list) {
+        progress.setMaximum(list.size() - 1);
+        progress.setString("Thinking ...");
+        for (int i = 0; i < list.size(); i++) {
+            progress.setValue(i);
+            Move move = list.get(i);
             board.move(move);
             double v = search(board, Piece.opposite(side), MAX_DEPTH);
             if (selected == null || v > best) {
@@ -128,7 +139,7 @@ public class Minimax implements Player, Runnable {
             }
             board.undo();
         }
-        System.out.println("AI is done!");
+        progress.setString("Done.");
         game.move(selected);
     }
 

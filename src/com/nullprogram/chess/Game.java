@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import com.nullprogram.chess.gui.ChessFrame;
+
 /**
  * Drives a game of chess, given players and a board.
  *
@@ -7,6 +9,9 @@ package com.nullprogram.chess;
  * to respond with a move from their own thread.
  */
 public class Game {
+
+    /** Display frame. */
+    private ChessFrame frame;
 
     /**
      * The board being used for this game.
@@ -42,20 +47,24 @@ public class Game {
     /**
      * Create a new game with the given board and players.
      *
-     * @param gameBoard      the game board
+     * @param display     display for this game
+     * @param gameBoard   the game board
      * @param whitePlayer the player playing white
      * @param blackPlayer the player playing black
      */
-    public Game(final Board gameBoard,
+    public Game(final ChessFrame display,
+                final Board gameBoard,
                 final Player whitePlayer,
                 final Player blackPlayer) {
         done = false;
+        frame = display;
         board = gameBoard;
         white = whitePlayer;
         black = blackPlayer;
         white.setGame(this);
         black.setGame(this);
         turn = Piece.Side.WHITE;
+        turnStatus();
         white.setActive(turn);
     }
 
@@ -82,5 +91,19 @@ public class Game {
             turn = Piece.Side.WHITE;
             white.setActive(turn);
         }
+        turnStatus();
+    }
+
+    /**
+     * Display the current turn status.
+     */
+    private void turnStatus() {
+        String status;
+        if (turn == Piece.Side.WHITE) {
+            status = "White's turn.";
+        } else {
+            status = "Black's turn.";
+        }
+        frame.setStatus(status);
     }
 }

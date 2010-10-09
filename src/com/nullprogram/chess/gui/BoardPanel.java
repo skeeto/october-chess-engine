@@ -25,93 +25,57 @@ import com.nullprogram.chess.Position;
  */
 public class BoardPanel extends JPanel implements MouseListener, Player {
 
-    /**
-     * Version for object serialization.
-     */
+    /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
 
-    /**
-     * The board being displayed.
-     */
+    /** The board being displayed. */
     private Board board;
 
-    /**
-     * The game engine used when the board is behaving as a player.
-     */
+    /** The game engine used when the board is behaving as a player. */
     private Game game;
 
-    /**
-     * The currently selected tile.
-     */
+    /** The currently selected tile. */
     private Position selected = null;
 
-    /**
-     * The list of moves for the selected tile.
-     */
+    /** The list of moves for the selected tile. */
     private MoveList moves = null;
 
-    /**
-     * The color for the dark tiles on the board.
-     */
+    /** The color for the dark tiles on the board. */
     static final Color DARK = new Color(0xD1, 0x8B, 0x47);
 
-    /**
-     * The color for the light tiles on the board.
-     */
+    /** The color for the light tiles on the board. */
     static final Color LIGHT = new Color(0xFF, 0xCE, 0x9E);
 
-    /**
-     * Border color for a selected tile.
-     */
+    /** Border color for a selected tile. */
     static final Color SELECTED = new Color(0x00, 0xFF, 0xFF);
 
-    /**
-     * Border color for a highlighted movement tile.
-     */
+    /** Border color for a highlighted movement tile. */
     static final Color MOVEMENT = new Color(0x7F, 0x00, 0x00);
 
-    /**
-     * Padding between the highlight and tile border.
-     */
+    /** Padding between the highlight and tile border. */
     static final int PADDING = 2;
 
-    /**
-     * Thickness of highlighting.
-     */
+    /** Thickness of highlighting. */
     static final int THICKNESS = 3;
 
-    /**
-     * Minimum size of a tile, in pixels.
-     */
+    /** Minimum size of a tile, in pixels. */
     static final int MIN_SIZE = 25;
 
-    /**
-     * Preferred size of a tile, in pixels.
-     */
+    /** Preferred size of a tile, in pixels. */
     static final int PREF_SIZE = 50;
 
-    /**
-     * The interaction modes.
-     */
+    /** The interaction modes. */
     private enum Mode {
-        /**
-         * Don't interact with the player.
-         */
+        /** Don't interact with the player. */
         WAIT,
-        /**
-         * Interact with the player.
-         */
+        /** Interact with the player. */
         PLAYER;
     }
 
-    /**
-     * The current interaction mode.
-     */
+    /** The current interaction mode. */
     private Mode mode = Mode.WAIT;
 
-    /**
-     * Current player making a move, when interactive.
-     */
+    /** Current player making a move, when interactive. */
     private Piece.Side side;
 
     /**
@@ -214,6 +178,26 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
 
     /** {@inheritDoc} */
     public final void mouseReleased(final MouseEvent e) {
+        switch (e.getButton()) {
+        case MouseEvent.BUTTON1:
+            leftClick(e);
+            break;
+        case MouseEvent.BUTTON3:
+            board.undo();
+            repaint();
+            break;
+        default:
+            /* do nothing */
+            break;
+        }
+    }
+
+    /**
+     * Handle the event when the left button is clicked.
+     *
+     * @param e the mouse event
+     */
+    private void leftClick(final MouseEvent e) {
         if (mode == Mode.WAIT) {
             return;
         }

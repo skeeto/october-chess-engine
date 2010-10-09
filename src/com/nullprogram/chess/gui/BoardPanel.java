@@ -52,6 +52,9 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
     /** Border color for a highlighted movement tile. */
     static final Color MOVEMENT = new Color(0x7F, 0x00, 0x00);
 
+    /** Last move highlight color. */
+    static final Color LAST = new Color(0x00, 0x7F, 0xFF);
+
     /** Padding between the highlight and tile border. */
     static final int PADDING = 2;
 
@@ -143,6 +146,14 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
                     g.drawImage(tile, x * size, (h - y - 1) * size, this);
                 }
             }
+        }
+
+        // Draw last move
+        Move last = board.last();
+        if (last != null) {
+            g.setColor(LAST);
+            highlight(g, last.getOrigin());
+            highlight(g, last.getDest());
         }
 
         // Draw selected square

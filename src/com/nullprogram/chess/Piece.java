@@ -154,4 +154,17 @@ public abstract class Piece {
     public final void decMoved() {
         moved--;
     }
+
+    /**
+     * Return the opposing side.
+     *
+     * @return the opposing side
+     */
+    public static Side opposite(Side s) {
+        if (s == Side.BLACK) {
+            return Side.WHITE;
+        } else {
+            return Side.BLACK;
+        }
+    }
 }

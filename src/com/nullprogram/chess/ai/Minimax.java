@@ -225,8 +225,7 @@ public class Minimax implements Player, Runnable {
                     for (Move move : list) {
                         b.move(move);
                         double value = search(b, Piece.opposite(s), depth - 1);
-                        value *= invert;
-                        if (best == null || value > best) {
+                        if (best == null || (value * invert) > best) {
                             best = value;
                         }
                         b.undo();
@@ -235,7 +234,7 @@ public class Minimax implements Player, Runnable {
             }
         }
         if (best == null) {
-            best = INF;
+            best = INF * invert * -1;
         }
         return best;
     }

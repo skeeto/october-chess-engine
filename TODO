@@ -13,3 +13,7 @@
   * pawn capture to upgrade position bug
   * castling
     * move through check
+
+* speed
+  * cache getMoves()
+  * multithread AI

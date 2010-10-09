@@ -36,7 +36,9 @@
   </target>
 
   <target name="run" depends="jar" description="Run the application.">
-    <java jar="${jar}" fork="true"/>
+    <java jar="${jar}" fork="true">
+      <jvmarg value="-server"/>
+    </java>
   </target>
 
   <target name="clean" description="Delete all generated files.">

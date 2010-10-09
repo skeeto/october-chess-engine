@@ -107,12 +107,12 @@ public class Minimax implements Player, Runnable {
 
     /** {@inheritDoc} */
     public final void run() {
-        /* AI needs to eventually be running this on a copy of the board. */
-        MoveList list = new MoveList(board, false);
-        for (int y = 0; y < board.getHeight(); y++) {
-            for (int x = 0; x < board.getWidth(); x++) {
+        Board b = board.copy();
+        MoveList list = new MoveList(b, false);
+        for (int y = 0; y < b.getHeight(); y++) {
+            for (int x = 0; x < b.getWidth(); x++) {
                 Position pos = new Position(x, y);
-                Piece p = board.getPiece(pos);
+                Piece p = b.getPiece(pos);
                 if (p != null && p.getSide() == side) {
                     /* Gather up every move. */
                     list.addAll(p.getMoves(true));
@@ -128,8 +128,8 @@ public class Minimax implements Player, Runnable {
         for (int i = 0; i < list.size(); i++) {
             progress.setValue(i);
             Move move = list.get(i);
-            board.move(move);
-            double v = search(board, Piece.opposite(side), MAX_DEPTH);
+            b.move(move);
+            double v = search(b, Piece.opposite(side), MAX_DEPTH);
             if (selected == null || v > best) {
                 selected = move;
                 best = v;
@@ -137,7 +137,7 @@ public class Minimax implements Player, Runnable {
                 /* randomize this eventually */
                 best = v;
             }
-            board.undo();
+            b.undo();
         }
         progress.setString("Done.");
         game.move(selected);

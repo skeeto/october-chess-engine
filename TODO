@@ -1,19 +1,13 @@
 * features
-  * AI
   * multiplayer
 
 * gui
   * menu
-  * status line
   * save/load game
-  * AI progress bar
 
 * rules
-  * en passant capture capture bug
-  * pawn capture to upgrade position bug
   * castling
     * move through check
 
 * speed
-  * cache getMoves()
   * multithread AI

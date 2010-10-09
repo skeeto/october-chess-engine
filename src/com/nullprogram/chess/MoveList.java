@@ -45,10 +45,12 @@ public class MoveList extends ArrayList<Move> {
      * @return     true if position was added
      */
     public final boolean addMove(final Move move) {
-        if (board.isFree(move.getDest())
-                && !causesCheck(move)) {
-            super.add(move);
-            return true;
+        if (board.isFree(move.getDest())) {
+            if (!causesCheck(move)) {
+                super.add(move);
+                return true;
+            }
+            return true; // false only for a "blocking" move
         }
         return false;
     }
@@ -61,10 +63,12 @@ public class MoveList extends ArrayList<Move> {
      */
     public final boolean addCapture(final Move move) {
         Piece p = board.getPiece(move.getOrigin());
-        if (board.isFree(move.getDest(), p.getSide())
-                && !causesCheck(move)) {
-            super.add(move);
-            return true;
+        if (board.isFree(move.getDest(), p.getSide())) {
+            if (!causesCheck(move)) {
+                super.add(move);
+                return true;
+            }
+            return true; // false only for a "blocking" move
         }
         return false;
     }

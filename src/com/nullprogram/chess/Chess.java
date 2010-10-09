@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 
 import com.nullprogram.chess.gui.BoardPanel;
 import com.nullprogram.chess.boards.StandardBoard;
+import com.nullprogram.chess.ai.Minimax;
 
 /**
  * Main class for the Chess game application.
@@ -34,6 +35,7 @@ public final class Chess {
         frame.setVisible(true);
 
         /* Set up a hot-seat game */
-        Game game = new Game(board, display, display);
+        Minimax ai = new Minimax(board);
+        Game game = new Game(board, display, ai);
     }
 }

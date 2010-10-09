@@ -37,8 +37,23 @@ public class Minimax implements Player, Runnable {
     /** Side this AI plays. */
     private Piece.Side side;
 
+    /** List of moves to be evaluated. */
+    private MoveList moves;
+
+    /** Number of moves left to be evaluated. */
+    private int moveCount;
+
+    /** The current best known move. */
+    private Move selected;
+
+    /** Best move score, corresponding to the selected move. */
+    private double bestScore;
+
     /** Used to display AI's progress. */
     private JProgressBar progress;
+
+    /** Time AI turns. */
+    private long startTime;
 
     /** Maximum search depth. */
     static final int MAX_DEPTH = 3;
@@ -66,6 +81,9 @@ public class Minimax implements Player, Runnable {
 
     /** Value of a king. */
     static final double KING_VALUE = 1000.0;
+
+    /** Divisor for milliseconds. */
+    static final double MILLI = 1000.0;
 
     /**
      * Hidden constructor.
@@ -102,45 +120,80 @@ public class Minimax implements Player, Runnable {
     /** {@inheritDoc} */
     public final void setActive(final Piece.Side currentSide) {
         side = currentSide;
-        (new Thread(this)).start();
+
+        /* Gather up every move. */
+        moves = new MoveList(board, false);
+        for (int y = 0; y < board.getHeight(); y++) {
+            for (int x = 0; x < board.getWidth(); x++) {
+                Position pos = new Position(x, y);
+                Piece p = board.getPiece(pos);
+                if (p != null && p.getSide() == side) {
+                    moves.addAll(p.getMoves(true));
+                }
+            }
+        }
+        /* Eventually randomize this list, too. */
+
+        /* Initialize the shared structures. */
+        moveCount = moves.size();
+        progress.setValue(0);
+        progress.setMaximum(moves.size() - 1);
+        progress.setString("Thinking ...");
+        startTime = System.currentTimeMillis();
+        selected = null;
+        bestScore = 0;
+
+        /* Spin off threads to evaluate each move's tree. */
+        int threads = Runtime.getRuntime().availableProcessors();
+        System.out.println("AI using " + threads + " threads.");
+        for (int i = 0; i < threads; i++) {
+            (new Thread(this)).start();
+        }
+    }
+
+    /**
+     * Hand off another move in the calling thread.
+     *
+     * @return an unevaluated move
+     */
+    public final synchronized Move getNextMove() {
+        if (moves.isEmpty()) {
+            return null;
+        }
+        progress.setValue(progress.getValue() + 1);
+        return moves.pop();
+    }
+
+    /**
+     * Thread calls in here to report its results.
+     *
+     * @param move  the move being reported
+     * @param score the score of the move
+     */
+    public final synchronized void report(final Move move, final double score) {
+        if (selected == null || score > bestScore) {
+            bestScore = score;
+            selected = move;
+        }
+        moveCount--;
+        if (moveCount == 0) {
+            /* All moves accounted for. */
+            game.move(selected);
+            progress.setString("Done.");
+            long time = (System.currentTimeMillis() - startTime);
+            System.out.println("Took " + (time / MILLI) + " seconds.");
+        }
     }
 
     /** {@inheritDoc} */
     public final void run() {
         Board b = board.copy();
-        MoveList list = new MoveList(b, false);
-        for (int y = 0; y < b.getHeight(); y++) {
-            for (int x = 0; x < b.getWidth(); x++) {
-                Position pos = new Position(x, y);
-                Piece p = b.getPiece(pos);
-                if (p != null && p.getSide() == side) {
-                    /* Gather up every move. */
-                    list.addAll(p.getMoves(true));
-                }
-            }
-        }
-
-        /* Evaluate the tree under each move. */
-        double best = 0;
-        Move selected = null;
-        progress.setMaximum(list.size() - 1);
-        progress.setString("Thinking ...");
-        for (int i = 0; i < list.size(); i++) {
-            progress.setValue(i);
-            Move move = list.get(i);
+        for (Move move = getNextMove(); move != null; move = getNextMove()) {
             b.move(move);
             double v = search(b, Piece.opposite(side), MAX_DEPTH);
-            if (selected == null || v > best) {
-                selected = move;
-                best = v;
-            } else if (v == best) {
-                /* randomize this eventually */
-                best = v;
-            }
+            report(move, v);
             b.undo();
         }
-        progress.setString("Done.");
-        game.move(selected);
     }
 
     /**
@@ -167,16 +220,13 @@ public class Minimax implements Player, Runnable {
                 Position pos = new Position(x, y);
                 Piece p = b.getPiece(pos);
                 if (p != null && p.getSide() == s) {
-                    MoveList moves = p.getMoves(true);
+                    MoveList list = p.getMoves(true);
                     /* Try every move. */
-                    for (Move move : moves) {
+                    for (Move move : list) {
                         b.move(move);
                         double value = search(b, Piece.opposite(s), depth - 1);
                         value *= invert;
                         if (best == null || value > best) {
-                            best = value;
-                        } else if (value == best) {
-                            /* randomize this eventually */
                             best = value;
                         }
                         b.undo();

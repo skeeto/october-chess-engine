@@ -39,7 +39,7 @@ public class King extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves(final boolean check) {
+    public final MoveList genMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         Boolean inCheck = null;  // expensive test: do it only 0 or 1 times!
         Position pos = getPosition();

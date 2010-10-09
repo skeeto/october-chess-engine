@@ -21,11 +21,11 @@ public class Chancellor extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves(final boolean check) {
+    public final MoveList genMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         // Take advantage of the Rook and Knight implementations
-        list = Rook.getMoves(this, list);
-        list = Knight.getMoves(this, list);
+        list = Rook.genMoves(this, list);
+        list = Knight.genMoves(this, list);
         return list;
     }
 }

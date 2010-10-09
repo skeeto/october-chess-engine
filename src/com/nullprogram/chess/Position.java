@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import java.security.MessageDigest;
+
 /**
  * Represents a position on a Chess board.
  */
@@ -9,6 +11,9 @@ public class Position implements Comparable<Position> {
      * queenside rook.
      */
     private int x, y;
+
+    static final int X_SEED = 0xf563c066;
+    static final int Y_SEED = 0x3390fb73;
 
     /**
      * Create a new position with given coordinates.
@@ -91,7 +96,18 @@ public class Position implements Comparable<Position> {
      * @return hash code of this object.
      */
     public final int hashCode() {
-        return ((new Integer(x)).hashCode() ^ (new Integer(y)).hashCode());
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA");
+        } catch (Exception e) {
+            System.exit(1);
+        }
+        md.reset();
+        byte[] out = md.digest(toString().getBytes());
+        return out[3] * 16777216 + out[2] * 65536 + out[1] * 256 + out[0];
+        //return toString().hashCode();
+        //return ("" + (x ^ X_SEED) + "" + (y ^ Y_SEED)).hashCode();
+        //return ((int) Math.pow((x << 8), X_SEED)) ^ ((y << 16) * Y_SEED);
     }
 
     /**

@@ -21,11 +21,11 @@ public class Archbishop extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves(final boolean check) {
+    public final MoveList genMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         // Take advantage of the Bishop and Knight implementations
-        list = Bishop.getMoves(this, list);
-        list = Knight.getMoves(this, list);
+        list = Bishop.genMoves(this, list);
+        list = Knight.genMoves(this, list);
         return list;
     }
 }

@@ -21,11 +21,11 @@ public class Queen extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves(final boolean check) {
+    public final MoveList genMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         // Take advantage of the Bishop and Rook implementations
-        list = Rook.getMoves(this, list);
-        list = Bishop.getMoves(this, list);
+        list = Rook.genMoves(this, list);
+        list = Bishop.genMoves(this, list);
         return list;
     }
 }

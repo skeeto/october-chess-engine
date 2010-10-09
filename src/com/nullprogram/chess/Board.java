@@ -1,5 +1,8 @@
 package com.nullprogram.chess;
 
+import java.util.Stack;
+import java.util.Random;
+
 import com.nullprogram.chess.pieces.King;
 
 /**
@@ -20,11 +23,19 @@ public abstract class Board {
     /** Moves taken in this game so far. */
     private MoveList moves = new MoveList(this);
 
+    /** Tracks board states alongside the moves. */
+    private Stack<Integer> stateID;
+
+    /** Random number generator for making board state IDs. */
+    private Random rng = new Random();
+
     /**
      * Create a new Piece array, effectively clearing the board.
      */
     public final void clear() {
         board = new Piece[boardWidth][boardHeight];
+        stateID = new Stack<Integer>();
+        stateID.push(rng.nextInt());
     }
 
     /**
@@ -176,6 +187,7 @@ public abstract class Board {
      * @param move the move
      */
     public final void move(final Move move) {
+        stateID.push(newID());
         moves.add(move);
         execMove(move);
     }
@@ -210,6 +222,7 @@ public abstract class Board {
      * Undo the last move.
      */
     public final void undo() {
+        stateID.pop();
         execUndo(moves.pop());
     }
 
@@ -321,5 +334,40 @@ public abstract class Board {
             fresh.move(move);
         }
         return fresh;
+    }
+
+    public int hashCode() {
+        int hash = 0;
+        for (int y = 0; y < getHeight(); y++) {
+            for (int x = 0; x < getWidth(); x++) {
+                Position pos = new Position(x, y);
+                Piece p = getPiece(pos);
+                if (p != null) {
+                    hash ^= p.hashCode();
+                }
+            }
+        }
+        return hash;
+    }
+
+    /**
+     * Generate a new board state ID.
+     *
+     * @return a unique integer
+     */
+    private int newID() {
+        int hash = hashCode();// ^ rng.nextInt();
+        //System.out.println("hash: " + hash);
+        return hash;
+        //return rng.nextInt();
+    }
+
+    /**
+     * Return the current state ID.
+     *
+     * @return current state ID
+     */
+    public int getID() {
+        return stateID.peek();
     }
 }

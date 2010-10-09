@@ -1,6 +1,8 @@
 package com.nullprogram.chess;
 
+import java.util.WeakHashMap;
 import java.awt.image.BufferedImage;
+
 import com.nullprogram.chess.pieces.ImageServer;
 
 /**
@@ -15,11 +17,17 @@ public abstract class Piece {
         /**
          * The lighter colored side of the board.
          */
-        WHITE,
+        WHITE (1),
         /**
          * The darker colored side of the board.
          */
-        BLACK;
+        BLACK (-1);
+
+        private final int val;
+        Side(int value) {
+            this.val = value;
+        }
+        public int value() { return val; }
     }
 
     /**
@@ -41,6 +49,16 @@ public abstract class Piece {
     private int moved = 0;
 
     /**
+     * Hash of check-checked moves.
+     */
+    private WeakHashMap<Integer, MoveList> checkCache;
+
+    /**
+     * Hash of check-unchecked moves.
+     */
+    private WeakHashMap<Integer, MoveList> noCheckCache;
+
+    /**
      * When creating a piece, you must always choose a side.
      */
     protected Piece() {
@@ -53,15 +71,43 @@ public abstract class Piece {
      */
     protected Piece(final Side owner) {
         side = owner;
+        checkCache = new WeakHashMap<Integer, MoveList>();
+        noCheckCache = new WeakHashMap<Integer, MoveList>();
     }
 
     /**
-     * Get the moves for this piece.
+     * Get the (possibly cached) moves for this piece.
      *
      * @param checkCheck check for check
      * @return           list of moves
      */
-    public abstract MoveList getMoves(boolean checkCheck);
+    public MoveList getMoves(boolean checkCheck) {
+        if (false)
+            return genMoves(checkCheck);
+        WeakHashMap<Integer, MoveList> cache;
+        if (checkCheck) {
+            cache = checkCache;
+        } else {
+            cache = noCheckCache;
+        }
+        MoveList moves = cache.get(board.getID());
+        if (moves != null) {
+            //System.out.println("cached " + this.getClass().getSimpleName());
+            return moves;
+        } else {
+            moves = genMoves(checkCheck);
+            cache.put(board.getID(), moves);
+            return moves;
+        }
+    }
+
+    /**
+     * Generate the moves for this piece.
+     *
+     * @param checkCheck check for check
+     * @return           list of moves
+     */
+    protected abstract MoveList genMoves(boolean checkCheck);
 
     /**
      * Update the piece's current position on the board.
@@ -167,5 +213,12 @@ public abstract class Piece {
         } else {
             return Side.BLACK;
         }
+    }
+
+    public int hashCode() {
+        return getPosition().hashCode()
+            ^ moved
+            ^ getSide().value()
+            ^ this.getClass().hashCode();
     }
 }

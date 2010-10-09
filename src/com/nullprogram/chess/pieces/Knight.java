@@ -33,9 +33,9 @@ public class Knight extends Piece {
     }
 
     /** {@inheritDoc} */
-    public final MoveList getMoves(final boolean check) {
+    public final MoveList genMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
-        list = getMoves(this, list);
+        list = genMoves(this, list);
         return list;
     }
 
@@ -48,7 +48,7 @@ public class Knight extends Piece {
      * @param list  list to be appended to
      * @return      the modified list
      */
-    public static MoveList getMoves(final Piece p,
+    public static MoveList genMoves(final Piece p,
                                     final MoveList list) {
         Position pos = p.getPosition();
         list.addCapture(new Move(pos, new Position(pos,  NEAR,  FAR)));

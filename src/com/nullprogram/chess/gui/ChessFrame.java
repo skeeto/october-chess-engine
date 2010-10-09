@@ -36,6 +36,7 @@ public class ChessFrame extends JFrame {
         display = new BoardPanel(board);
         progress = new JProgressBar();
         progress.setStringPainted(true);
+        setStatus("Initializing.");
         add(display);
         add(progress);
         pack();

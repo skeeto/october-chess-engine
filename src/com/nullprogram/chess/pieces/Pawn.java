@@ -31,19 +31,18 @@ public class Pawn extends Piece {
         int dir = direction();
         Position dest = new Position(pos, 0, 1 * dir);
         Move first = new Move(pos, dest);
-        if (dest.getY() == upgradeRow()) {
-            first.setNext(new Move(dest, null)); // remove the pawn
-            Move upgrade = new Move(null, dest);
-            upgrade.setCaptured(new Queen(getSide()));
-            first.getNext().setNext(upgrade);     // add a queen
-        }
+        addUpgrade(first);
         if (list.addMove(first)) {
             if (!moved()) {
                 list.addMove(new Move(pos, new Position(pos, 0, 2 * dir)));
             }
         }
-        list.addCaptureOnly(new Move(pos, new Position(pos, -1, 1 * dir)));
-        list.addCaptureOnly(new Move(pos, new Position(pos,  1, 1 * dir)));
+        Move captureLeft = new Move(pos, new Position(pos, -1, 1 * dir));
+        addUpgrade(captureLeft);
+        list.addCaptureOnly(captureLeft);
+        Move captureRight = new Move(pos, new Position(pos,  1, 1 * dir));
+        addUpgrade(captureRight);
+        list.addCaptureOnly(captureRight);
 
         /* check for en passant */
         Move last = board.last();
@@ -67,6 +66,21 @@ public class Pawn extends Piece {
             }
         }
         return list;
+    }
+
+    /**
+     * Add the upgrade actions to the given move if needed.
+     *
+     * @param move the move to be modified
+     */
+    private void addUpgrade(final Move move) {
+        if (move.getDest().getY() != upgradeRow()) {
+            return;
+        }
+        move.setNext(new Move(move.getDest(), null)); // remove the pawn
+        Move upgrade = new Move(null, move.getDest());
+        upgrade.setCaptured(new Queen(getSide()));
+        move.getNext().setNext(upgrade);              // add a queen
     }
 
     /**

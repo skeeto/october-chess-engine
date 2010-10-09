@@ -79,7 +79,13 @@ public class Game {
     public final void move(final Move move) {
         board.move(move);
         if (board.checkmate() || board.stalemate()) {
-            System.out.println("Game over!");
+            if (board.checkmate(Piece.Side.BLACK)) {
+                frame.setStatus("White wins!");
+            } else if (board.checkmate(Piece.Side.WHITE)) {
+                frame.setStatus("Black wins!");
+            } else {
+                frame.setStatus("Stalemate!");
+            }
             done = true;
             return;
         }

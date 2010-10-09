@@ -191,15 +191,17 @@ public abstract class Board {
         }
         Position a = move.getOrigin();
         Position b = move.getDest();
-        if (b != null) {
+        if (a != null && b != null) {
             move.setCaptured(getPiece(b));
             setPiece(b, getPiece(a));
             setPiece(a, null);
             getPiece(b).setPosition(b);
             getPiece(b).incMoved();
-        } else {
+        } else if (a != null && b == null) {
             move.setCaptured(getPiece(a));
             setPiece(a, null);
+        } else {
+            setPiece(b, move.getCaptured());
         }
         execMove(move.getNext());
     }
@@ -220,17 +222,19 @@ public abstract class Board {
         if (move == null) {
             return;
         }
+        execUndo(move.getNext()); // undo in reverse
         Position a = move.getOrigin();
         Position b = move.getDest();
-        if (b != null) {
+        if (a != null && b != null) {
             setPiece(a, getPiece(b));
             setPiece(b, move.getCaptured());
             getPiece(a).setPosition(a);
             getPiece(a).decMoved();
-        } else {
+        } else if (a != null && b == null) {
             setPiece(a, move.getCaptured());
+        } else {
+            setPiece(b, null);
         }
-        execUndo(move.getNext());
     }
 
     /**

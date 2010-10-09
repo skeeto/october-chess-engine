@@ -29,7 +29,15 @@ public class Pawn extends Piece {
         Position pos = getPosition();
         Board board = getBoard();
         int dir = direction();
-        if (list.addMove(new Move(pos, new Position(pos, 0, 1 * dir)))) {
+        Position dest = new Position(pos, 0, 1 * dir);
+        Move first = new Move(pos, dest);
+        if (dest.getY() == upgradeRow()) {
+            first.setNext(new Move(dest, null)); // remove the pawn
+            Move upgrade = new Move(null, dest);
+            upgrade.setCaptured(new Queen(getSide()));
+            first.getNext().setNext(upgrade);     // add a queen
+        }
+        if (list.addMove(first)) {
             if (!moved()) {
                 list.addMove(new Move(pos, new Position(pos, 0, 2 * dir)));
             }
@@ -69,6 +77,19 @@ public class Pawn extends Piece {
             return 1;
         } else {
             return -1;
+        }
+    }
+
+    /**
+     * Determine upgrade row.
+     *
+     * @return the upgrade row index.
+     */
+    private int upgradeRow() {
+        if (getSide() == Side.BLACK) {
+            return 0;
+        } else {
+            return getBoard().getHeight() - 1;
         }
     }
 }

@@ -124,6 +124,10 @@ public class StandardBoard extends Board {
             attacker = Piece.Side.WHITE;
         }
         Position kingPos = findKing(side);
+        if (kingPos == null) {
+            /* no king on board, but can happen in AI evaluation */
+            return false;
+        }
         for (int y = 0; y < getHeight(); y++) {
             for (int x = 0; x < getWidth(); x++) {
                 Piece p = getPiece(new Position(x, y));

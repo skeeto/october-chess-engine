@@ -15,74 +15,46 @@ import com.nullprogram.chess.pieces.King;
  */
 public class StandardBoard extends Board {
 
-    /**
-     * The standard board width.
-     */
+    /** The standard board width. */
     static final int WIDTH = 8;
 
-    /**
-     * The standard board height.
-     */
+    /** The standard board height. */
     static final int HEIGHT = 8;
 
-    /**
-     * Row of the white pawns.
-     */
+    /** Row of the white pawns. */
     static final int WHITE_PAWN_ROW = 1;
 
-    /**
-     * Row of the black pawns.
-     */
+    /** Row of the black pawns. */
     static final int BLACK_PAWN_ROW = 6;
 
-    /**
-     * White home row.
-     */
+    /** White home row. */
     static final int WHITE_ROW = 0;
 
-    /**
-     * Black home row.
-     */
+    /** Black home row. */
     static final int BLACK_ROW = 7;
 
-    /**
-     * Queen side rook column.
-     */
+    /** Queen side rook column. */
     static final int Q_ROOK = 0;
 
-    /**
-     * Queen side knight column.
-     */
+    /** Queen side knight column. */
     static final int Q_KNIGHT = 1;
 
-    /**
-     * Queen side bishop column.
-     */
+    /** Queen side bishop column. */
     static final int Q_BISHOP = 2;
 
-    /**
-     * Queen column.
-     */
+    /** Queen column. */
     static final int QUEEN = 3;
 
-    /**
-     * King column.
-     */
+    /** King column. */
     static final int KING = 4;
 
-    /**
-     * King side bishop column.
-     */
+    /** King side bishop column. */
     static final int K_BISHOP = 5;
 
-    /**
-     * King side knight column.
-     */
+    /** King side knight column. */
     static final int K_KNIGHT = 6;
 
-    /**
-     * King side rook column.
-     */
+    /** King side rook column. */
     static final int K_ROOK = 7;
 
     /**

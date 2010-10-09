@@ -302,4 +302,24 @@ public abstract class Board {
     public final Boolean isFree(final Position pos, final Piece.Side side) {
         return inRange(pos) && isEmpty(pos, side);
     }
+
+    /**
+     * Return a fresh instance of the board, used for duplication.
+     *
+     * @return the fresh board
+     */
+    protected abstract Board freshBoard();
+
+    /**
+     * Copy this board.
+     *
+     * @return deep copy of the board.
+     */
+    public final Board copy() {
+        Board fresh = freshBoard();
+        for (Move move : moves) {
+            fresh.move(move);
+        }
+        return fresh;
+    }
 }

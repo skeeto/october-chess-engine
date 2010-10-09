@@ -140,4 +140,9 @@ public class StandardBoard extends Board {
         }
         return false;
     }
+
+    /** {@inheritDoc} */
+    protected final Board freshBoard() {
+        return new StandardBoard();
+    }
 }

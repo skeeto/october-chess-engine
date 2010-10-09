@@ -246,6 +246,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
     public final void setActive(final Piece.Side currentSide) {
         side = currentSide;
         mode = Mode.PLAYER;
+        repaint();
     }
 
     /**

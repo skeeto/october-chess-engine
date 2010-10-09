@@ -68,6 +68,15 @@
     </javadoc>
   </target>
 
+  <target name="tags" description="Generate a TAGS file for your editor.">
+    <delete file="TAGS"/>
+    <apply executable="etags">
+      <arg value="-a"/>
+      <fileset dir="${src.dir}" includes="**/*.java"/>
+      <fileset dir="${test.dir}" includes="**/*.java"/>
+    </apply>
+  </target>
+
   <!-- JUnit -->
 
   <target name="test-init" depends="init">

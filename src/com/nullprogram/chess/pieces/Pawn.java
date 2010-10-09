@@ -51,12 +51,14 @@ public class Pawn extends Piece {
             Position left = new Position(pos, -1, 0);
             Position right = new Position(pos, 1, 0);
             if (left.equals(last.getDest())
+                    && (last.getOrigin().getX() == last.getDest().getX())
                     && (board.getPiece(left) instanceof Pawn)) {
                 /* en passant to the left */
                 Move passant = new Move(pos, new Position(pos, -1, dir));
                 passant.setNext(new Move(left, null));
                 list.addMove(passant);
             } else if (right.equals(last.getDest())
+                       && (last.getOrigin().getX() == last.getDest().getX())
                        && (board.getPiece(right) instanceof Pawn)) {
                 /* en passant to the right */
                 Move passant = new Move(pos, new Position(pos, 1, dir));

@@ -226,20 +226,27 @@ public class Minimax implements Player, Runnable {
      * @return  valuation of this board
      */
     private double valuate(final Board b) {
+        double material = materialValue(b);
+        return material;
+    }
+
+    /**
+     * Add up the material value of the board only.
+     *
+     * @param b board to be evaluated
+     * @return  material value of the board
+     */
+    private double materialValue(final Board b) {
         double value = 0;
         for (int y = 0; y < b.getHeight(); y++) {
             for (int x = 0; x < b.getWidth(); x++) {
                 Position pos = new Position(x, y);
                 Piece p = b.getPiece(pos);
                 if (p != null) {
-                    if (p.getSide() == side) {
-                        value += values.get(p.getClass());
-                    } else {
-                        value -= values.get(p.getClass());
-                    }
+                    value += values.get(p.getClass()) * p.getSide().value();
                 }
             }
         }
-        return value;
+        return value * side.value();
     }
 }

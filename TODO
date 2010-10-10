@@ -2,12 +2,16 @@
   * multiplayer
 
 * gui
-  * menu
+  * new game dialog
   * save/load game
 
 * rules
   * castling
     * move through check
 
-* speed
-  * multithread AI
+* AI
+  * alpha-beta pruning
+  * GNU Chess, Crafty, etc. interfacing
+
+* incomplete
+  * undo *during* turn taking

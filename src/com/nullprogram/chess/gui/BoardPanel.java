@@ -115,6 +115,24 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
     }
 
     /**
+     * Change the board to be displayed.
+     *
+     * @param b the new board
+     */
+    public final void setBoard(final Board b) {
+        board = b;
+    }
+
+    /**
+     * Change the board to be displayed.
+     *
+     * @return display's board
+     */
+    public final Board getBoard() {
+        return board;
+    }
+
+    /**
      * Standard painting method.
      *
      * @param g the drawing surface

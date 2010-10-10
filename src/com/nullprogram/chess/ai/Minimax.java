@@ -83,6 +83,12 @@ public class Minimax implements Player, Runnable {
     /** Divisor for milliseconds. */
     static final double MILLI = 1000.0;
 
+    /** Material score weight. */
+    static final double W_MATERIAL = 1.0;
+
+    /** King safety score weight. */
+    static final double W_KING = 0.15;
+
     /**
      * Hidden constructor.
      */
@@ -227,7 +233,9 @@ public class Minimax implements Player, Runnable {
      */
     private double valuate(final Board b) {
         double material = materialValue(b);
-        return material;
+        double kingSafety = kingInsafetyValue(b);
+        return material * W_MATERIAL
+            + kingSafety * W_KING;
     }
 
     /**
@@ -248,5 +256,37 @@ public class Minimax implements Player, Runnable {
             }
         }
         return value * side.value();
+    }
+
+    /**
+     * Determine the safety of each king. Higher is worse.
+     *
+     * @param b board to be evaluated
+     * @return  king insafety score
+     */
+    private double kingInsafetyValue(final Board b) {
+        return kingInsafetyValue(b, Piece.opposite(side))
+            - kingInsafetyValue(b, side);
+    }
+
+    /**
+     * Helper function: determine safety of a single king.
+     *
+     * @param b board to be evaluated
+     * @param s side of king to be checked
+     * @return king insafety score
+     */
+    private double kingInsafetyValue(final Board b, final Piece.Side s) {
+        /* Trace lines away from the king and count the spaces. */
+        Position king = b.findKing(s);
+        if (king == null) {
+            /* Weird, but may happen during evaluation. */
+            return KING_VALUE;
+        }
+        MoveList list = new MoveList(b, false);
+        /* Take advantage of the Rook and Bishop code. */
+        Rook.getMoves(b.getPiece(king), list);
+        Bishop.getMoves(b.getPiece(king), list);
+        return list.size();
     }
 }

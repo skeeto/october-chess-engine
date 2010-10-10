@@ -145,7 +145,6 @@ public class Minimax implements Player, Runnable {
 
         /* Spin off threads to evaluate each move's tree. */
         int threadCount = Runtime.getRuntime().availableProcessors();
-        threadCount = 1;
         System.out.println("AI using " + threadCount + " threads.");
         threads = new Thread[threadCount];
         for (int i = 0; i < threadCount; i++) {

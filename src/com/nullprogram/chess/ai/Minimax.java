@@ -41,9 +41,6 @@ public class Minimax implements Player, Runnable {
     /** List of moves to be evaluated. */
     private MoveList moves;
 
-    /** Number of moves left to be evaluated. */
-    private int moveCount;
-
     /** The current best known move. */
     private Move selected;
 
@@ -55,6 +52,9 @@ public class Minimax implements Player, Runnable {
 
     /** Time AI turns. */
     private long startTime;
+
+    /** The search threads. */
+    private Thread[] threads;
 
     /** Maximum search depth. */
     static final int MAX_DEPTH = 3;
@@ -136,7 +136,6 @@ public class Minimax implements Player, Runnable {
         Collections.shuffle(moves);
 
         /* Initialize the shared structures. */
-        moveCount = moves.size();
         progress.setValue(0);
         progress.setMaximum(moves.size() - 1);
         progress.setStatus("Thinking ...");
@@ -145,11 +144,24 @@ public class Minimax implements Player, Runnable {
         bestScore = 0;
 
         /* Spin off threads to evaluate each move's tree. */
-        int threads = Runtime.getRuntime().availableProcessors();
-        System.out.println("AI using " + threads + " threads.");
-        for (int i = 0; i < threads; i++) {
-            (new Thread(this)).start();
+        int threadCount = Runtime.getRuntime().availableProcessors();
+        threadCount = 1;
+        System.out.println("AI using " + threadCount + " threads.");
+        threads = new Thread[threadCount];
+        for (int i = 0; i < threadCount; i++) {
+            threads[i] = new Thread(this);
+            threads[i].start();
         }
+        for (Thread t : threads) {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }
+        }
+        long time = (System.currentTimeMillis() - startTime);
+        System.out.println("Took " + (time / MILLI) + " seconds.");
+        game.move(selected);
     }
 
     /**
@@ -176,13 +188,6 @@ public class Minimax implements Player, Runnable {
             bestScore = score;
             selected = move;
         }
-        moveCount--;
-        if (moveCount == 0) {
-            /* All moves accounted for. */
-            game.move(selected);
-            long time = (System.currentTimeMillis() - startTime);
-            System.out.println("Took " + (time / MILLI) + " seconds.");
-        }
     }
 
     /** {@inheritDoc} */
@@ -191,8 +196,8 @@ public class Minimax implements Player, Runnable {
         for (Move move = getNextMove(); move != null; move = getNextMove()) {
             b.move(move);
             double v = search(b, Piece.opposite(side), MAX_DEPTH);
-            report(move, v);
             b.undo();
+            report(move, v);
         }
     }
 
@@ -225,10 +230,10 @@ public class Minimax implements Player, Runnable {
                     for (Move move : list) {
                         b.move(move);
                         double value = search(b, Piece.opposite(s), depth - 1);
+                        b.undo();
                         if (best == null || (value * invert) > best) {
                             best = value;
                         }
-                        b.undo();
                     }
                 }
             }

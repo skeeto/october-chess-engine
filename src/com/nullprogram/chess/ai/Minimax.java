@@ -205,12 +205,12 @@ public class Minimax implements Player, Runnable {
         if (depth == 0) {
             return valuate(b);
         }
+        Piece.Side opps = Piece.opposite(s);  // opposite side
         double best = alpha;
         MoveList list = b.allMoves(s);
         for (Move move : list) {
             b.move(move);
-            double res = search(b, depth - 1, Piece.opposite(s), -beta, -best);
-            best = Math.max(best, -res);
+            best = Math.max(best, -search(b, depth - 1, opps, -beta, -best));
             b.undo();
             /* alpha-beta prune */
             if (beta <= best) {

@@ -211,10 +211,6 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
         case MouseEvent.BUTTON1:
             leftClick(e);
             break;
-        case MouseEvent.BUTTON3:
-            board.undo();
-            repaint();
-            break;
         default:
             /* do nothing */
             break;

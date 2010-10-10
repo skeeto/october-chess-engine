@@ -1,7 +1,14 @@
 package com.nullprogram.chess.gui;
 
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Player;
@@ -20,6 +27,9 @@ public class ChessFrame extends JFrame {
     /** The progress bar on the display. */
     private StatusBar progress;
 
+    /** Subclass instance for dealing with the menu. */
+    private MenuHandler handler;
+
     /**
      * Create a new ChessFrame for the given board.
      *
@@ -31,6 +41,9 @@ public class ChessFrame extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+        handler = new MenuHandler();
+        handler.setUpMenu();
 
         display = new BoardPanel(board);
         progress = new StatusBar();
@@ -67,5 +80,58 @@ public class ChessFrame extends JFrame {
      */
     public final void setStatus(final String status) {
         progress.setStatus(status);
+    }
+
+    /**
+     * Used for manaing menu events.
+     */
+    private class MenuHandler implements ActionListener {
+
+        /** The "Game" menu. */
+        private JMenu game;
+
+        /** The "Action" menu. */
+        private JMenu action;
+
+        /** {@inheritDoc} */
+        public final void actionPerformed(final ActionEvent e) {
+            if ("New Game".equals(e.getActionCommand())) {
+                System.out.println("New Game Dialog");
+            } else if ("Undo".equals(e.getActionCommand())) {
+                System.out.println("Undo");
+            } else if ("Exit".equals(e.getActionCommand())) {
+                System.exit(0);
+            }
+        }
+
+        /**
+         * Set up the menu bar.
+         */
+        public final void setUpMenu() {
+            JMenuBar menuBar = new JMenuBar();
+
+            game = new JMenu("Game");
+            game.setMnemonic('G');
+            JMenuItem newGame = new JMenuItem("New Game");
+            newGame.addActionListener(this);
+            newGame.setMnemonic('N');
+            game.add(newGame);
+            game.add(new JSeparator());
+            JMenuItem exitGame = new JMenuItem("Exit");
+            exitGame.addActionListener(this);
+            exitGame.setMnemonic('x');
+            game.add(exitGame);
+            menuBar.add(game);
+
+            action = new JMenu("Action");
+            action.setMnemonic('A');
+            action.setEnabled(false);
+            JMenuItem undo = new JMenuItem("Undo");
+            undo.setMnemonic('U');
+            undo.addActionListener(this);
+            menuBar.add(action);
+
+            setJMenuBar(menuBar);
+        }
     }
 }

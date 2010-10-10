@@ -101,6 +101,7 @@ public class Game {
         } else {
             status = "Black's turn.";
         }
+        frame.getProgress().setValue(0);
         frame.setStatus(status);
     }
 }

@@ -115,7 +115,6 @@ public class StatusBar extends JPanel {
      */
     public final void setStatus(final String message) {
         status = message;
-        System.out.println(message);
         repaint();
     }
 

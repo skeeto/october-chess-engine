@@ -2,8 +2,6 @@ package com.nullprogram.chess.ai;
 
 import java.util.HashMap;
 
-import javax.swing.JProgressBar;
-
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
@@ -18,6 +16,8 @@ import com.nullprogram.chess.pieces.Knight;
 import com.nullprogram.chess.pieces.Bishop;
 import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.King;
+
+import com.nullprogram.chess.gui.StatusBar;
 
 /**
  * Minimax Chess AI player.
@@ -50,7 +50,7 @@ public class Minimax implements Player, Runnable {
     private double bestScore;
 
     /** Used to display AI's progress. */
-    private JProgressBar progress;
+    private StatusBar progress;
 
     /** Time AI turns. */
     private long startTime;
@@ -97,7 +97,7 @@ public class Minimax implements Player, Runnable {
      * @param gameBoard the board to be displayed
      * @param status    GUI progress bar
      */
-    public Minimax(final Board gameBoard, final JProgressBar status) {
+    public Minimax(final Board gameBoard, final StatusBar status) {
         board = gameBoard;
         values = new HashMap<Class, Double>();
 
@@ -138,7 +138,7 @@ public class Minimax implements Player, Runnable {
         moveCount = moves.size();
         progress.setValue(0);
         progress.setMaximum(moves.size() - 1);
-        progress.setString("Thinking ...");
+        progress.setStatus("Thinking ...");
         startTime = System.currentTimeMillis();
         selected = null;
         bestScore = 0;
@@ -179,7 +179,6 @@ public class Minimax implements Player, Runnable {
         if (moveCount == 0) {
             /* All moves accounted for. */
             game.move(selected);
-            progress.setString("Done.");
             long time = (System.currentTimeMillis() - startTime);
             System.out.println("Took " + (time / MILLI) + " seconds.");
         }

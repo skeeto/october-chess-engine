@@ -82,12 +82,13 @@ public class Game {
 
         if (turn == Piece.Side.WHITE) {
             turn = Piece.Side.BLACK;
+            turnStatus();
             black.setActive(turn);
         } else {
             turn = Piece.Side.WHITE;
+            turnStatus();
             white.setActive(turn);
         }
-        turnStatus();
     }
 
     /**

@@ -2,7 +2,6 @@ package com.nullprogram.chess.gui;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JProgressBar;
 
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Player;
@@ -19,7 +18,7 @@ public class ChessFrame extends JFrame {
     private BoardPanel display;
 
     /** The progress bar on the display. */
-    private JProgressBar progress;
+    private StatusBar progress;
 
     /**
      * Create a new ChessFrame for the given board.
@@ -34,8 +33,7 @@ public class ChessFrame extends JFrame {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         display = new BoardPanel(board);
-        progress = new JProgressBar();
-        progress.setStringPainted(true);
+        progress = new StatusBar();
         setStatus("Initializing.");
         add(display);
         add(progress);
@@ -58,7 +56,7 @@ public class ChessFrame extends JFrame {
      *
      * @return the progress bar
      */
-    public final JProgressBar getProgress() {
+    public final StatusBar getProgress() {
         return progress;
     }
 
@@ -68,6 +66,6 @@ public class ChessFrame extends JFrame {
      * @param status string to display
      */
     public final void setStatus(final String status) {
-        progress.setString(status);
+        progress.setStatus(status);
     }
 }

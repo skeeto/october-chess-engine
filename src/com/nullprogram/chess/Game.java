@@ -83,7 +83,7 @@ public class Game implements Runnable {
     /**
      * The thread that fires off the next player.
      */
-    public void run() {
+    public final void run() {
         switchTurns();
     }
 

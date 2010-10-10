@@ -129,7 +129,7 @@ public class Minimax implements Player, Runnable {
         progress.setStatus("Thinking ...");
         startTime = System.currentTimeMillis();
         selected = null;
-        bestScore = 0;
+        bestScore = Double.NEGATIVE_INFINITY;
 
         /* Spin off threads to evaluate each move's tree. */
         int threadCount = Runtime.getRuntime().availableProcessors();

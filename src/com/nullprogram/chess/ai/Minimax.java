@@ -97,6 +97,9 @@ public class Minimax implements Player, Runnable {
     /** King safety score weight. */
     static final double W_KING = 0.15;
 
+    /** Mobility score weight. */
+    static final double W_MOBILITY = 0.01;
+
     /**
      * Hidden constructor.
      */
@@ -244,8 +247,10 @@ public class Minimax implements Player, Runnable {
     private double valuate(final Board b) {
         double material = materialValue(b);
         double kingSafety = kingInsafetyValue(b);
+        double mobility = mobilityValue(b);
         return material * W_MATERIAL
-               + kingSafety * W_KING;
+               + kingSafety * W_KING
+               + mobility * W_MOBILITY;
     }
 
     /**
@@ -298,5 +303,16 @@ public class Minimax implements Player, Runnable {
         Rook.getMoves(b.getPiece(king), list);
         Bishop.getMoves(b.getPiece(king), list);
         return list.size();
+    }
+
+    /**
+     * Mobility score for this board.
+     *
+     * @param b board to be evaluated
+     * @return  score for this board
+     */
+    private double mobilityValue(final Board b) {
+        return b.allMoves(side, false).size()
+               - b.allMoves(Piece.opposite(side), false).size();
     }
 }

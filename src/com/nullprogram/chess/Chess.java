@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import javax.swing.UIManager;
+
 import com.nullprogram.chess.gui.ChessFrame;
 import com.nullprogram.chess.boards.StandardBoard;
 import com.nullprogram.chess.ai.Minimax;
@@ -21,6 +23,13 @@ public final class Chess {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
+        try {
+            String lnf = UIManager.getSystemLookAndFeelClassName();
+            UIManager.setLookAndFeel(lnf);
+        } catch (Exception e) {
+            /* Do nothing. */
+        }
+
         Board board = new StandardBoard();
         ChessFrame frame = new ChessFrame(board);
 

@@ -3,6 +3,7 @@ package com.nullprogram.chess;
 import java.util.ArrayList;
 
 import com.nullprogram.chess.pieces.King;
+import com.nullprogram.chess.pieces.PieceFactory;
 
 /**
  * Board data structure.
@@ -207,7 +208,8 @@ public abstract class Board {
             move.setCaptured(getPiece(a));
             setPiece(a, null);
         } else {
-            setPiece(b, move.getCaptured());
+            setPiece(b, PieceFactory.create(move.getReplacement(),
+                                            move.getReplacementSide()));
         }
         execMove(move.getNext());
     }
@@ -325,7 +327,7 @@ public abstract class Board {
     public final Board copy() {
         Board fresh = freshBoard();
         for (Move move : moves) {
-            fresh.move(move);
+            fresh.move(new Move(move));
         }
         return fresh;
     }

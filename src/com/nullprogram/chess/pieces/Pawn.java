@@ -79,7 +79,8 @@ public class Pawn extends Piece {
         }
         move.setNext(new Move(move.getDest(), null)); // remove the pawn
         Move upgrade = new Move(null, move.getDest());
-        upgrade.setCaptured(new Queen(getSide()));
+        upgrade.setReplacement("Queen");
+        upgrade.setReplacementSide(getSide());
         move.getNext().setNext(upgrade);              // add a queen
     }
 

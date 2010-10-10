@@ -23,6 +23,12 @@ public class Move {
     /** Piece that was capture: used for undoing a move.  */
     private Piece captured;
 
+    /** New piece to make. */
+    private String replacement;
+
+    /** Side of the new piece to make. */
+    private Piece.Side replacementSide;
+
     /**
      * Create a new move to move a piece from one position to another.
      *
@@ -33,6 +39,21 @@ public class Move {
         destination = dest;
         origin = orig;
         next = null;
+    }
+
+    /**
+     * Create a Move from an existing Move.
+     *
+     * @param move move to copy
+     */
+    public Move(final Move move) {
+        this(move.getOrigin(), move.getDest());
+        captured = move.getCaptured();
+        replacement = move.getReplacement();
+        replacementSide = move.getReplacementSide();
+        if (move.getNext() != null) {
+            next = new Move(move.getNext());
+        }
     }
 
     /**
@@ -87,5 +108,41 @@ public class Move {
      */
     public final Piece getCaptured() {
         return captured;
+    }
+
+    /**
+     * Set the piece that will be created.
+     *
+     * @param pieceName piece to be created
+     */
+    public final void setReplacement(final String pieceName) {
+        replacement = pieceName;
+    }
+
+    /**
+     * Get the name of the piece that will be created.
+     *
+     * @return piece to be created
+     */
+    public final String getReplacement() {
+        return replacement;
+    }
+
+    /**
+     * Set the side of piece that will be created.
+     *
+     * @param side piece to be created
+     */
+    public final void setReplacementSide(final Piece.Side side) {
+        replacementSide = side;
+    }
+
+    /**
+     * Get the side of the piece that will be created.
+     *
+     * @return side of piece to be created
+     */
+    public final Piece.Side getReplacementSide() {
+        return replacementSide;
     }
 }

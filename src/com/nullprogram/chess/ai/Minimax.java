@@ -59,9 +59,6 @@ public class Minimax implements Player, Runnable {
     /** Maximum search depth. */
     static final int MAX_DEPTH = 3;
 
-    /** Maximum search depth. */
-    static final double INF = 10000;
-
     /** Values of each piece. */
     private HashMap<Class, Double> values;
 
@@ -123,16 +120,7 @@ public class Minimax implements Player, Runnable {
         side = currentSide;
 
         /* Gather up every move. */
-        moves = new MoveList(board, false);
-        for (int y = 0; y < board.getHeight(); y++) {
-            for (int x = 0; x < board.getWidth(); x++) {
-                Position pos = new Position(x, y);
-                Piece p = board.getPiece(pos);
-                if (p != null && p.getSide() == side) {
-                    moves.addAll(p.getMoves(true));
-                }
-            }
-        }
+        moves = board.allMoves(side);
         Collections.shuffle(moves);
 
         /* Initialize the shared structures. */
@@ -194,7 +182,9 @@ public class Minimax implements Player, Runnable {
         Board b = board.copy();
         for (Move move = getNextMove(); move != null; move = getNextMove()) {
             b.move(move);
-            double v = search(b, Piece.opposite(side), MAX_DEPTH);
+            double v = search(b, MAX_DEPTH, Piece.opposite(side),
+                              Double.NEGATIVE_INFINITY,
+                              Double.POSITIVE_INFINITY);
             b.undo();
             report(move, v);
         }
@@ -206,39 +196,26 @@ public class Minimax implements Player, Runnable {
      * @param b     board to search
      * @param depth current depth
      * @param s     side for current move
+     * @param alpha lower bound to check
+     * @param beta  upper bound to check
      * @return      best valuation found at lowest depth
      */
-    private double search(final Board b, final Piece.Side s, final int depth) {
+    private double search(final Board b, final int depth, final Piece.Side s,
+                          final double alpha, final double beta) {
         if (depth == 0) {
             return valuate(b);
         }
-        int invert;
-        if (side == s) {
-            invert = 1;
-        } else {
-            invert = -1;
-        }
-        Double best = null;
-        for (int y = 0; y < b.getHeight(); y++) {
-            for (int x = 0; x < b.getWidth(); x++) {
-                Position pos = new Position(x, y);
-                Piece p = b.getPiece(pos);
-                if (p != null && p.getSide() == s) {
-                    MoveList list = p.getMoves(true);
-                    /* Try every move. */
-                    for (Move move : list) {
-                        b.move(move);
-                        double value = search(b, Piece.opposite(s), depth - 1);
-                        b.undo();
-                        if (best == null || (value * invert) > best) {
-                            best = value;
-                        }
-                    }
-                }
+        double best = alpha;
+        MoveList list = b.allMoves(s);
+        for (Move move : list) {
+            b.move(move);
+            double res = search(b, depth - 1, Piece.opposite(s), -beta, -best);
+            best = Math.max(best, -res);
+            b.undo();
+            /* alpha-beta prune */
+            if (beta <= best) {
+                return best;
             }
-        }
-        if (best == null) {
-            best = INF * invert * -1;
         }
         return best;
     }

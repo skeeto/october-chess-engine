@@ -228,6 +228,10 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
         }
 
         Position pos = getPixelPosition(e.getPoint());
+        if (!board.inRange(pos)) {
+            /* Click was outside the board, somehow. */
+            return;
+        }
         if (pos != null) {
             if (pos.equals(selected)) {
                 /* Deselect */

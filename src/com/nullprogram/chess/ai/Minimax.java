@@ -1,6 +1,7 @@
 package com.nullprogram.chess.ai;
 
 import java.util.HashMap;
+import java.util.Collections;
 
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
@@ -132,7 +133,7 @@ public class Minimax implements Player, Runnable {
                 }
             }
         }
-        /* Eventually randomize this list, too. */
+        Collections.shuffle(moves);
 
         /* Initialize the shared structures. */
         moveCount = moves.size();

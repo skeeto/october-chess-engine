@@ -27,7 +27,7 @@ public final class Chess {
             String lnf = UIManager.getSystemLookAndFeelClassName();
             UIManager.setLookAndFeel(lnf);
         } catch (Exception e) {
-            /* Do nothing. */
+            System.out.println("Failed to set 'Look and Feel'.");
         }
 
         Board board = new StandardBoard();

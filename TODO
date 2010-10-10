@@ -8,9 +8,10 @@
 * rules
   * castling
     * move through check
+    * move into check
+  * 50-turn stalemate or similar
 
 * AI
-  * alpha-beta pruning
   * GNU Chess, Crafty, etc. interfacing
 
 * incomplete

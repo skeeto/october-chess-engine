@@ -183,10 +183,9 @@ public class Minimax implements Player, Runnable {
         for (Move move = getNextMove(); move != null; move = getNextMove()) {
             b.move(move);
             double v = search(b, MAX_DEPTH, Piece.opposite(side),
-                              Double.NEGATIVE_INFINITY,
-                              Double.POSITIVE_INFINITY);
+                              Double.NEGATIVE_INFINITY, -bestScore);
             b.undo();
-            report(move, v);
+            report(move, -v);
         }
     }
 

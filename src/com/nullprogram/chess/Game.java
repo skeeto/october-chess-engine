@@ -6,9 +6,9 @@ import com.nullprogram.chess.gui.ChessFrame;
  * Drives a game of chess, given players and a board.
  *
  * This will, in turn, inform players of their turn and wait for them
- * to respond with a move from their own thread.
+ * to respond with a move.
  */
-public class Game {
+public class Game implements Runnable {
 
     /** Display frame. */
     private ChessFrame frame;
@@ -61,9 +61,6 @@ public class Game {
     /**
      * Perform a turn of the game.
      *
-     * This should not be called by the same thread that called
-     * setActive() in the player.
-     *
      * @param move the move action to take
      */
     public final void move(final Move move) {
@@ -80,6 +77,13 @@ public class Game {
             done = true;
             return;
         }
+        (new Thread(this)).start();
+    }
+
+    /**
+     * The thread that fires off the next player.
+     */
+    public void run() {
         switchTurns();
     }
 

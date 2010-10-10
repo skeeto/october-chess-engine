@@ -15,11 +15,34 @@ public abstract class Piece {
         /**
          * The lighter colored side of the board.
          */
-        WHITE,
+        WHITE (1),
         /**
          * The darker colored side of the board.
          */
-        BLACK;
+        BLACK (-1);
+
+        /**
+         * Multiplier value of this side.
+         */
+        private int value;
+
+        /**
+         * Create a new side with given value.
+         *
+         * @param val value of this side
+         */
+        private Side(final int val) {
+            value = val;
+        }
+
+        /**
+         * Get the value of the side.
+         *
+         * @return value of the side
+         */
+        public int value() {
+            return value;
+        }
     }
 
     /** The side this piece belongs to. */

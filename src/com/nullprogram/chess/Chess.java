@@ -3,8 +3,6 @@ package com.nullprogram.chess;
 import javax.swing.UIManager;
 
 import com.nullprogram.chess.gui.ChessFrame;
-import com.nullprogram.chess.boards.StandardBoard;
-import com.nullprogram.chess.ai.Minimax;
 
 /**
  * Main class for the Chess game application.
@@ -30,11 +28,6 @@ public final class Chess {
             System.out.println("Failed to set 'Look and Feel'.");
         }
 
-        Board board = new StandardBoard();
-        ChessFrame frame = new ChessFrame(board);
-
-        /* Set up a hot-seat game */
-        Minimax ai = new Minimax(board, frame.getProgress());
-        Game game = new Game(frame, board, frame.getPlayer(), ai);
+        ChessFrame frame = new ChessFrame();
     }
 }

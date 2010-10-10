@@ -76,10 +76,17 @@ public class Game {
             } else {
                 frame.setStatus("Stalemate!");
             }
+            frame.endGame();
             done = true;
             return;
         }
+        switchTurns();
+    }
 
+    /**
+     * Switch the turn variable and inform the player.
+     */
+    private void switchTurns() {
         if (turn == Piece.Side.WHITE) {
             turn = Piece.Side.BLACK;
             turnStatus();
@@ -89,6 +96,15 @@ public class Game {
             turnStatus();
             white.setActive(turn);
         }
+    }
+
+    /**
+     * Try to undo the last move in the game.
+     */
+    public final void undo() {
+        board.undo();
+        switchTurns();
+        /* Still need to inform active player of this! */
     }
 
     /**

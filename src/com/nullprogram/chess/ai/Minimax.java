@@ -93,11 +93,23 @@ public class Minimax implements Player, Runnable {
      * @param status    GUI progress bar
      */
     public Minimax(final Board gameBoard, final StatusBar status) {
+        this(gameBoard, status, "default");
+    }
+
+    /**
+     * Create a new AI for the given board.
+     *
+     * @param gameBoard the board to be displayed
+     * @param status    GUI progress bar
+     * @param name name of configuration to use
+     */
+    public Minimax(final Board gameBoard, final StatusBar status,
+                   final String name) {
         board = gameBoard;
         values = new HashMap<Class, Double>();
         progress = status;
 
-        config = getConfig("default");
+        config = getConfig(name);
 
         /* Piece values */
         values.put((new Pawn(side)).getClass(),

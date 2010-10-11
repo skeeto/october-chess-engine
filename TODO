@@ -6,9 +6,6 @@
   * save/load game
 
 * rules
-  * castling
-    * move through check
-    * move into check
   * 50-turn stalemate or similar
 
 * AI

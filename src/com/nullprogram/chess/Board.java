@@ -348,16 +348,17 @@ public abstract class Board {
     /**
      * Generate a list of all moves for the given side.
      *
-     * @param side side to get moves for
-     * @return     list of all moves
+     * @param side  side to get moves for
+     * @param check check for check
+     * @return      list of all moves
      */
-    public final MoveList allMoves(final Piece.Side side) {
+    public final MoveList allMoves(final Piece.Side side, final boolean check) {
         MoveList list = new MoveList(this, false);
         for (int y = 0; y < boardHeight; y++) {
             for (int x = 0; x < boardWidth; x++) {
                 Piece p = board[x][y];
                 if (p != null && p.getSide() == side) {
-                    list.addAll(p.getMoves(true));
+                    list.addAll(p.getMoves(check));
                 }
             }
         }

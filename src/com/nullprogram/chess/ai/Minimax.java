@@ -136,7 +136,7 @@ public class Minimax implements Player, Runnable {
         side = currentSide;
 
         /* Gather up every move. */
-        moves = board.allMoves(side);
+        moves = board.allMoves(side, true);
         Collections.shuffle(moves);
 
         /* Initialize the shared structures. */
@@ -222,7 +222,7 @@ public class Minimax implements Player, Runnable {
         }
         Piece.Side opps = Piece.opposite(s);  // opposite side
         double best = alpha;
-        MoveList list = b.allMoves(s);
+        MoveList list = b.allMoves(s, true);
         for (Move move : list) {
             b.move(move);
             best = Math.max(best, -search(b, depth - 1, opps, -beta, -best));

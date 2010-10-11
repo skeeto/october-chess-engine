@@ -75,7 +75,7 @@ public class King extends Piece {
 
         Position rookPos = new Position(max, pos.getY());
         Piece rook = getBoard().getPiece(rookPos);
-        if (rook != null && rook.moved()) {
+        if (rook == null || rook.moved()) {
             return null;
         }
 

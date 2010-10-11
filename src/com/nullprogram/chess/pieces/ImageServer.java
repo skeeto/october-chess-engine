@@ -28,17 +28,16 @@ public class ImageServer {
     /**
      * A key to an image in the cache.
      */
-    private static class CacheKey {
+    private static final class CacheKey {
 
-        /**
-         * File name of the image.
-         */
+        /** File name of the image. */
         private String filename;
 
-        /**
-         * Requested size of the image.
-         */
+        /** Requested size of the image. */
         private int size;
+
+        /** Seed for the hashCode() function. */
+        static final int SEED = 0xc54c8016;
 
         /**
          * Create a new key with given name and size.
@@ -46,18 +45,19 @@ public class ImageServer {
          * @param name    filename
          * @param reqSize requested size
          */
-        public CacheKey(final String name, final int reqSize) {
+        private CacheKey(final String name, final int reqSize) {
             filename = name;
-            size = size;
+            size = reqSize;
         }
 
         /** {@inheritDoc} */
         public int hashCode() {
-            return filename.hashCode() ^ size;
+            return filename.hashCode()
+                ^ (SEED * (size << (size % (2 * 2))));
         }
 
         /** {@inheritDoc} */
-        public final boolean equals(final Object that) {
+        public boolean equals(final Object that) {
             if (this == that) {
                 return true;
             }
@@ -65,7 +65,7 @@ public class ImageServer {
                 return false;
             }
             CacheKey key = (CacheKey) that;
-            return key.hashCode() == hashCode();
+            return filename.equals(key.filename) && (size == key.size);
         }
     }
 

@@ -53,7 +53,7 @@ public class ImageServer {
         /** {@inheritDoc} */
         public int hashCode() {
             return filename.hashCode()
-                ^ (SEED * (size << (size % (2 * 2))));
+                   ^ (SEED * (size << (size % (2 * 2))));
         }
 
         /** {@inheritDoc} */

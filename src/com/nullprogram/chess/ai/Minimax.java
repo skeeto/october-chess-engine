@@ -245,7 +245,7 @@ public class Minimax implements Player, Runnable {
         double material = materialValue(b);
         double kingSafety = kingInsafetyValue(b);
         return material * W_MATERIAL
-            + kingSafety * W_KING;
+               + kingSafety * W_KING;
     }
 
     /**
@@ -276,7 +276,7 @@ public class Minimax implements Player, Runnable {
      */
     private double kingInsafetyValue(final Board b) {
         return kingInsafetyValue(b, Piece.opposite(side))
-            - kingInsafetyValue(b, side);
+               - kingInsafetyValue(b, side);
     }
 
     /**

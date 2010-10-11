@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.nullprogram.chess.pieces.King;
 import com.nullprogram.chess.pieces.PieceFactory;
 
+import com.nullprogram.chess.boards.BoardFactory;
+
 /**
  * Board data structure.
  *
@@ -313,19 +315,12 @@ public abstract class Board {
     }
 
     /**
-     * Return a fresh instance of the board, used for duplication.
-     *
-     * @return the fresh board
-     */
-    protected abstract Board freshBoard();
-
-    /**
      * Copy this board.
      *
      * @return deep copy of the board.
      */
     public final Board copy() {
-        Board fresh = freshBoard();
+        Board fresh = BoardFactory.create(this.getClass());
         for (Move move : moves) {
             fresh.move(new Move(move));
         }

@@ -1,22 +1,22 @@
 package com.nullprogram.chess.boards;
 
-import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
-import com.nullprogram.chess.Position;
 import com.nullprogram.chess.pieces.Pawn;
 import com.nullprogram.chess.pieces.Rook;
 import com.nullprogram.chess.pieces.Knight;
 import com.nullprogram.chess.pieces.Bishop;
 import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.King;
+import com.nullprogram.chess.pieces.Chancellor;
+import com.nullprogram.chess.pieces.Archbishop;
 
 /**
- * The board for a standard game of chess.
+ * Board for the game of Gothic Chess.
  */
-public class StandardBoard extends Board {
+public class Gothic extends StandardBoard {
 
     /** The standard board width. */
-    static final int WIDTH = 8;
+    static final int WIDTH = 10;
 
     /** The standard board height. */
     static final int HEIGHT = 8;
@@ -45,22 +45,28 @@ public class StandardBoard extends Board {
     /** Queen column. */
     static final int QUEEN = 3;
 
+    /** Chancellor column. */
+    static final int CHANCELLOR = 4;
+
     /** King column. */
-    static final int KING = 4;
+    static final int KING = 5;
+
+    /** Archbishop column. */
+    static final int ARCHBISHOP = 6;
 
     /** King side bishop column. */
-    static final int K_BISHOP = 5;
+    static final int K_BISHOP = 7;
 
     /** King side knight column. */
-    static final int K_KNIGHT = 6;
+    static final int K_KNIGHT = 8;
 
     /** King side rook column. */
-    static final int K_ROOK = 7;
+    static final int K_ROOK = 9;
 
     /**
-     * The standard chess board.
+     * The Gothic Chess board.
      */
-    public StandardBoard() {
+    public Gothic() {
         setWidth(WIDTH);
         setHeight(HEIGHT);
         clear();
@@ -84,60 +90,10 @@ public class StandardBoard extends Board {
         setPiece(QUEEN, BLACK_ROW, new Queen(Piece.Side.BLACK));
         setPiece(KING, WHITE_ROW, new King(Piece.Side.WHITE));
         setPiece(KING, BLACK_ROW, new King(Piece.Side.BLACK));
-    }
 
-    /** {@inheritDoc} */
-    public final Boolean checkmate(final Piece.Side side) {
-        return check(side) && (moveCount(side) == 0);
-    }
-
-    /** {@inheritDoc} */
-    public final Boolean stalemate(final Piece.Side side) {
-        return (!check(side)) && (moveCount(side) == 0);
-    }
-
-    /**
-     * Number of moves available to this player.
-     *
-     * @param side side to be tested
-     * @return     number of moves right now
-     */
-    public final int moveCount(final Piece.Side side) {
-        int count = 0;
-        for (int y = 0; y < getHeight(); y++) {
-            for (int x = 0; x < getWidth(); x++) {
-                Piece p = getPiece(new Position(x, y));
-                if ((p != null) && (p.getSide() == side)) {
-                    count += p.getMoves(true).size();
-                }
-            }
-        }
-        return count;
-    }
-
-    /** {@inheritDoc} */
-    public final Boolean check(final Piece.Side side) {
-        Piece.Side attacker;
-        if (side == Piece.Side.WHITE) {
-            attacker = Piece.Side.BLACK;
-        } else {
-            attacker = Piece.Side.WHITE;
-        }
-        Position kingPos = findKing(side);
-        if (kingPos == null) {
-            /* no king on board, but can happen in AI evaluation */
-            return false;
-        }
-        for (int y = 0; y < getHeight(); y++) {
-            for (int x = 0; x < getWidth(); x++) {
-                Piece p = getPiece(new Position(x, y));
-                if ((p != null)
-                        && (p.getSide() == attacker)
-                        && p.getMoves(false).containsDest(kingPos)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        setPiece(CHANCELLOR, WHITE_ROW, new Chancellor(Piece.Side.WHITE));
+        setPiece(CHANCELLOR, BLACK_ROW, new Chancellor(Piece.Side.BLACK));
+        setPiece(ARCHBISHOP, WHITE_ROW, new Archbishop(Piece.Side.WHITE));
+        setPiece(ARCHBISHOP, BLACK_ROW, new Archbishop(Piece.Side.BLACK));
     }
 }

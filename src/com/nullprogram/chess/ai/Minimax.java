@@ -17,6 +17,8 @@ import com.nullprogram.chess.pieces.Knight;
 import com.nullprogram.chess.pieces.Bishop;
 import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.King;
+import com.nullprogram.chess.pieces.Chancellor;
+import com.nullprogram.chess.pieces.Archbishop;
 
 import com.nullprogram.chess.gui.StatusBar;
 
@@ -80,6 +82,12 @@ public class Minimax implements Player, Runnable {
     /** Value of a king. */
     static final double KING_VALUE = 1000.0;
 
+    /** Value of a king. */
+    static final double CHANCELLOR_VALUE = 8.5;
+
+    /** Value of a king. */
+    static final double ARCHBISHOP_VALUE = 6.0;
+
     /** Divisor for milliseconds. */
     static final double MILLI = 1000.0;
 
@@ -112,6 +120,8 @@ public class Minimax implements Player, Runnable {
         values.put((new Rook(side)).getClass(),   ROOK_VALUE);
         values.put((new Queen(side)).getClass(),  QUEEN_VALUE);
         values.put((new King(side)).getClass(),   KING_VALUE);
+        values.put((new Chancellor(side)).getClass(),  CHANCELLOR_VALUE);
+        values.put((new Archbishop(side)).getClass(),   ARCHBISHOP_VALUE);
 
         progress = status;
     }

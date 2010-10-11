@@ -94,11 +94,24 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
      */
     public BoardPanel(final Board displayBoard) {
         board = displayBoard;
+        updateSize();
+        addMouseListener(this);
+    }
+
+    /**
+     * Set the preferred board size.
+     */
+    private void updateSize() {
         setPreferredSize(new Dimension(PREF_SIZE * board.getWidth(),
                                        PREF_SIZE * board.getHeight()));
         setMinimumSize(new Dimension(MIN_SIZE * board.getWidth(),
                                      MIN_SIZE * board.getHeight()));
-        addMouseListener(this);
+    }
+
+    /** {@inheritDoc} */
+    public final Dimension getPreferredSize() {
+        return new Dimension(PREF_SIZE * board.getWidth(),
+                             PREF_SIZE * board.getHeight());
     }
 
     /**
@@ -121,6 +134,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
      */
     public final void setBoard(final Board b) {
         board = b;
+        updateSize();
     }
 
     /**
@@ -262,9 +276,9 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
      * @return  the position on the board
      */
     private Position getPixelPosition(final Point p) {
-        return new Position((int) (p.getX()) / getTileSize(),
-                            board.getWidth() - 1
-                            - (int) (p.getY()) / getTileSize());
+        int size = getTileSize();
+        return new Position((int) (p.getX()) / size,
+                            board.getHeight() - 1 - (int) (p.getY()) / size);
     }
 
     /**

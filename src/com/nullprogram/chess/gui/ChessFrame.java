@@ -71,6 +71,8 @@ public class ChessFrame extends JFrame implements BoardListener {
         Board board = new StandardBoard();
         board.addBoardListener(this);
         display.setBoard(board);
+        display.invalidate();
+        setSize(getPreferredSize());
         Minimax ai = new Minimax(board, getProgress());
         game = new Game(this, board, getPlayer(), ai);
         handler.gameMode(true);

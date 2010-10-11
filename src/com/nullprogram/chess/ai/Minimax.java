@@ -2,6 +2,7 @@ package com.nullprogram.chess.ai;
 
 import java.util.HashMap;
 import java.util.Collections;
+import java.util.Properties;
 
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
@@ -58,47 +59,26 @@ public class Minimax implements Player, Runnable {
     /** The search threads. */
     private Thread[] threads;
 
-    /** Maximum search depth. */
-    static final int MAX_DEPTH = 3;
-
     /** Values of each piece. */
     private HashMap<Class, Double> values;
-
-    /** Value of a pawn. */
-    static final double PAWN_VALUE = 1.0;
-
-    /** Value of a knight. */
-    static final double KNIGHT_VALUE = 3.0;
-
-    /** Value of a bishop. */
-    static final double BISHOP_VALUE = 3.0;
-
-    /** Value of a rook. */
-    static final double ROOK_VALUE = 5.0;
-
-    /** Value of a queen. */
-    static final double QUEEN_VALUE = 9.0;
-
-    /** Value of a king. */
-    static final double KING_VALUE = 1000.0;
-
-    /** Value of a king. */
-    static final double CHANCELLOR_VALUE = 8.5;
-
-    /** Value of a king. */
-    static final double ARCHBISHOP_VALUE = 6.0;
 
     /** Divisor for milliseconds. */
     static final double MILLI = 1000.0;
 
-    /** Material score weight. */
-    static final double W_MATERIAL = 1.0;
+    /** Current AI configuration. */
+    private Properties config;
 
-    /** King safety score weight. */
-    static final double W_KING = 0.15;
+    /** Maximum depth (configured). */
+    private int maxDepth;
 
-    /** Mobility score weight. */
-    static final double W_MOBILITY = 0.01;
+    /** Material score weight (configured). */
+    private double wMaterial;
+
+    /** King safety score weight (configured). */
+    private double wSafety;
+
+    /** Mobility score weight (configured). */
+    private double wMobility;
 
     /**
      * Hidden constructor.
@@ -115,18 +95,50 @@ public class Minimax implements Player, Runnable {
     public Minimax(final Board gameBoard, final StatusBar status) {
         board = gameBoard;
         values = new HashMap<Class, Double>();
+        progress = status;
+
+        config = getConfig("default");
 
         /* Piece values */
-        values.put((new Pawn(side)).getClass(),   PAWN_VALUE);
-        values.put((new Knight(side)).getClass(), KNIGHT_VALUE);
-        values.put((new Bishop(side)).getClass(), BISHOP_VALUE);
-        values.put((new Rook(side)).getClass(),   ROOK_VALUE);
-        values.put((new Queen(side)).getClass(),  QUEEN_VALUE);
-        values.put((new King(side)).getClass(),   KING_VALUE);
-        values.put((new Chancellor(side)).getClass(),  CHANCELLOR_VALUE);
-        values.put((new Archbishop(side)).getClass(),   ARCHBISHOP_VALUE);
+        values.put((new Pawn(side)).getClass(),
+                   Double.parseDouble(config.getProperty("Pawn")));
+        values.put((new Knight(side)).getClass(),
+                   Double.parseDouble(config.getProperty("Knight")));
+        values.put((new Bishop(side)).getClass(),
+                   Double.parseDouble(config.getProperty("Bishop")));
+        values.put((new Rook(side)).getClass(),
+                   Double.parseDouble(config.getProperty("Rook")));
+        values.put((new Queen(side)).getClass(),
+                   Double.parseDouble(config.getProperty("Queen")));
+        values.put((new King(side)).getClass(),
+                   Double.parseDouble(config.getProperty("King")));
+        values.put((new Chancellor(side)).getClass(),
+                   Double.parseDouble(config.getProperty("Chancellor")));
+        values.put((new Archbishop(side)).getClass(),
+                   Double.parseDouble(config.getProperty("Archbishop")));
 
-        progress = status;
+        maxDepth = Integer.parseInt(config.getProperty("depth"));
+        wMaterial = Double.parseDouble(config.getProperty("material"));
+        wSafety = Double.parseDouble(config.getProperty("safety"));
+        wMobility = Double.parseDouble(config.getProperty("mobility"));
+    }
+
+    /**
+     * Get the configuration.
+     *
+     * @param name name of the configuration to load
+     * @return the configuration
+     */
+    private Properties getConfig(final String name) {
+        Properties props = new Properties();
+        String filename = name + ".properties";
+        try {
+            props.load(Minimax.class.getResourceAsStream(filename));
+        } catch (java.io.IOException e) {
+            System.out.println(e);
+            /* Do something else here sometime. */
+        }
+        return props;
     }
 
     /** {@inheritDoc} */
@@ -201,7 +213,7 @@ public class Minimax implements Player, Runnable {
         Board b = board.copy();
         for (Move move = getNextMove(); move != null; move = getNextMove()) {
             b.move(move);
-            double v = search(b, MAX_DEPTH, Piece.opposite(side),
+            double v = search(b, maxDepth, Piece.opposite(side),
                               Double.NEGATIVE_INFINITY, -bestScore);
             b.undo();
             report(move, -v);
@@ -248,9 +260,9 @@ public class Minimax implements Player, Runnable {
         double material = materialValue(b);
         double kingSafety = kingInsafetyValue(b);
         double mobility = mobilityValue(b);
-        return material * W_MATERIAL
-               + kingSafety * W_KING
-               + mobility * W_MOBILITY;
+        return material * wMaterial
+               + kingSafety * wSafety
+               + mobility * wMobility;
     }
 
     /**
@@ -296,7 +308,7 @@ public class Minimax implements Player, Runnable {
         Position king = b.findKing(s);
         if (king == null) {
             /* Weird, but may happen during evaluation. */
-            return KING_VALUE;
+            return Double.POSITIVE_INFINITY;
         }
         MoveList list = new MoveList(b, false);
         /* Take advantage of the Rook and Bishop code. */

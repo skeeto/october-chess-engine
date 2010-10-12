@@ -89,25 +89,21 @@ public class Minimax implements Player, Runnable {
     /**
      * Create a new AI for the given board.
      *
-     * @param gameBoard the board to be displayed
-     * @param status    GUI progress bar
+     * @param statusBar GUI progress bar
      */
-    public Minimax(final Board gameBoard, final StatusBar status) {
-        this(gameBoard, status, "default");
+    public Minimax(final StatusBar statusBar) {
+        this(statusBar, "default");
     }
 
     /**
      * Create a new AI for the given board.
      *
-     * @param gameBoard the board to be displayed
-     * @param status    GUI progress bar
-     * @param name name of configuration to use
+     * @param statusBar GUI progress bar
+     * @param name      name of configuration to use
      */
-    public Minimax(final Board gameBoard, final StatusBar status,
-                   final String name) {
-        board = gameBoard;
+    public Minimax(final StatusBar statusBar, final String name) {
         values = new HashMap<Class, Double>();
-        progress = status;
+        progress = statusBar;
 
         config = getConfig(name);
 
@@ -159,7 +155,9 @@ public class Minimax implements Player, Runnable {
     }
 
     /** {@inheritDoc} */
-    public final void setActive(final Piece.Side currentSide) {
+    public final void setActive(final Board curBoard,
+                                final Piece.Side currentSide) {
+        board = curBoard;
         side = currentSide;
 
         /* Gather up every move. */

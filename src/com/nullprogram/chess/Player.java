@@ -17,9 +17,10 @@ public interface Player {
     /**
      * Inform the player it is time to take its turn.
      *
-     * @param side the player's side
+     * @param board the current board
+     * @param side  the player's side
      */
-    void setActive(Piece.Side side);
+    void setActive(Board board, Piece.Side side);
 
     /**
      * Set the game the player belongs to.

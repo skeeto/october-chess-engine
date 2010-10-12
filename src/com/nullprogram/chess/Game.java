@@ -55,7 +55,7 @@ public class Game implements Runnable {
         black.setGame(this);
         turn = Piece.Side.WHITE;
         turnStatus();
-        white.setActive(turn);
+        white.setActive(board.copy(), turn);
     }
 
     /**
@@ -94,11 +94,11 @@ public class Game implements Runnable {
         if (turn == Piece.Side.WHITE) {
             turn = Piece.Side.BLACK;
             turnStatus();
-            black.setActive(turn);
+            black.setActive(board.copy(), turn);
         } else {
             turn = Piece.Side.WHITE;
             turnStatus();
-            white.setActive(turn);
+            white.setActive(board.copy(), turn);
         }
     }
 

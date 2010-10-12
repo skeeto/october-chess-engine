@@ -254,7 +254,9 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
             } else if (moves != null && moves.containsDest(pos)) {
                 /* Move selected piece */
                 mode = Mode.WAIT;
-                game.move(moves.getMoveByDest(pos));
+                Move move = moves.getMoveByDest(pos);
+                board.move(move);
+                game.move(move);
                 selected = null;
                 moves = null;
             } else {
@@ -281,12 +283,10 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
                             board.getHeight() - 1 - (int) (p.getY()) / size);
     }
 
-    /**
-     * Tell the BoardPanel to get a move from the player.
-     *
-     * @param currentSide the side who is making the move
-     */
-    public final void setActive(final Piece.Side currentSide) {
+    /** {@inheritDoc} */
+    public final void setActive(final Board turnBoard,
+                                final Piece.Side currentSide) {
+        board = turnBoard;
         side = currentSide;
         mode = Mode.PLAYER;
         repaint();

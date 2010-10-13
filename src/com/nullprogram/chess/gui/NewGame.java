@@ -78,6 +78,7 @@ public class NewGame extends JDialog implements ActionListener {
         JButton cancel = new JButton("Cancel");
         ok.addActionListener(this);
         cancel.addActionListener(this);
+        getRootPane().setDefaultButton(ok);
         JPanel buttonRow = new JPanel();
         buttonRow.setLayout(new BoxLayout(buttonRow, BoxLayout.X_AXIS));
         buttonRow.setBorder(BorderFactory.createEmptyBorder(H_PADDING,

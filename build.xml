@@ -41,6 +41,13 @@
     </java>
   </target>
 
+  <target name="ga" depends="compile" description="Run genetic algorithm.">
+    <java classpath="${build.classes.dir}" fork="true"
+	  classname="com.nullprogram.chess.ai.OptimizeGA">
+      <jvmarg value="-server"/>
+    </java>
+  </target>
+
   <target name="clean" description="Delete all generated files.">
     <delete dir="${build.dir}"/>
     <delete dir="${doc.dir}/javadoc"/>

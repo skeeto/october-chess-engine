@@ -57,7 +57,7 @@ public class Position implements Comparable<Position> {
      * @return string form of position
      */
     public final String toString() {
-        return "(" + x + ", " + y + ")";
+        return "" + ((char) ('a' + (char) x)) + (y + 1);
     }
 
     /**

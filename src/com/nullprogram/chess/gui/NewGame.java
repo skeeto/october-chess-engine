@@ -1,12 +1,15 @@
 package com.nullprogram.chess.gui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.BorderLayout;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Game;
@@ -42,6 +45,12 @@ public class NewGame extends JDialog implements ActionListener {
     /** Black player selector. */
     private PlayerSelector blackPanel;
 
+    /** Vertical padding around this panel. */
+    static final int V_PADDING = 15;
+
+    /** Horizontal padding around this panel. */
+    static final int H_PADDING = 10;
+
     /**
      * Create a new dialog to ask the user for the game configuration.
      *
@@ -64,6 +73,12 @@ public class NewGame extends JDialog implements ActionListener {
         ok.addActionListener(this);
         cancel.addActionListener(this);
         JPanel buttonRow = new JPanel();
+        buttonRow.setLayout(new BoxLayout(buttonRow, BoxLayout.X_AXIS));
+        buttonRow.setBorder(BorderFactory.createEmptyBorder(H_PADDING,
+                                                            V_PADDING,
+                                                            H_PADDING,
+                                                            V_PADDING));
+        buttonRow.add(Box.createHorizontalGlue());
         buttonRow.add(ok);
         buttonRow.add(cancel);
         add(buttonRow, BorderLayout.PAGE_END);

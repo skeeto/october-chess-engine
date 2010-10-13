@@ -223,7 +223,7 @@ public class Minimax implements Player, Runnable {
         Board b = board.copy();
         for (Move move = getNextMove(); move != null; move = getNextMove()) {
             b.move(move);
-            double v = search(b, maxDepth, Piece.opposite(side),
+            double v = search(b, maxDepth - 1, Piece.opposite(side),
                               Double.NEGATIVE_INFINITY, -bestScore);
             b.undo();
             report(move, -v);

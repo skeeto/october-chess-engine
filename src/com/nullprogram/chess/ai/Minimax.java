@@ -96,16 +96,26 @@ public class Minimax implements Player, Runnable {
     }
 
     /**
-     * Create a new AI for the given board.
+     * Create a new AI from a given properties name.
      *
      * @param statusBar GUI progress bar
      * @param name      name of configuration to use
      */
     public Minimax(final StatusBar statusBar, final String name) {
+        this(statusBar, getConfig(name));
+    }
+
+    /**
+     * Create a new AI for the given board.
+     *
+     * @param statusBar GUI progress bar
+     * @param props     properties for this player
+     */
+    public Minimax(final StatusBar statusBar, final Properties props) {
         values = new HashMap<Class, Double>();
         progress = statusBar;
 
-        config = getConfig(name);
+        config = props;
 
         /* Piece values */
         values.put((new Pawn(side)).getClass(),
@@ -125,7 +135,7 @@ public class Minimax implements Player, Runnable {
         values.put((new Archbishop(side)).getClass(),
                    Double.parseDouble(config.getProperty("Archbishop")));
 
-        maxDepth = Integer.parseInt(config.getProperty("depth"));
+        maxDepth = (int) Double.parseDouble(config.getProperty("depth"));
         wMaterial = Double.parseDouble(config.getProperty("material"));
         wSafety = Double.parseDouble(config.getProperty("safety"));
         wMobility = Double.parseDouble(config.getProperty("mobility"));
@@ -137,7 +147,7 @@ public class Minimax implements Player, Runnable {
      * @param name name of the configuration to load
      * @return the configuration
      */
-    private Properties getConfig(final String name) {
+    private static Properties getConfig(final String name) {
         Properties props = new Properties();
         String filename = name + ".properties";
         try {

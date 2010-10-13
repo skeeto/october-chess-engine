@@ -15,6 +15,7 @@ import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Player;
 
+import com.nullprogram.chess.boards.Gothic;
 import com.nullprogram.chess.boards.StandardBoard;
 
 import com.nullprogram.chess.ai.Minimax;
@@ -45,6 +46,9 @@ public class NewGame extends JDialog implements ActionListener {
     /** Black player selector. */
     private PlayerSelector blackPanel;
 
+    /** Black player selector. */
+    private BoardSelector boardPanel;
+
     /** Vertical padding around this panel. */
     static final int V_PADDING = 15;
 
@@ -66,7 +70,9 @@ public class NewGame extends JDialog implements ActionListener {
         whitePanel = new PlayerSelector("White:", true);
         blackPanel = new PlayerSelector("Black:", false);
         add(whitePanel, BorderLayout.LINE_START);
-        add(blackPanel, BorderLayout.LINE_END);
+        add(blackPanel, BorderLayout.CENTER);
+        boardPanel = new BoardSelector();
+        add(boardPanel, BorderLayout.LINE_END);
 
         JButton ok = new JButton("OK");
         JButton cancel = new JButton("Cancel");
@@ -92,7 +98,7 @@ public class NewGame extends JDialog implements ActionListener {
             /* Lock in selection. */
             white = createPlayer(whitePanel.getPlayer());
             black = createPlayer(blackPanel.getPlayer());
-            board = new StandardBoard();
+            board = createBoard(boardPanel.getBoard());
         } else {
             white = null;
             black = null;
@@ -113,6 +119,22 @@ public class NewGame extends JDialog implements ActionListener {
             return parent.getPlayer();
         } else if ("computer".equals(name)) {
             return new Minimax(parent.getProgress());
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Create a new Board instance based on the given string.
+     *
+     * @param name name of type of board
+     * @return board of named type
+     */
+    private Board createBoard(final String name) {
+        if ("chess".equals(name)) {
+            return new StandardBoard();
+        } else if ("gothic".equals(name)) {
+            return new Gothic();
         } else {
             return null;
         }

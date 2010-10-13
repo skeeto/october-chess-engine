@@ -71,6 +71,9 @@ public class ChessFrame extends JFrame implements BoardListener {
         if (newGame == null) {
             return;
         }
+        if (game != null) {
+            game.end();
+        }
         game = newGame;
         Board board = game.getBoard();
         board.addBoardListener(this);

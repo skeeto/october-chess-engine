@@ -26,7 +26,7 @@ public class Game implements Runnable {
     private Piece.Side turn;
 
     /** Set to true when the board is in a completed state. */
-    private Boolean done;
+    private volatile Boolean done;
 
     /**
      * Hidden constructor.
@@ -59,8 +59,16 @@ public class Game implements Runnable {
      * Begin the game.
      */
     public final void begin() {
+        done = false;
         turn = Piece.Side.BLACK;
         (new Thread(this)).start();
+    }
+
+    /**
+     * End the running game.
+     */
+    public final void end() {
+        done = true;
     }
 
     /**
@@ -69,6 +77,9 @@ public class Game implements Runnable {
      * @param move the move action to take
      */
     public final void move(final Move move) {
+        if (done) {
+            return;
+        }
         board.move(move);
         if (board.checkmate() || board.stalemate()) {
             if (board.checkmate(Piece.Side.BLACK)) {

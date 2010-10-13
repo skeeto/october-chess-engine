@@ -364,4 +364,13 @@ public abstract class Board {
         }
         return list;
     }
+
+    /**
+     * Return the number of moves taken on this board.
+     *
+     * @return number of moves taken on this board
+     */
+    public final int moveCount() {
+        return moves.size();
+    }
 }

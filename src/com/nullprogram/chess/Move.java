@@ -145,4 +145,9 @@ public class Move {
     public final Piece.Side getReplacementSide() {
         return replacementSide;
     }
+
+    /** {@inheritDoc} */
+    public final String toString() {
+        return "" + origin + destination;
+    }
 }

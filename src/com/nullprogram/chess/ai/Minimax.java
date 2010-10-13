@@ -165,9 +165,11 @@ public class Minimax implements Player, Runnable {
         Collections.shuffle(moves);
 
         /* Initialize the shared structures. */
-        progress.setValue(0);
-        progress.setMaximum(moves.size() - 1);
-        progress.setStatus("Thinking ...");
+        if (progress != null) {
+            progress.setValue(0);
+            progress.setMaximum(moves.size() - 1);
+            progress.setStatus("Thinking ...");
+        }
         startTime = System.currentTimeMillis();
         selected = null;
         bestScore = Double.NEGATIVE_INFINITY;
@@ -201,7 +203,9 @@ public class Minimax implements Player, Runnable {
         if (moves.isEmpty()) {
             return null;
         }
-        progress.setValue(progress.getValue() + 1);
+        if (progress != null) {
+            progress.setValue(progress.getValue() + 1);
+        }
         return moves.pop();
     }
 

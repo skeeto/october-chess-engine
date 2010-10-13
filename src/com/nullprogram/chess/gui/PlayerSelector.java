@@ -50,7 +50,7 @@ public class PlayerSelector extends JPanel {
         add(minimax);
 
         setBorder(BorderFactory.createEmptyBorder(H_PADDING, V_PADDING,
-                                                  H_PADDING, V_PADDING));
+                  H_PADDING, V_PADDING));
     }
 
     /**

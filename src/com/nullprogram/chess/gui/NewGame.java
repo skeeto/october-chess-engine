@@ -75,9 +75,9 @@ public class NewGame extends JDialog implements ActionListener {
         JPanel buttonRow = new JPanel();
         buttonRow.setLayout(new BoxLayout(buttonRow, BoxLayout.X_AXIS));
         buttonRow.setBorder(BorderFactory.createEmptyBorder(H_PADDING,
-                                                            V_PADDING,
-                                                            H_PADDING,
-                                                            V_PADDING));
+                            V_PADDING,
+                            H_PADDING,
+                            V_PADDING));
         buttonRow.add(Box.createHorizontalGlue());
         buttonRow.add(ok);
         buttonRow.add(cancel);

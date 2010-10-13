@@ -53,9 +53,14 @@ public class Game implements Runnable {
         black = blackPlayer;
         white.setGame(this);
         black.setGame(this);
-        turn = Piece.Side.WHITE;
-        turnStatus();
-        white.setActive(board.copy(), turn);
+    }
+
+    /**
+     * Begin the game.
+     */
+    public final void begin() {
+        turn = Piece.Side.BLACK;
+        (new Thread(this)).start();
     }
 
     /**
@@ -123,5 +128,14 @@ public class Game implements Runnable {
         }
         frame.getProgress().setValue(0);
         frame.setStatus(status);
+    }
+
+    /**
+     * Get the board that belongs to this game.
+     *
+     * @return the game's board
+     */
+    public final Board getBoard() {
+        return board;
     }
 }

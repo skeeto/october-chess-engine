@@ -15,9 +15,6 @@ import com.nullprogram.chess.BoardListener;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Game;
 
-import com.nullprogram.chess.ai.Minimax;
-
-import com.nullprogram.chess.boards.StandardBoard;
 import com.nullprogram.chess.boards.EmptyBoard;
 
 /**
@@ -60,6 +57,7 @@ public class ChessFrame extends JFrame implements BoardListener {
         add(progress);
         pack();
 
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -67,15 +65,19 @@ public class ChessFrame extends JFrame implements BoardListener {
      * Set up a new game.
      */
     public final void newGame() {
-        /* Set up a hot-seat game */
-        Board board = new StandardBoard();
-        board.addBoardListener(this);
+        NewGame ngFrame = new NewGame(this);
+        ngFrame.setVisible(true);
+        Game newGame = ngFrame.getGame();
+        if (newGame == null) {
+            return;
+        }
+        game = newGame;
+        Board board = game.getBoard();
         display.setBoard(board);
         display.invalidate();
         setSize(getPreferredSize());
-        Minimax ai = new Minimax(getProgress());
-        game = new Game(this, board, getPlayer(), ai);
         handler.gameMode(true);
+        game.begin();
     }
 
     /**

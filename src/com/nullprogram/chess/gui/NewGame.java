@@ -2,10 +2,11 @@ package com.nullprogram.chess.gui;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.BorderLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JButton;
-import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Game;
@@ -49,21 +50,23 @@ public class NewGame extends JDialog implements ActionListener {
     public NewGame(final ChessFrame owner) {
         super(owner, "New game", true);
         parent = owner;
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
         setLocationRelativeTo(owner);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         whitePanel = new PlayerSelector("White:", true);
         blackPanel = new PlayerSelector("Black:", false);
-        add(whitePanel);
-        add(blackPanel);
+        add(whitePanel, BorderLayout.LINE_START);
+        add(blackPanel, BorderLayout.LINE_END);
 
         JButton ok = new JButton("OK");
         JButton cancel = new JButton("Cancel");
         ok.addActionListener(this);
         cancel.addActionListener(this);
-        add(ok);
-        add(cancel);
+        JPanel buttonRow = new JPanel();
+        buttonRow.add(ok);
+        buttonRow.add(cancel);
+        add(buttonRow, BorderLayout.PAGE_END);
 
         pack();
     }

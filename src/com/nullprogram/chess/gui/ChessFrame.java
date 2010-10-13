@@ -73,6 +73,7 @@ public class ChessFrame extends JFrame implements BoardListener {
         }
         game = newGame;
         Board board = game.getBoard();
+        board.addBoardListener(this);
         display.setBoard(board);
         display.invalidate();
         setSize(getPreferredSize());

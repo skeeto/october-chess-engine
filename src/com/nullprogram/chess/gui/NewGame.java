@@ -35,6 +35,12 @@ public class NewGame extends JDialog implements ActionListener {
     /** The selected board. */
     private Board board;
 
+    /** White player selector. */
+    private PlayerSelector whitePanel;
+
+    /** Black player selector. */
+    private PlayerSelector blackPanel;
+
     /**
      * Create a new dialog to ask the user for the game configuration.
      *
@@ -47,8 +53,8 @@ public class NewGame extends JDialog implements ActionListener {
         setLocationRelativeTo(owner);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-        PlayerSelector whitePanel = new PlayerSelector("White:", true);
-        PlayerSelector blackPanel = new PlayerSelector("Black:", false);
+        whitePanel = new PlayerSelector("White:", true);
+        blackPanel = new PlayerSelector("Black:", false);
         add(whitePanel);
         add(blackPanel);
 
@@ -66,8 +72,8 @@ public class NewGame extends JDialog implements ActionListener {
     public final void actionPerformed(final ActionEvent e) {
         if ("OK".equals(e.getActionCommand())) {
             /* Lock in selection. */
-            white = parent.getPlayer();
-            black = new Minimax(parent.getProgress());
+            white = createPlayer(whitePanel.getPlayer());
+            black = createPlayer(blackPanel.getPlayer());
             board = new StandardBoard();
         } else {
             white = null;
@@ -76,6 +82,22 @@ public class NewGame extends JDialog implements ActionListener {
         }
         setVisible(false);
         dispose();
+    }
+
+    /**
+     * Create a new Player instance based on the given string.
+     *
+     * @param name name of type of player
+     * @return player of named type
+     */
+    private Player createPlayer(final String name) {
+        if ("human".equals(name)) {
+            return parent.getPlayer();
+        } else if ("computer".equals(name)) {
+            return new Minimax(parent.getProgress());
+        } else {
+            return null;
+        }
     }
 
     /**

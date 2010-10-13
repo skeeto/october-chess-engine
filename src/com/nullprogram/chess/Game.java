@@ -83,11 +83,17 @@ public class Game implements Runnable {
         board.move(move);
         if (board.checkmate() || board.stalemate()) {
             if (board.checkmate(Piece.Side.BLACK)) {
-                frame.setStatus("White wins!");
+                if (frame != null) {
+                    frame.setStatus("White wins!");
+                }
             } else if (board.checkmate(Piece.Side.WHITE)) {
-                frame.setStatus("Black wins!");
+                if (frame != null) {
+                    frame.setStatus("Black wins!");
+                }
             } else {
-                frame.setStatus("Stalemate!");
+                if (frame != null) {
+                    frame.setStatus("Stalemate!");
+                }
             }
             frame.endGame();
             done = true;
@@ -137,8 +143,10 @@ public class Game implements Runnable {
         } else {
             status = "Black's turn.";
         }
-        frame.getProgress().setValue(0);
-        frame.setStatus(status);
+        if (frame != null) {
+            frame.getProgress().setValue(0);
+            frame.setStatus(status);
+        }
     }
 
     /**

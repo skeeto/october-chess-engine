@@ -27,6 +27,12 @@ public class OptimizeGA implements GameListener {
     /** Maximum number of moves. */
     static final int MAX_MOVES = 75;
 
+    /** Mutation rate. */
+    static final double MUTATION_RATE = 0.02;
+
+    /** Mutation variance. */
+    static final double MUTATION_VAR = 2.0;
+
     /**
      * Hidden constructor.
      */
@@ -51,6 +57,8 @@ public class OptimizeGA implements GameListener {
      * @param blackConf config for the black player
      */
     private void launch(final Config whiteConf, final Config blackConf) {
+        System.out.println(whiteConf);
+        System.out.println(blackConf);
         Player white = new Minimax(null, whiteConf.getProperties());
         Player black = new Minimax(null, whiteConf.getProperties());
         Board board = new StandardBoard();
@@ -98,5 +106,31 @@ public class OptimizeGA implements GameListener {
         conf.put("safety", rng.nextDouble());
         conf.put("mobility", rng.nextDouble());
         return conf;
+    }
+
+    /**
+     * Breed two configurations to make a child.
+     */
+    private static Config breed(Config a, Config b) {
+        Config child = new Config();
+        for (String prop : Config.PLIST) {
+            double ave = (a.get(prop) + b.get(prop)) / 2;
+            if ("depth".equals(prop)) {
+                ave = DEPTH;
+            } else if (rng.nextDouble() < MUTATION_RATE) {
+                ave += (rng.nextDouble() * 1.0 / 2.0) * MUTATION_VAR;
+                double max = PIECE_RANGE;
+                if ("King".equals(prop)) {
+                    max = PIECE_RANGE * PIECE_RANGE * PIECE_RANGE;
+                }
+                if (ave > max) {
+                    ave = max;
+                } else if (ave < -max) {
+                    ave = -max;
+                }
+            }
+            child.put(prop, ave);
+        }
+        return child;
     }
 }

@@ -158,8 +158,8 @@ public class OptimizeGA implements GameListener {
                 bdir = 1;
             } else {
                 System.out.println("Stalemate.");
-                adir = -1;
-                bdir = -1;
+                adir = 0;
+                bdir = 0;
             }
             doScore = true;
         } else if (game.getBoard().moveCount() > MAX_MOVES) {

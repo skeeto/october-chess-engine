@@ -207,8 +207,12 @@ public class OptimizeGA implements GameListener {
 
     /**
      * Breed two configurations to make a child.
+     *
+     * @param a first parent
+     * @param b second parent
+     * @return child config
      */
-    private static Config breed(Config a, Config b) {
+    private static Config breed(final Config a, final Config b) {
         Config child = new Config();
         for (String prop : Config.PLIST) {
             double ave = (a.get(prop) + b.get(prop)) / 2;

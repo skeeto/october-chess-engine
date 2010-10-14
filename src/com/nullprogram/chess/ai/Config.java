@@ -46,4 +46,13 @@ public class Config extends HashMap<String, Double> {
         }
         return props;
     }
+
+    /** {@inheritDo} */
+    public String toString() {
+        String str = "";
+        for (String prop : PLIST) {
+            str += prop + "=" + get(prop) + ",";
+        }
+        return str;
+    }
 }

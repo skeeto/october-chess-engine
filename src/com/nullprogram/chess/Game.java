@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import java.util.ArrayList;
+
 import com.nullprogram.chess.gui.ChessFrame;
 
 /**
@@ -28,6 +30,12 @@ public class Game implements Runnable {
     /** Set to true when the board is in a completed state. */
     private volatile Boolean done;
 
+    /** When the game is done, this is the winner. */
+    private Piece.Side winner;
+
+    /** List of event listeners. */
+    private ArrayList<GameListener> listeners;
+
     /**
      * Hidden constructor.
      */
@@ -53,6 +61,7 @@ public class Game implements Runnable {
         black = blackPlayer;
         white.setGame(this);
         black.setGame(this);
+        listeners = new ArrayList<GameListener>();
     }
 
     /**
@@ -61,13 +70,17 @@ public class Game implements Runnable {
     public final void begin() {
         done = false;
         turn = Piece.Side.BLACK;
-        (new Thread(this)).start();
+        callListeners();
+        if (!done) {
+            (new Thread(this)).start();
+        }
     }
 
     /**
      * End the running game.
      */
     public final void end() {
+        winner = null;
         done = true;
     }
 
@@ -86,20 +99,27 @@ public class Game implements Runnable {
                 if (frame != null) {
                     frame.setStatus("White wins!");
                 }
+                winner = Piece.Side.WHITE;
             } else if (board.checkmate(Piece.Side.WHITE)) {
                 if (frame != null) {
                     frame.setStatus("Black wins!");
                 }
+                winner = Piece.Side.BLACK;
             } else {
                 if (frame != null) {
                     frame.setStatus("Stalemate!");
                 }
+                winner = null;
             }
             frame.endGame();
             done = true;
+            callListeners();
             return;
         }
-        (new Thread(this)).start();
+        callListeners();
+        if (!done) {
+            (new Thread(this)).start();
+        }
     }
 
     /**
@@ -156,5 +176,41 @@ public class Game implements Runnable {
      */
     public final Board getBoard() {
         return board;
+    }
+
+    /**
+     * Add a new event listener.
+     *
+     * @param listener the new event listener
+     */
+    public final void addListener(final GameListener listener) {
+        listeners.add(listener);
+    }
+
+    /**
+     * Call all of the game event listeners.
+     */
+    private void callListeners() {
+        for (GameListener listener : listeners) {
+            listener.gameEvent(this);
+        }
+    }
+
+    /**
+     * Ask if the game is complete.
+     *
+     * @return true if the game is complete
+     */
+    public final boolean isDone() {
+        return done;
+    }
+
+    /**
+     * Return the winner of this game.
+     *
+     * @return the winner for this game
+     */
+    public final Piece.Side getWinner() {
+        return winner;
     }
 }

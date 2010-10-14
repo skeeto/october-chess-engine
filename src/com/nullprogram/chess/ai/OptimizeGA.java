@@ -1,6 +1,8 @@
 package com.nullprogram.chess.ai;
 
 import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
 
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Game;
@@ -33,11 +35,24 @@ public class OptimizeGA implements GameListener {
     /** Mutation variance. */
     static final double MUTATION_VAR = 2.0;
 
+    /** Size of the gene pool. */
+    static final int POOL_SIZE = 3;
+
+    /** The gene pool. */
+    private Config[] genes;
+
+    /** Current gene scores. */
+    private int[] geneScores;
+
+    /** Current index into the gene pool. */
+    private int gene;
+
     /**
      * Hidden constructor.
      */
     protected OptimizeGA() {
-        launch(create(), create());
+        newPool();
+        launch(genes[0], genes[1]);
     }
 
     /**
@@ -48,6 +63,65 @@ public class OptimizeGA implements GameListener {
     public static void main(final String[] args) {
         rng = new Random();
         new OptimizeGA();
+    }
+
+    /**
+     * Create a fresh gene pool.
+     */
+    private void newPool() {
+        genes = new Config[POOL_SIZE];
+        geneScores = new int[POOL_SIZE];
+        gene = 0;
+        /* Seed the pool with something reasonable. */
+        genes[0] = new Config(Minimax.getConfig("default"));
+        for (int i = 1; i < POOL_SIZE; i++) {
+            genes[i] = create();
+        }
+    }
+
+    /**
+     * Launch the next experiment.
+     */
+    private void launchNext() {
+        gene++;
+        if (gene >= POOL_SIZE) {
+            /* Complete */
+            nextPool();
+            launch(genes[0], genes[1]);
+        } else  if (gene == POOL_SIZE - 1) {
+            /* Last one. */
+            launch(genes[gene], genes[0]);
+        } else {
+            launch(genes[gene], genes[gene + 1]);
+        }
+    }
+
+    /**
+     * Breed the winners, preparing the new pool.
+     */
+    private void nextPool() {
+        Config[] pool = new Config[POOL_SIZE];
+        int poolSize = 0;
+        for (int i = 0; i < POOL_SIZE; i++) {
+            if (geneScores[i] > 0) {
+                pool[poolSize] = genes[i];
+                poolSize++;
+            }
+        }
+        if (poolSize == 0) {
+            /* No clear winners. */
+            newPool();
+        } else {
+            for (int i = poolSize; i < POOL_SIZE; i++) {
+                int a = rng.nextInt(poolSize);
+                int b = rng.nextInt(poolSize);
+                genes[i] = breed(genes[a], genes[b]);
+            }
+            Collections.shuffle(Arrays.asList(pool));
+        }
+        geneScores = new int[POOL_SIZE];
+        gene = 0;
+        genes = pool;
     }
 
     /**
@@ -69,18 +143,41 @@ public class OptimizeGA implements GameListener {
 
     /** {@inheritDoc} */
     public final void gameEvent(final Game game) {
+        boolean doScore = false;
+        int adir = 0;
+        int bdir = 0;
         if (game.isDone()) {
             System.out.println("Game complete: ");
             if (game.getWinner() == Piece.Side.WHITE) {
                 System.out.println("White wins.");
+                adir = 1;
+                bdir = -1;
             } else if (game.getWinner() == Piece.Side.BLACK) {
-                System.out.println("White wins.");
+                System.out.println("Black wins.");
+                adir = -1;
+                bdir = 1;
             } else {
                 System.out.println("Stalemate.");
+                adir = -1;
+                bdir = -1;
             }
+            doScore = true;
         } else if (game.getBoard().moveCount() > MAX_MOVES) {
             System.out.println("Game timeout!");
             game.end();
+            doScore = true;
+            adir = -1;
+            bdir = -1;
+        }
+        if (doScore) {
+            int a = gene;
+            int b = gene + 1;
+            if (b == POOL_SIZE) {
+                b = 0;
+            }
+            geneScores[a] += adir;
+            geneScores[b] += bdir;
+            launchNext();
         }
     }
 

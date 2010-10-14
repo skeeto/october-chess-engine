@@ -9,7 +9,7 @@ import com.nullprogram.chess.Player;
 import com.nullprogram.chess.boards.StandardBoard;
 
 /**
- * Alternte main class optimizing AI parameters via genetic algorithm.
+ * Alternate main class for optimizing AI parameters via genetic algorithm.
  */
 public class OptimizeGA {
 

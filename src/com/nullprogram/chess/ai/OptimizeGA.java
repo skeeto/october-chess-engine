@@ -36,7 +36,7 @@ public class OptimizeGA implements GameListener {
     static final double MUTATION_VAR = 2.0;
 
     /** Size of the gene pool. */
-    static final int POOL_SIZE = 3;
+    static final int POOL_SIZE = 20;
 
     /** The gene pool. */
     private Config[] genes;

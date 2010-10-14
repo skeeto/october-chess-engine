@@ -147,7 +147,7 @@ public class Minimax implements Player, Runnable {
      * @param name name of the configuration to load
      * @return the configuration
      */
-    private static Properties getConfig(final String name) {
+    public static Properties getConfig(final String name) {
         Properties props = new Properties();
         String filename = name + ".properties";
         try {

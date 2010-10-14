@@ -2,7 +2,9 @@ package com.nullprogram.chess.ai;
 
 import java.util.Random;
 
+import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Game;
+import com.nullprogram.chess.GameListener;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Player;
 
@@ -11,7 +13,7 @@ import com.nullprogram.chess.boards.StandardBoard;
 /**
  * Alternate main class for optimizing AI parameters via genetic algorithm.
  */
-public class OptimizeGA {
+public class OptimizeGA implements GameListener {
 
     /** Random number generator.  */
     private static Random rng;
@@ -22,10 +24,14 @@ public class OptimizeGA {
     /** Locked-in dpeth: we don't change this in the population. */
     static final int DEPTH = 4;
 
+    /** Maximum number of moves. */
+    static final int MAX_MOVES = 75;
+
     /**
      * Hidden constructor.
      */
     protected OptimizeGA() {
+        launch(create(), create());
     }
 
     /**
@@ -35,14 +41,39 @@ public class OptimizeGA {
      */
     public static void main(final String[] args) {
         rng = new Random();
+        new OptimizeGA();
+    }
 
-        Config whiteConf = create();
-        Config blackConf = create();
+    /**
+     * Launch a game with players using the given configurations.
+     *
+     * @param whiteConf config for the white player
+     * @param blackConf config for the black player
+     */
+    private void launch(final Config whiteConf, final Config blackConf) {
         Player white = new Minimax(null, whiteConf.getProperties());
         Player black = new Minimax(null, whiteConf.getProperties());
         Board board = new StandardBoard();
         Game game = new Game(null, board, white, black);
+        game.addListener(this);
         game.begin();
+    }
+
+    /** {@inheritDoc} */
+    public final void gameEvent(final Game game) {
+        if (game.isDone()) {
+            System.out.println("Game complete: ");
+            if (game.getWinner() == Piece.Side.WHITE) {
+                System.out.println("White wins.");
+            } else if (game.getWinner() == Piece.Side.BLACK) {
+                System.out.println("White wins.");
+            } else {
+                System.out.println("Stalemate.");
+            }
+        } else if (game.getBoard().moveCount() > MAX_MOVES) {
+            System.out.println("Game timeout!");
+            game.end();
+        }
     }
 
     /**

@@ -190,7 +190,8 @@ public class OptimizeGA implements GameListener {
         Config conf = new Config();
         conf.put("depth", (double) DEPTH);
         String[] pieces = {"Pawn", "Knight", "Bishop", "Rook", "Queen",
-                           "King", "Chancellor", "Archbishop"};
+                           "King", "Chancellor", "Archbishop"
+                          };
         for (String piece : pieces) {
             Double v = rng.nextDouble() * PIECE_RANGE;
             if ("King".equals(piece)) {

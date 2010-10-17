@@ -94,13 +94,14 @@ public class Game implements Runnable {
             return;
         }
         board.move(move);
-        if (board.checkmate() || board.stalemate()) {
-            if (board.checkmate(Piece.Side.BLACK)) {
+        Piece.Side opp = Piece.opposite(turn);
+        if (board.checkmate(opp) || board.stalemate(opp)) {
+            if (opp == Piece.Side.BLACK) {
                 if (frame != null) {
                     frame.setStatus("White wins!");
                 }
                 winner = Piece.Side.WHITE;
-            } else if (board.checkmate(Piece.Side.WHITE)) {
+            } else if (opp == Piece.Side.WHITE) {
                 if (frame != null) {
                     frame.setStatus("Black wins!");
                 }

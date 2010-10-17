@@ -5,6 +5,9 @@ If you want to use the Checkstyle target "check", you'll need to drop
 a recent version of the Checkstyle -all.jar in your Ant's lib/
 directory.
 
+If you want to use the ProGuard "optimize" target, you'll need to drop
+the progaurd.jar in your Ant's lib/ directory.
+
 If you want to use the "format" target you'll need AStyle installed
 somewhere on your PATH.
 

@@ -28,4 +28,11 @@ public interface Player {
      * @param game the player's game
      */
     void setGame(Game game);
+
+    /**
+     * Give the player the current board without beginning a turn.
+     *
+     * @param board the current game board
+     */
+    void setBoard(Board board);
 }

@@ -135,6 +135,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
     public final void setBoard(final Board b) {
         board = b;
         updateSize();
+        repaint();
     }
 
     /**

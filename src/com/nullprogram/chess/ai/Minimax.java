@@ -351,4 +351,9 @@ public class Minimax implements Player, Runnable {
         return b.allMoves(side, false).size()
                - b.allMoves(Piece.opposite(side), false).size();
     }
+
+    /** {@inheritDoc} */
+    public final void setBoard(final Board b) {
+        board = b;
+    }
 }

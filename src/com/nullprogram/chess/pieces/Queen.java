@@ -17,7 +17,7 @@ public class Queen extends Piece {
      * @param side piece owner
      */
     public Queen(final Side side) {
-        super(side);
+        super(side, "Queen");
     }
 
     /** {@inheritDoc} */

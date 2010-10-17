@@ -29,7 +29,7 @@ public class Knight extends Piece {
      * @param side piece owner
      */
     public Knight(final Side side) {
-        super(side);
+        super(side, "Knight");
     }
 
     /** {@inheritDoc} */

@@ -25,7 +25,7 @@ public class King extends Piece {
      * @param side piece owner
      */
     public King(final Side side) {
-        super(side);
+        super(side, "King");
     }
 
     /** {@inheritDoc} */

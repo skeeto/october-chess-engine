@@ -19,7 +19,7 @@ public class Rook extends Piece {
      * @param side piece owner
      */
     public Rook(final Side side) {
-        super(side);
+        super(side, "Rook");
     }
 
     /** {@inheritDoc} */

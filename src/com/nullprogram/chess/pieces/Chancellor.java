@@ -17,7 +17,7 @@ public class Chancellor extends Piece {
      * @param side piece owner
      */
     public Chancellor(final Side side) {
-        super(side);
+        super(side, "Chancellor");
     }
 
     /** {@inheritDoc} */

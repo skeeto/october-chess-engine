@@ -19,7 +19,7 @@ public class Bishop extends Piece {
      * @param side piece side
      */
     public Bishop(final Side side) {
-        super(side);
+        super(side, "Bishop");
     }
 
     /** {@inheritDoc} */

@@ -20,7 +20,7 @@ public class Pawn extends Piece {
      * @param side piece owner
      */
     public Pawn(final Side side) {
-        super(side);
+        super(side, "Pawn");
     }
 
     /** {@inheritDoc} */

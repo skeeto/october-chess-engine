@@ -17,7 +17,7 @@ public class Archbishop extends Piece {
      * @param side piece owner
      */
     public Archbishop(final Side side) {
-        super(side);
+        super(side, "Archbishop");
     }
 
     /** {@inheritDoc} */

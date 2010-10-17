@@ -57,6 +57,9 @@ public abstract class Piece {
     /** Movement counter. */
     private int moved = 0;
 
+    /** Name of this piece. */
+    private String name;
+
     /**
      * When creating a piece, you must always choose a side.
      */
@@ -67,9 +70,11 @@ public abstract class Piece {
      * Create a new piece on the given side.
      *
      * @param owner the side of the piece
+     * @param pieceName name of this piece
      */
-    protected Piece(final Side owner) {
+    protected Piece(final Side owner, final String pieceName) {
         side = owner;
+        name = pieceName;
     }
 
     /**
@@ -145,7 +150,6 @@ public abstract class Piece {
      * @return     image for this piece
      */
     public final BufferedImage getImage(final int size) {
-        String name = this.getClass().getSimpleName();
         return ImageServer.getTile(name + "-" + side, size);
     }
 

@@ -112,9 +112,13 @@ public class Game implements Runnable {
                 }
                 winner = null;
             }
-            frame.endGame();
+            if (frame != null) {
+                frame.endGame();
+            }
             done = true;
             callListeners();
+            white.setBoard(board);
+            black.setBoard(board);
             return;
         }
         callListeners();

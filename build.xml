@@ -9,6 +9,7 @@
   <property name="test.classes.dir" value="${build.dir}/test"/>
   <property name="applet.html" value="index.html"/>
   <taskdef resource="checkstyletask.properties"/>
+  <taskdef resource="proguard/ant/task.properties"/>
 
   <target name="init">
     <mkdir dir="${build.classes.dir}"/>
@@ -89,6 +90,21 @@
     <exec executable="appletviewer">
       <arg value="${applet.html}"/>
     </exec>
+  </target>
+
+  <target name="optimize" depends="jar">
+    <proguard>
+      <libraryjar path="${java.home}/lib/rt.jar"/>
+      <injar file="${jar.file}"/>
+      <outjar file="out.${jar.file}"/>
+      <keepclasseswithmembers access="public" type="class">
+	<method access="public" type="void" name="main"
+		parameters="java.lang.String[]"/>
+      </keepclasseswithmembers>
+      <keep access="public" type="class" extends="javax.swing.JApplet"/>
+    </proguard>
+    <delete file="${jar.file}"/>
+    <move file="out.${jar.file}" tofile="${jar.file}"/>
   </target>
 
   <!-- JUnit -->

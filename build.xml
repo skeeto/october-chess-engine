@@ -7,6 +7,7 @@
   <property name="doc.dir" value="doc"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="test.classes.dir" value="${build.dir}/test"/>
+  <property name="applet.html" value="index.html"/>
   <taskdef resource="checkstyletask.properties"/>
 
   <target name="init">
@@ -82,6 +83,12 @@
       <fileset dir="${src.dir}" includes="**/*.java"/>
       <fileset dir="${test.dir}" includes="**/*.java"/>
     </apply>
+  </target>
+
+  <target name="applet" depends="jar" description="Run the applet version.">
+    <exec executable="appletviewer">
+      <arg value="${applet.html}"/>
+    </exec>
   </target>
 
   <!-- JUnit -->

@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
+import com.nullprogram.chess.BoardListener;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Move;
@@ -23,7 +24,8 @@ import com.nullprogram.chess.Position;
  * This swing element displays a game board and can also behave as a
  * player as needed.
  */
-public class BoardPanel extends JPanel implements MouseListener, Player {
+public class BoardPanel extends JPanel
+    implements MouseListener, Player, BoardListener {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
@@ -300,6 +302,11 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
      */
     public final void setGame(final Game currentGame) {
         game = currentGame;
+    }
+
+    /** {@inheritDoc} */
+    public final void boardChange() {
+        repaint();
     }
 
     /** {@inheritDoc} */

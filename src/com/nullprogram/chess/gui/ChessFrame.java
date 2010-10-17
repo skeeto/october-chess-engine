@@ -11,7 +11,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
 import com.nullprogram.chess.Board;
-import com.nullprogram.chess.BoardListener;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Game;
 
@@ -20,7 +19,7 @@ import com.nullprogram.chess.boards.EmptyBoard;
 /**
  * The JFrame that contains all GUI elements.
  */
-public class ChessFrame extends JFrame implements BoardListener {
+public class ChessFrame extends JFrame {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
@@ -76,7 +75,7 @@ public class ChessFrame extends JFrame implements BoardListener {
         }
         game = newGame;
         Board board = game.getBoard();
-        board.addBoardListener(this);
+        board.addBoardListener(display);
         display.setBoard(board);
         display.invalidate();
         setSize(getPreferredSize());
@@ -114,11 +113,6 @@ public class ChessFrame extends JFrame implements BoardListener {
      */
     public final StatusBar getProgress() {
         return progress;
-    }
-
-    /** {@inheritDoc} */
-    public final void boardChange() {
-        display.repaint();
     }
 
     /**

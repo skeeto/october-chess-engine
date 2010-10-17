@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="Chess" default="jar">
-  <property name="jar" value="${ant.project.name}.jar"/>
+  <property name="jar.file" value="${ant.project.name}.jar"/>
   <property name="src.dir" value="src"/>
   <property name="build.dir" value="build"/>
   <property name="test.dir" value="test"/>
@@ -28,7 +28,7 @@
 
   <target name="jar" depends="compile"
 	  description="Generate the jarfile distributable.">
-    <jar destfile="${jar}" basedir="${build.classes.dir}">
+    <jar destfile="${jar.file}" basedir="${build.classes.dir}">
       <manifest>
         <attribute name="Main-Class"
 		   value="com.nullprogram.chess.Chess"/>
@@ -37,7 +37,7 @@
   </target>
 
   <target name="run" depends="jar" description="Run the application.">
-    <java jar="${jar}" fork="true">
+    <java jar="${jar.file}" fork="true">
       <jvmarg value="-server"/>
     </java>
   </target>
@@ -52,7 +52,7 @@
   <target name="clean" description="Delete all generated files.">
     <delete dir="${build.dir}"/>
     <delete dir="${doc.dir}/javadoc"/>
-    <delete file="${jar}"/>
+    <delete file="${jar.file}"/>
   </target>
 
   <target name="format" description="Run the indenter on all source files.">

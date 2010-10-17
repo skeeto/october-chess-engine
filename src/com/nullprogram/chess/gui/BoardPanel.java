@@ -230,6 +230,7 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
             /* do nothing */
             break;
         }
+        repaint();
     }
 
     /**
@@ -269,7 +270,6 @@ public class BoardPanel extends JPanel implements MouseListener, Player {
                 }
             }
         }
-        repaint();
     }
 
     /**

@@ -84,8 +84,10 @@ public class ImageServer {
         }
 
         BufferedImage orig = null, image = null;
+        String prefix = "/com/nullprogram/chess/pieces/";
+        String file = prefix + name + ".png";
         try {
-            orig = ImageIO.read(ImageServer.class.getResource(name + ".png"));
+            orig = ImageIO.read(ImageServer.class.getResource(file));
             image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = image.createGraphics();
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
@@ -93,11 +95,11 @@ public class ImageServer {
             g.drawImage(orig, 0, 0, size, size, null);
             g.dispose();
         } catch (java.io.IOException e) {
-            String message = "Failed to read image: " + name;
+            String message = "Failed to read image: " + file;
             System.out.println(message);
             System.exit(1);
         } catch (IllegalArgumentException e) {
-            String message = "Failed to find image: " + name;
+            String message = "Failed to find image: " + file;
             System.out.println(message);
             System.exit(1);
         }

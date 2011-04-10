@@ -29,10 +29,15 @@
 
   <target name="jar" depends="compile"
 	  description="Generate the jarfile distributable.">
-    <jar destfile="${jar.file}" basedir="${build.classes.dir}">
+    <jar destfile="${jar.file}">
+      <fileset dir="${build.classes.dir}"/>
+      <fileset dir="${src.dir}" includes="**/*.java"/>
+      <fileset file="UNLICENSE"/>
+      <fileset file="build.xml"/>
+      <fileset file="HACKING"/>
+      <fileset file="AUTHORS"/>
       <manifest>
-        <attribute name="Main-Class"
-		   value="com.nullprogram.chess.Chess"/>
+        <attribute name="Main-Class" value="com.nullprogram.chess.Chess"/>
       </manifest>
     </jar>
   </target>

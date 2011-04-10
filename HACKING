@@ -1,6 +1,27 @@
 To build, all you need is a Java 6 compiler and Ant, properly
 configured to find the Java compiler.
 
+If you got this source code from the .jar itself, just make a src/
+directory, stick the com/ directory into it, and delete all the .class
+files. Then you're ready for hacking.
+
+  unzip Chess.jar
+  mkdir src
+  mv com src
+  find src -name "*.class" -exec rm {} \;
+
+  # Tidy up (optional)
+  rm -rf META-INF
+  ant clean
+
+  # Source control (optional)
+  git init
+  git add .
+  git commit -m "Initial commit from .jar."
+
+  # Test run
+  ant run
+
 If you want to use the Checkstyle target "check", you'll need to drop
 a recent version of the Checkstyle -all.jar in your Ant's lib/
 directory.

@@ -37,7 +37,7 @@ formatted by the "format" target before it gets checked in. A trick
 you can use for the latter if you're nervous about formatting
 uncommitted code: first commit your code, format, then commit --amend.
 
-git commit -am "Added blah blah."
-ant format
-git diff   # check it
-git commit -a --amend
+  git commit -am "Added blah blah."
+  ant format
+  git diff   # check it
+  git commit -a --amend

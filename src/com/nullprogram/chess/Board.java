@@ -1,5 +1,6 @@
 package com.nullprogram.chess;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import com.nullprogram.chess.pieces.King;
@@ -26,7 +27,7 @@ public abstract class Board {
     private MoveList moves = new MoveList(this);
 
     /** BoardListeners to be informed of board changes. */
-    private ArrayList<BoardListener> listeners = new ArrayList<BoardListener>();
+    private List<BoardListener> listeners = new ArrayList<BoardListener>();
 
     /**
      * Create a new Piece array, effectively clearing the board.

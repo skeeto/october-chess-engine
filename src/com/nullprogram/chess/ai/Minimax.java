@@ -1,5 +1,6 @@
 package com.nullprogram.chess.ai;
 
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Properties;
@@ -60,7 +61,7 @@ public class Minimax implements Player, Runnable {
     private Thread[] threads;
 
     /** Values of each piece. */
-    private HashMap<Class, Double> values;
+    private Map<Class, Double> values;
 
     /** Divisor for milliseconds. */
     static final double MILLI = 1000.0;

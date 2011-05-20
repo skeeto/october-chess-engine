@@ -1,5 +1,6 @@
 package com.nullprogram.chess;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import com.nullprogram.chess.gui.ChessFrame;
@@ -34,7 +35,7 @@ public class Game implements Runnable {
     private Piece.Side winner;
 
     /** List of event listeners. */
-    private ArrayList<GameListener> listeners;
+    private List<GameListener> listeners;
 
     /**
      * Hidden constructor.

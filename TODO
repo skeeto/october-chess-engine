@@ -1,12 +1,17 @@
 * features
-  * multiplayer
-
-* gui
-  * new game dialog
+  * network multiplayer
+  * difficulty selection
+  * pondering
+    * progressive searching
+    * time constrained instead of depth constrained
+  * move record log
+  * engine as analysis tool
+  * board editor
   * save/load game
 
 * rules
   * 50-turn stalemate or similar
+  * proper pawn promotion
 
 * AI
   * GNU Chess, Crafty, etc. interfacing

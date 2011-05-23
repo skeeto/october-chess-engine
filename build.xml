@@ -36,6 +36,7 @@
       <fileset file="build.xml"/>
       <fileset file="HACKING"/>
       <fileset file="AUTHORS"/>
+      <fileset file="README"/>
       <manifest>
         <attribute name="Main-Class" value="com.nullprogram.chess.Chess"/>
       </manifest>

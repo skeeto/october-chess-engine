@@ -181,6 +181,12 @@ public class BoardPanel extends JComponent
         int h = board.getHeight();
         int w = board.getWidth();
         g.transform(getTransform());
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                           RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                           RenderingHints.VALUE_STROKE_PURE);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING,
+                           RenderingHints.VALUE_RENDER_QUALITY);
 
         /* Temp AffineTransform for the method */
         AffineTransform at = new AffineTransform();

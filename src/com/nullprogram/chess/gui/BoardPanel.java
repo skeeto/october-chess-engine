@@ -1,29 +1,30 @@
 package com.nullprogram.chess.gui;
 
-import java.awt.BasicStroke;
-import java.awt.Stroke;
 import java.awt.Shape;
-import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Stroke;
 import java.awt.Graphics;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.BasicStroke;
+import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.AffineTransform;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
 import com.nullprogram.chess.Game;
+import com.nullprogram.chess.Move;
 import com.nullprogram.chess.Board;
-import com.nullprogram.chess.BoardListener;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Player;
-import com.nullprogram.chess.Move;
 import com.nullprogram.chess.MoveList;
 import com.nullprogram.chess.Position;
+import com.nullprogram.chess.BoardListener;
 
 /**
  * Displays a board and exposes local players.

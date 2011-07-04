@@ -8,8 +8,6 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
-import com.nullprogram.chess.LoggerUtils;
-
 /**
  * Serves cached images of requsted size.
  *
@@ -18,7 +16,7 @@ import com.nullprogram.chess.LoggerUtils;
  */
 public class ImageServer {
     /** This class's Logger. */
-    private static final Logger LOG = LoggerUtils.getLogger();
+    private static final Logger LOG = Logger.getLogger("pieces.ImageServer");
 
     /** The image cache. */
     private static Map<String, BufferedImage> cache

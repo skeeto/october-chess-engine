@@ -18,7 +18,7 @@ import com.nullprogram.chess.ai.Minimax;
 public final class ChessApplet extends JApplet implements GameListener {
 
     /** This class's Logger. */
-    private static final Logger LOG = LoggerUtils.getLogger();
+    private static final Logger LOG = Logger.getLogger("ChessApplet");
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 34863129470926196L;

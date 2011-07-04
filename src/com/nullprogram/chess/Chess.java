@@ -11,7 +11,7 @@ import com.nullprogram.chess.gui.ChessFrame;
  */
 public final class Chess {
     /** This class's Logger. */
-    private static final Logger LOG = LoggerUtils.getLogger();
+    private static final Logger LOG = Logger.getLogger("Chess");
 
     /**
      * Hidden constructor.

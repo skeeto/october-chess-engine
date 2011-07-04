@@ -19,7 +19,6 @@ import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.Move;
 import com.nullprogram.chess.MoveList;
-import com.nullprogram.chess.LoggerUtils;
 
 import com.nullprogram.chess.pieces.Pawn;
 import com.nullprogram.chess.pieces.Rook;
@@ -41,7 +40,7 @@ import com.nullprogram.chess.gui.StatusBar;
  */
 public class Minimax implements Player {
     /** This class's Logger. */
-    private static final Logger LOG = LoggerUtils.getLogger();
+    private static final Logger LOG = Logger.getLogger("ai.Minimax");
 
     /** The number of threads to use. */
     private static final int NTHREADS

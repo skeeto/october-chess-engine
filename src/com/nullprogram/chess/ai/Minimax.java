@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.Collections;
 import java.util.Properties;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
+
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
@@ -31,7 +37,10 @@ import com.nullprogram.chess.gui.StatusBar;
  * moves. The board is currently only evaluated only by the pieces
  * present, not their positions.
  */
-public class Minimax implements Player, Runnable {
+public class Minimax implements Player {
+    /** The number of threads to use. */
+    private static final int NTHREADS
+        = Runtime.getRuntime().availableProcessors();
 
     /** Board the AI will be playing on. */
     private Board board;
@@ -42,14 +51,8 @@ public class Minimax implements Player, Runnable {
     /** Side this AI plays. */
     private Piece.Side side;
 
-    /** List of moves to be evaluated. */
-    private MoveList moves;
-
-    /** The current best known move. */
-    private Move selected;
-
-    /** Best move score, corresponding to the selected move. */
-    private double bestScore;
+    /** Best move, the selected move. */
+    private volatile Move bestMove;
 
     /** Used to display AI's progress. */
     private StatusBar progress;
@@ -57,8 +60,8 @@ public class Minimax implements Player, Runnable {
     /** Time AI turns. */
     private long startTime;
 
-    /** The search threads. */
-    private Thread[] threads;
+    /** Thread manager. */
+    private final Executor executor = Executors.newFixedThreadPool(NTHREADS);
 
     /** Values of each piece. */
     private Map<Class, Double> values;
@@ -172,7 +175,7 @@ public class Minimax implements Player, Runnable {
         side = currentSide;
 
         /* Gather up every move. */
-        moves = board.allMoves(side, true);
+        MoveList moves = board.allMoves(side, true);
         Collections.shuffle(moves);
 
         /* Initialize the shared structures. */
@@ -182,67 +185,49 @@ public class Minimax implements Player, Runnable {
             progress.setStatus("Thinking ...");
         }
         startTime = System.currentTimeMillis();
-        selected = null;
-        bestScore = Double.NEGATIVE_INFINITY;
 
         /* Spin off threads to evaluate each move's tree. */
-        int threadCount = Runtime.getRuntime().availableProcessors();
-        System.out.println("AI using " + threadCount + " threads.");
-        threads = new Thread[threadCount];
-        for (int i = 0; i < threadCount; i++) {
-            threads[i] = new Thread(this);
-            threads[i].start();
+        System.out.println("AI using " + NTHREADS + " threads.");
+        CompletionService<Move> service
+            = new ExecutorCompletionService<Move>(executor);
+        int submitted = 0;
+        bestMove = null;
+        for (final Move move : moves) {
+            final Board callboard = board.copy();
+            service.submit(new Callable<Move>() {
+                    public Move call() {
+                        callboard.move(move);
+                        double beta = Double.POSITIVE_INFINITY;
+                        if (bestMove != null) {
+                            beta = -bestMove.getScore();
+                        }
+                        double v = search(callboard, maxDepth - 1,
+                                          Piece.opposite(side),
+                                          Double.NEGATIVE_INFINITY, beta);
+                        move.setScore(-v);
+                        return move;
+                    }
+                });
+            submitted++;
         }
-        for (Thread t : threads) {
+
+        /* Gather up results and pick the best move. */
+        for (int i = 0; i < submitted; i++) {
             try {
-                t.join();
-            } catch (InterruptedException e) {
-                System.out.println(e);
+                Move m = service.take().get();
+                if (bestMove == null || m.getScore() > bestMove.getScore()) {
+                    bestMove = m;
+                }
+            } catch (Exception e) {
+                /* This move was unevaluated. */
+                System.out.println("warning: move went unevaluated");
             }
+            progress.setValue(i);
         }
+
         long time = (System.currentTimeMillis() - startTime);
         System.out.println("Took " + (time / MILLI) + " seconds.");
-        game.move(selected);
-    }
-
-    /**
-     * Hand off another move in the calling thread.
-     *
-     * @return an unevaluated move
-     */
-    public final synchronized Move getNextMove() {
-        if (moves.isEmpty()) {
-            return null;
-        }
-        if (progress != null) {
-            progress.setValue(progress.getValue() + 1);
-        }
-        return moves.pop();
-    }
-
-    /**
-     * Thread calls in here to report its results.
-     *
-     * @param move  the move being reported
-     * @param score the score of the move
-     */
-    public final synchronized void report(final Move move, final double score) {
-        if (selected == null || score > bestScore) {
-            bestScore = score;
-            selected = move;
-        }
-    }
-
-    /** {@inheritDoc} */
-    public final void run() {
-        Board b = board.copy();
-        for (Move move = getNextMove(); move != null; move = getNextMove()) {
-            b.move(move);
-            double v = search(b, maxDepth - 1, Piece.opposite(side),
-                              Double.NEGATIVE_INFINITY, -bestScore);
-            b.undo();
-            report(move, -v);
-        }
+        game.move(bestMove);
     }
 
     /**

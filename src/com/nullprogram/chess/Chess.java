@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import java.util.logging.Logger;
+
 import javax.swing.UIManager;
 
 import com.nullprogram.chess.gui.ChessFrame;
@@ -8,6 +10,8 @@ import com.nullprogram.chess.gui.ChessFrame;
  * Main class for the Chess game application.
  */
 public final class Chess {
+    /** This class's Logger. */
+    private static final Logger LOG = LoggerUtils.getLogger();
 
     /**
      * Hidden constructor.
@@ -25,9 +29,8 @@ public final class Chess {
             String lnf = UIManager.getSystemLookAndFeelClassName();
             UIManager.setLookAndFeel(lnf);
         } catch (Exception e) {
-            System.out.println("Failed to set 'Look and Feel'.");
+            LOG.warning("Failed to set 'Look and Feel'");
         }
-
         ChessFrame frame = new ChessFrame();
     }
 }

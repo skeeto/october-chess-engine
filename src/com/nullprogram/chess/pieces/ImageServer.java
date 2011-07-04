@@ -2,10 +2,13 @@ package com.nullprogram.chess.pieces;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+
+import com.nullprogram.chess.LoggerUtils;
 
 /**
  * Serves cached images of requsted size.
@@ -14,6 +17,8 @@ import javax.imageio.ImageIO;
  * every time the display needs an image.
  */
 public class ImageServer {
+    /** This class's Logger. */
+    private static final Logger LOG = LoggerUtils.getLogger();
 
     /** The image cache. */
     private static Map<String, BufferedImage> cache
@@ -43,12 +48,12 @@ public class ImageServer {
             cache.put(name, i);
             return i;
         } catch (java.io.IOException e) {
-            String message = "Failed to read image: " + file;
-            System.out.println(message);
+            String message = "Failed to read image: " + file + ": " + e;
+            LOG.severe(message);
             System.exit(1);
         } catch (IllegalArgumentException e) {
-            String message = "Failed to find image: " + file;
-            System.out.println(message);
+            String message = "Failed to find image: " + file + ": " + e;
+            LOG.severe(message);
             System.exit(1);
         }
         return null;

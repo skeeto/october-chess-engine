@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
@@ -18,6 +19,7 @@ import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.Move;
 import com.nullprogram.chess.MoveList;
+import com.nullprogram.chess.LoggerUtils;
 
 import com.nullprogram.chess.pieces.Pawn;
 import com.nullprogram.chess.pieces.Rook;
@@ -38,6 +40,9 @@ import com.nullprogram.chess.gui.StatusBar;
  * present, not their positions.
  */
 public class Minimax implements Player {
+    /** This class's Logger. */
+    private static final Logger LOG = LoggerUtils.getLogger();
+
     /** The number of threads to use. */
     private static final int NTHREADS
         = Runtime.getRuntime().availableProcessors();
@@ -157,8 +162,7 @@ public class Minimax implements Player {
         try {
             props.load(Minimax.class.getResourceAsStream(filename));
         } catch (java.io.IOException e) {
-            System.out.println(e);
-            /* Do something else here sometime. */
+            LOG.warning("Failed to load AI config: " + name + ": " + e);
         }
         return props;
     }
@@ -187,7 +191,7 @@ public class Minimax implements Player {
         startTime = System.currentTimeMillis();
 
         /* Spin off threads to evaluate each move's tree. */
-        System.out.println("AI using " + NTHREADS + " threads.");
+        LOG.info("AI using " + NTHREADS + " threads.");
         CompletionService<Move> service
             = new ExecutorCompletionService<Move>(executor);
         int submitted = 0;
@@ -220,7 +224,7 @@ public class Minimax implements Player {
                 }
             } catch (Exception e) {
                 /* This move was unevaluated. */
-                System.out.println("warning: move went unevaluated");
+                LOG.warning("move went unevaluated");
             }
             if (progress != null) {
                 progress.setValue(i);
@@ -228,7 +232,7 @@ public class Minimax implements Player {
         }
 
         long time = (System.currentTimeMillis() - startTime);
-        System.out.println("Took " + (time / MILLI) + " seconds.");
+        LOG.info("Took " + (time / MILLI) + " seconds.");
         game.move(bestMove);
     }
 

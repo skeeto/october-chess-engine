@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import java.util.logging.Logger;
+
 import javax.swing.UIManager;
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
@@ -15,6 +17,9 @@ import com.nullprogram.chess.ai.Minimax;
  */
 public final class ChessApplet extends JApplet implements GameListener {
 
+    /** This class's Logger. */
+    private static final Logger LOG = LoggerUtils.getLogger();
+
     /** Version for object serialization. */
     private static final long serialVersionUID = 34863129470926196L;
 
@@ -24,7 +29,7 @@ public final class ChessApplet extends JApplet implements GameListener {
             String lnf = UIManager.getSystemLookAndFeelClassName();
             UIManager.setLookAndFeel(lnf);
         } catch (Exception e) {
-            System.out.println("Failed to set 'Look and Feel'.");
+            LOG.warning("Failed to set 'Look and Feel'.");
         }
 
         StandardBoard board = new StandardBoard();

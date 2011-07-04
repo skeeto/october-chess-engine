@@ -1,5 +1,6 @@
 package com.nullprogram.chess.gui;
 
+import java.util.logging.Logger;
 import java.awt.Shape;
 import java.awt.Color;
 import java.awt.Stroke;
@@ -26,6 +27,7 @@ import com.nullprogram.chess.Player;
 import com.nullprogram.chess.MoveList;
 import com.nullprogram.chess.Position;
 import com.nullprogram.chess.BoardListener;
+import com.nullprogram.chess.LoggerUtils;
 
 /**
  * Displays a board and exposes local players.
@@ -35,6 +37,8 @@ import com.nullprogram.chess.BoardListener;
  */
 public class BoardPanel extends JComponent
     implements MouseListener, Player, BoardListener {
+    /** This class's Logger. */
+    private static final Logger LOG = LoggerUtils.getLogger();
 
     /** Size of a tile in working coordinates. */
     private static final double TILE_SIZE = 200.0;

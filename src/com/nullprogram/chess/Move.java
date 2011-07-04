@@ -29,6 +29,9 @@ public class Move {
     /** Side of the new piece to make. */
     private Piece.Side replacementSide;
 
+    /** Score for this move. */
+    private double score;
+
     /**
      * Create a new move to move a piece from one position to another.
      *
@@ -149,5 +152,23 @@ public class Move {
     /** {@inheritDoc} */
     public final String toString() {
         return "" + origin + destination;
+    }
+
+    /**
+     * Return this move's set score (AI purposes).
+     *
+     * @return this move's score
+     */
+    public final double getScore() {
+        return score;
+    }
+
+    /**
+     * Set this move's score (AI purposes).
+     *
+     * @param newscore  this move's score
+     */
+    public final void setScore(final double newscore) {
+        this.score = newscore;
     }
 }

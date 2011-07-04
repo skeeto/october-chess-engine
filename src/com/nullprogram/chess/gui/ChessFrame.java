@@ -153,7 +153,7 @@ public class ChessFrame extends JFrame implements ComponentListener {
             frame = parent;
         }
 
-        /** {@inheritDoc} */
+        @Override
         public final void actionPerformed(final ActionEvent e) {
             if ("New Game".equals(e.getActionCommand())) {
                 frame.newGame();

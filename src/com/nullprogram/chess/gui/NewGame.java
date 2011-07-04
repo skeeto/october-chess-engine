@@ -93,7 +93,7 @@ public class NewGame extends JDialog implements ActionListener {
         pack();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void actionPerformed(final ActionEvent e) {
         if ("OK".equals(e.getActionCommand())) {
             /* Lock in selection. */

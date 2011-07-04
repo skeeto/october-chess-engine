@@ -48,7 +48,7 @@ public class Config extends HashMap<String, Double> {
         return props;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final String toString() {
         String str = "";
         for (String prop : PLIST) {

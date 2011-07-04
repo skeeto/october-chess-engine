@@ -22,7 +22,7 @@ public class Rook extends Piece {
         super(side, "Rook");
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final MoveList getMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         list = getMoves(this, list);

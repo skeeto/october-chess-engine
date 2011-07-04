@@ -86,12 +86,12 @@ public class StandardBoard extends Board {
         setPiece(KING, BLACK_ROW, new King(Piece.Side.BLACK));
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final Boolean checkmate(final Piece.Side side) {
         return check(side) && (moveCount(side) == 0);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final Boolean stalemate(final Piece.Side side) {
         return (!check(side)) && (moveCount(side) == 0);
     }
@@ -115,7 +115,7 @@ public class StandardBoard extends Board {
         return count;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final Boolean check(final Piece.Side side) {
         Piece.Side attacker;
         if (side == Piece.Side.WHITE) {

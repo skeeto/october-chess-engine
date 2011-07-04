@@ -163,12 +163,12 @@ public class Minimax implements Player {
         return props;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void setGame(final Game currentGame) {
         game = currentGame;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void setActive(final Board curBoard,
                                 final Piece.Side currentSide) {
         board = curBoard;
@@ -338,7 +338,7 @@ public class Minimax implements Player {
                - b.allMoves(Piece.opposite(side), false).size();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void setBoard(final Board b) {
         board = b;
     }

@@ -23,7 +23,7 @@ public class Pawn extends Piece {
         super(side, "Pawn");
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final MoveList getMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         Position pos = getPosition();

@@ -149,7 +149,7 @@ public class Move {
         return replacementSide;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final String toString() {
         return "" + origin + destination;
     }

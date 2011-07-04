@@ -56,7 +56,7 @@ public class StatusBar extends JPanel {
         setMaximumSize(null);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final Dimension getPreferredSize() {
         Graphics g = getGraphics();
         if (g != null) {
@@ -67,12 +67,11 @@ public class StatusBar extends JPanel {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final Dimension getMinimumSize() {
         return getPreferredSize();
     }
 
-    /** {@inheritDoc} */
     @Override
     public final Dimension getMaximumSize() {
         return new Dimension(Integer.MAX_VALUE,
@@ -126,7 +125,7 @@ public class StatusBar extends JPanel {
         repaint();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void paintComponent(final Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;

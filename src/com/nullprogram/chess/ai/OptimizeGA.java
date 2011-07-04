@@ -141,7 +141,7 @@ public class OptimizeGA implements GameListener {
         game.begin();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void gameEvent(final Game game) {
         boolean doScore = false;
         int adir = 0;

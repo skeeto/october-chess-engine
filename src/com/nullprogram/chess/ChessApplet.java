@@ -18,7 +18,7 @@ public final class ChessApplet extends JApplet implements GameListener {
     /** Version for object serialization. */
     private static final long serialVersionUID = 34863129470926196L;
 
-    /** {@inheritDoc} */
+    @Override
     public void init() {
         try {
             String lnf = UIManager.getSystemLookAndFeelClassName();
@@ -35,7 +35,7 @@ public final class ChessApplet extends JApplet implements GameListener {
         game.begin();
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void gameEvent(final Game game) {
         if (game.isDone()) {
             String message;

@@ -20,7 +20,7 @@ public class Queen extends Piece {
         super(side, "Queen");
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final MoveList getMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         /* Take advantage of the Bishop and Rook implementations. */

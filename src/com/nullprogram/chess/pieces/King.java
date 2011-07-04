@@ -28,7 +28,7 @@ public class King extends Piece {
         super(side, "King");
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final MoveList getMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         Position pos = getPosition();

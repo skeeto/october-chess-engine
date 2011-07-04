@@ -137,7 +137,7 @@ public class BoardPanel extends JComponent
                                      MIN_SIZE * board.getHeight()));
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final Dimension getPreferredSize() {
         return new Dimension(PREF_SIZE * board.getWidth(),
                              PREF_SIZE * board.getHeight());
@@ -265,7 +265,7 @@ public class BoardPanel extends JComponent
         g.draw(at.createTransformedShape(HIGHLIGHT));
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void mouseReleased(final MouseEvent e) {
         switch (e.getButton()) {
         case MouseEvent.BUTTON1:
@@ -339,7 +339,7 @@ public class BoardPanel extends JComponent
         return new Position(x, y);
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void setActive(final Board turnBoard,
                                 final Piece.Side currentSide) {
         board = turnBoard;
@@ -357,7 +357,7 @@ public class BoardPanel extends JComponent
         game = currentGame;
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final void boardChange() {
         repaint();
     }
@@ -371,22 +371,22 @@ public class BoardPanel extends JComponent
         return board.getWidth() / (1.0 * board.getHeight());
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void mouseExited(final MouseEvent e) {
         /* Do nothing */
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void mouseEntered(final MouseEvent e) {
         /* Do nothing */
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void mouseClicked(final MouseEvent e) {
         /* Do nothing */
     }
 
-    /** {@inheritDoc} */
+    @Override
     public void mousePressed(final MouseEvent e) {
         /* Do nothing */
     }

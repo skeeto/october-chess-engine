@@ -20,7 +20,7 @@ public class Archbishop extends Piece {
         super(side, "Archbishop");
     }
 
-    /** {@inheritDoc} */
+    @Override
     public final MoveList getMoves(final boolean check) {
         MoveList list = new MoveList(getBoard(), check);
         /* Take advantage of the Bishop and Knight implementations */

@@ -222,7 +222,9 @@ public class Minimax implements Player {
                 /* This move was unevaluated. */
                 System.out.println("warning: move went unevaluated");
             }
-            progress.setValue(i);
+            if (progress != null) {
+                progress.setValue(i);
+            }
         }
 
         long time = (System.currentTimeMillis() - startTime);

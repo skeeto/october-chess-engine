@@ -91,7 +91,7 @@ public class BoardPanel extends JComponent
     static final int MIN_SIZE = 25;
 
     /** Preferred size of a tile, in pixels. */
-    static final int PREF_SIZE = 50;
+    static final int PREF_SIZE = 75;
 
     /** The interaction modes. */
     private enum Mode {

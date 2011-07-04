@@ -362,6 +362,15 @@ public class BoardPanel extends JComponent
         repaint();
     }
 
+    /**
+     * Return the desired aspect ratio of the board.
+     *
+     * @return desired aspect ratio
+     */
+    public final double getRatio() {
+        return board.getWidth() / (1.0 * board.getHeight());
+    }
+
     /** {@inheritDoc} */
     public void mouseExited(final MouseEvent e) {
         /* Do nothing */

@@ -1,7 +1,9 @@
 package com.nullprogram.chess.gui;
 
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -19,7 +21,7 @@ import com.nullprogram.chess.boards.EmptyBoard;
 /**
  * The JFrame that contains all GUI elements.
  */
-public class ChessFrame extends JFrame {
+public class ChessFrame extends JFrame implements ComponentListener {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
@@ -41,7 +43,7 @@ public class ChessFrame extends JFrame {
      */
     public ChessFrame() {
         super("Chess");
-        setResizable(false);
+        setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -56,6 +58,7 @@ public class ChessFrame extends JFrame {
         add(progress);
         pack();
 
+        addComponentListener(this);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -201,5 +204,32 @@ public class ChessFrame extends JFrame {
             action.setEnabled(mode);
             gameMode = mode;
         }
+    }
+
+    @Override
+    public final void componentResized(final ComponentEvent e) {
+        if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0) {
+            /* If the frame is maxmized, the battle has been lost. */
+            return;
+        }
+        double ratio = display.getRatio();
+        double barh = progress.getPreferredSize().getHeight();
+        if (getWidth() * ratio < (getHeight() - barh)) {
+            setSize((int) ((getHeight() - barh) * ratio), getHeight());
+        } else if (getWidth() * ratio > (getHeight() - barh)) {
+            setSize(getWidth(), (int) (getWidth() / ratio + barh));
+        }
+    }
+
+    @Override
+    public void componentHidden(final ComponentEvent e) {
+    }
+
+    @Override
+    public void componentMoved(final ComponentEvent e) {
+    }
+
+    @Override
+    public void componentShown(final ComponentEvent e) {
     }
 }

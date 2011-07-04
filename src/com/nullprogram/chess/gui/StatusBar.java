@@ -53,6 +53,7 @@ public class StatusBar extends JPanel {
         setBackground(BACKGROUND);
         setPreferredSize(null);
         setMinimumSize(null);
+        setMaximumSize(null);
     }
 
     /** {@inheritDoc} */
@@ -69,6 +70,13 @@ public class StatusBar extends JPanel {
     /** {@inheritDoc} */
     public final Dimension getMinimumSize() {
         return getPreferredSize();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public final Dimension getMaximumSize() {
+        return new Dimension(Integer.MAX_VALUE,
+                             (int) getPreferredSize().getHeight());
     }
 
     /**

@@ -11,6 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -50,9 +51,11 @@ public class BoardPanel extends JComponent
 
     /** Shape for drawing the highlights. */
     private static final Shape HIGHLIGHT
-        = new Rectangle2D.Double(HIGHLIGHT_PADDING, HIGHLIGHT_PADDING,
-                                 TILE_SIZE - HIGHLIGHT_PADDING * 2,
-                                 TILE_SIZE - HIGHLIGHT_PADDING * 2);
+        = new RoundRectangle2D.Double(HIGHLIGHT_PADDING, HIGHLIGHT_PADDING,
+                                      TILE_SIZE - HIGHLIGHT_PADDING * 2,
+                                      TILE_SIZE - HIGHLIGHT_PADDING * 2,
+                                      HIGHLIGHT_PADDING * 4,
+                                      HIGHLIGHT_PADDING * 4);
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;

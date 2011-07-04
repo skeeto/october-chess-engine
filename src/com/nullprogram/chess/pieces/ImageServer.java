@@ -22,7 +22,7 @@ public class ImageServer {
 
     /** The image cache. */
     private static Map<String, BufferedImage> cache
-        = new HashMap<String, BufferedImage>();
+    = new HashMap<String, BufferedImage>();
 
     /**
      * Hidden constructor.

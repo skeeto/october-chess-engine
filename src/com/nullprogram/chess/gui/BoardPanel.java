@@ -45,7 +45,7 @@ public class BoardPanel extends JComponent
 
     /** Shape provided for drawing background tiles. */
     private static final Shape TILE
-        = new Rectangle2D.Double(0, 0, TILE_SIZE, TILE_SIZE);
+    = new Rectangle2D.Double(0, 0, TILE_SIZE, TILE_SIZE);
 
     /** Padding between the highlight and tile border. */
     static final int HIGHLIGHT_PADDING = 15;
@@ -55,11 +55,11 @@ public class BoardPanel extends JComponent
 
     /** Shape for drawing the highlights. */
     private static final Shape HIGHLIGHT
-        = new RoundRectangle2D.Double(HIGHLIGHT_PADDING, HIGHLIGHT_PADDING,
-                                      TILE_SIZE - HIGHLIGHT_PADDING * 2,
-                                      TILE_SIZE - HIGHLIGHT_PADDING * 2,
-                                      HIGHLIGHT_PADDING * 4,
-                                      HIGHLIGHT_PADDING * 4);
+    = new RoundRectangle2D.Double(HIGHLIGHT_PADDING, HIGHLIGHT_PADDING,
+                                  TILE_SIZE - HIGHLIGHT_PADDING * 2,
+                                  TILE_SIZE - HIGHLIGHT_PADDING * 2,
+                                  HIGHLIGHT_PADDING * 4,
+                                  HIGHLIGHT_PADDING * 4);
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;

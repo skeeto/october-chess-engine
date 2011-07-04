@@ -45,7 +45,7 @@ public class Minimax implements Player {
 
     /** The number of threads to use. */
     private static final int NTHREADS
-        = Runtime.getRuntime().availableProcessors();
+    = Runtime.getRuntime().availableProcessors();
 
     /** Board the AI will be playing on. */
     private Board board;
@@ -193,25 +193,25 @@ public class Minimax implements Player {
         /* Spin off threads to evaluate each move's tree. */
         LOG.info("AI using " + NTHREADS + " threads.");
         CompletionService<Move> service
-            = new ExecutorCompletionService<Move>(executor);
+        = new ExecutorCompletionService<Move>(executor);
         int submitted = 0;
         bestMove = null;
         for (final Move move : moves) {
             final Board callboard = board.copy();
             service.submit(new Callable<Move>() {
-                    public Move call() {
-                        callboard.move(move);
-                        double beta = Double.POSITIVE_INFINITY;
-                        if (bestMove != null) {
-                            beta = -bestMove.getScore();
-                        }
-                        double v = search(callboard, maxDepth - 1,
-                                          Piece.opposite(side),
-                                          Double.NEGATIVE_INFINITY, beta);
-                        move.setScore(-v);
-                        return move;
+                public Move call() {
+                    callboard.move(move);
+                    double beta = Double.POSITIVE_INFINITY;
+                    if (bestMove != null) {
+                        beta = -bestMove.getScore();
                     }
-                });
+                    double v = search(callboard, maxDepth - 1,
+                                      Piece.opposite(side),
+                                      Double.NEGATIVE_INFINITY, beta);
+                    move.setScore(-v);
+                    return move;
+                }
+            });
             submitted++;
         }
 

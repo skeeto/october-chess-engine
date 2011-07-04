@@ -1,13 +1,20 @@
 package com.nullprogram.chess.gui;
 
+import java.awt.BasicStroke;
+import java.awt.Stroke;
+import java.awt.Shape;
+import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.AffineTransform;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-import javax.swing.JPanel;
+import java.awt.image.BufferedImage;
+
+import javax.swing.JComponent;
 
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
@@ -24,14 +31,36 @@ import com.nullprogram.chess.Position;
  * This swing element displays a game board and can also behave as a
  * player as needed.
  */
-public class BoardPanel extends JPanel
+public class BoardPanel extends JComponent
     implements MouseListener, Player, BoardListener {
+
+    /** Size of a tile in working coordinates. */
+    private static final double TILE_SIZE = 200.0;
+
+    /** Shape provided for drawing background tiles. */
+    private static final Shape TILE
+        = new Rectangle2D.Double(0, 0, TILE_SIZE, TILE_SIZE);
+
+    /** Padding between the highlight and tile border. */
+    static final int HIGHLIGHT_PADDING = 15;
+
+    /** Thickness of highlighting. */
+    static final Stroke HIGHLIGHT_STROKE = new BasicStroke(12);
+
+    /** Shape for drawing the highlights. */
+    private static final Shape HIGHLIGHT
+        = new Rectangle2D.Double(HIGHLIGHT_PADDING, HIGHLIGHT_PADDING,
+                                 TILE_SIZE - HIGHLIGHT_PADDING * 2,
+                                 TILE_SIZE - HIGHLIGHT_PADDING * 2);
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
 
     /** The board being displayed. */
     private Board board;
+
+    /** Indicate flipped status. */
+    private boolean flipped = true;
 
     /** The game engine used when the board is behaving as a player. */
     private Game game;
@@ -56,12 +85,6 @@ public class BoardPanel extends JPanel
 
     /** Last move highlight color. */
     static final Color LAST = new Color(0x00, 0x7F, 0xFF);
-
-    /** Padding between the highlight and tile border. */
-    static final int PADDING = 2;
-
-    /** Thickness of highlighting. */
-    static final int THICKNESS = 3;
 
     /** Minimum size of a tile, in pixels. */
     static final int MIN_SIZE = 25;
@@ -117,19 +140,6 @@ public class BoardPanel extends JPanel
     }
 
     /**
-     * Get the current pixel size of a tile.
-     *
-     * @return the current size in pixel of one tile.
-     */
-    private int getTileSize() {
-        int h = board.getHeight();
-        int w = board.getWidth();
-        int sizeX = getWidth() / w;
-        int sizeY = getHeight() / h;
-        return Math.min(sizeX, sizeY);
-    }
-
-    /**
      * Change the board to be displayed.
      *
      * @param b the new board
@@ -150,15 +160,30 @@ public class BoardPanel extends JPanel
     }
 
     /**
+     * Return the transform between working space and drawing space.
+     *
+     * @return display transform
+     */
+    public final AffineTransform getTransform() {
+        AffineTransform at = new AffineTransform();
+        at.scale(getWidth() / (TILE_SIZE * board.getWidth()),
+                 getHeight() / (TILE_SIZE * board.getHeight()));
+        return at;
+    }
+
+    /**
      * Standard painting method.
      *
-     * @param g the drawing surface
+     * @param graphics the drawing surface
      */
-    public final void paintComponent(final Graphics g) {
-        super.paintComponent(g);
+    public final void paintComponent(final Graphics graphics) {
+        Graphics2D g = (Graphics2D) graphics;
         int h = board.getHeight();
         int w = board.getWidth();
-        int size = getTileSize();
+        g.transform(getTransform());
+
+        /* Temp AffineTransform for the method */
+        AffineTransform at = new AffineTransform();
 
         /* Draw the background */
         for (int y = 0; y < h; y++) {
@@ -168,7 +193,8 @@ public class BoardPanel extends JPanel
                 } else {
                     g.setColor(DARK);
                 }
-                g.fillRect(x * size, y * size, size, size);
+                at.setToTranslation(x * TILE_SIZE, y * TILE_SIZE);
+                g.fill(at.createTransformedShape(TILE));
             }
         }
 
@@ -177,8 +203,13 @@ public class BoardPanel extends JPanel
             for (int x = 0; x < w; x++) {
                 Piece p = board.getPiece(new Position(x, y));
                 if (p != null) {
-                    BufferedImage tile = p.getImage(size);
-                    g.drawImage(tile, x * size, (h - y - 1) * size, this);
+                    BufferedImage tile = p.getImage();
+                    int yy = y;
+                    if (flipped) {
+                        yy = board.getHeight() - 1 - y;
+                    }
+                    at.setToTranslation(x * TILE_SIZE, yy * TILE_SIZE);
+                    g.drawImage(tile, at, null);
                 }
             }
         }
@@ -212,14 +243,16 @@ public class BoardPanel extends JPanel
      * @param g   the drawing surface
      * @param pos position to highlight
      */
-    private void highlight(final Graphics g, final Position pos) {
-        int size = getTileSize();
-        int x = pos.getX() * size;
-        int y = (board.getHeight() - 1 - pos.getY()) * size;
-        for (int i = PADDING; i < THICKNESS + PADDING; i++) {
-            g.drawRect(x + i, y + i,
-                       size - 1 - i * 2, size - 1 - i * 2);
+    private void highlight(final Graphics2D g, final Position pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        if (flipped) {
+            y = board.getHeight() - 1 - y;
         }
+        g.setStroke(HIGHLIGHT_STROKE);
+        AffineTransform at = new AffineTransform();
+        at.translate(x * TILE_SIZE, y * TILE_SIZE);
+        g.draw(at.createTransformedShape(HIGHLIGHT));
     }
 
     /** {@inheritDoc} */
@@ -280,10 +313,20 @@ public class BoardPanel extends JPanel
      * @param p the point
      * @return  the position on the board
      */
-    private Position getPixelPosition(final Point p) {
-        int size = getTileSize();
-        return new Position((int) (p.getX()) / size,
-                            board.getHeight() - 1 - (int) (p.getY()) / size);
+    private Position getPixelPosition(final Point2D p) {
+        Point2D pout = null;
+        try {
+            pout = getTransform().inverseTransform(p, null);
+        } catch (java.awt.geom.NoninvertibleTransformException t) {
+            /* This will never happen. */
+            return null;
+        }
+        int x = (int) (pout.getX() / TILE_SIZE);
+        int y = (int) (pout.getY() / TILE_SIZE);
+        if (flipped) {
+            y = board.getHeight() - 1 - y;
+        }
+        return new Position(x, y);
     }
 
     /** {@inheritDoc} */

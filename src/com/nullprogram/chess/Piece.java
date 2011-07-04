@@ -146,11 +146,10 @@ public abstract class Piece {
      *
      * This method currently uses reflection.
      *
-     * @param size the square size of the image to return
      * @return     image for this piece
      */
-    public final BufferedImage getImage(final int size) {
-        return ImageServer.getTile(name + "-" + side, size);
+    public final BufferedImage getImage() {
+        return ImageServer.getTile(name + "-" + side);
     }
 
     /**

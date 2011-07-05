@@ -9,13 +9,13 @@ package com.nullprogram.chess;
  * If destination position is null, it means to remove the piece in
  * the origin position.
  */
-public class Move {
+public final class Move {
 
     /** Originating position. */
-    private Position origin;
+    private final Position origin;
 
     /** Destination position. */
-    private Position destination;
+    private final Position destination;
 
     /** Linked list entry for next part of this move. */
     private Move next;
@@ -64,7 +64,7 @@ public class Move {
      *
      * @param move the next move
      */
-    public final void setNext(final Move move) {
+    public void setNext(final Move move) {
         next = move;
     }
 
@@ -73,7 +73,7 @@ public class Move {
      *
      * @return the next move
      */
-    public final Move getNext() {
+    public Move getNext() {
         return next;
     }
 
@@ -82,7 +82,7 @@ public class Move {
      *
      * @return origin position
      */
-    public final Position getOrigin() {
+    public Position getOrigin() {
         return origin;
     }
 
@@ -91,7 +91,7 @@ public class Move {
      *
      * @return destination position
      */
-    public final Position getDest() {
+    public Position getDest() {
         return destination;
     }
 
@@ -100,7 +100,7 @@ public class Move {
      *
      * @param p piece that was captured
      */
-    public final void setCaptured(final Piece p) {
+    public void setCaptured(final Piece p) {
         captured = p;
     }
 
@@ -109,7 +109,7 @@ public class Move {
      *
      * @return piece that was captured
      */
-    public final Piece getCaptured() {
+    public Piece getCaptured() {
         return captured;
     }
 
@@ -118,7 +118,7 @@ public class Move {
      *
      * @param pieceName piece to be created
      */
-    public final void setReplacement(final String pieceName) {
+    public void setReplacement(final String pieceName) {
         replacement = pieceName;
     }
 
@@ -127,7 +127,7 @@ public class Move {
      *
      * @return piece to be created
      */
-    public final String getReplacement() {
+    public String getReplacement() {
         return replacement;
     }
 
@@ -136,7 +136,7 @@ public class Move {
      *
      * @param side piece to be created
      */
-    public final void setReplacementSide(final Piece.Side side) {
+    public void setReplacementSide(final Piece.Side side) {
         replacementSide = side;
     }
 
@@ -145,12 +145,12 @@ public class Move {
      *
      * @return side of piece to be created
      */
-    public final Piece.Side getReplacementSide() {
+    public Piece.Side getReplacementSide() {
         return replacementSide;
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return "" + origin + destination;
     }
 
@@ -159,7 +159,7 @@ public class Move {
      *
      * @return this move's score
      */
-    public final double getScore() {
+    public double getScore() {
         return score;
     }
 
@@ -168,7 +168,7 @@ public class Move {
      *
      * @param newscore  this move's score
      */
-    public final void setScore(final double newscore) {
+    public void setScore(final double newscore) {
         this.score = newscore;
     }
 }

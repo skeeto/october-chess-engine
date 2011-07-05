@@ -342,7 +342,7 @@ public abstract class Board {
      */
     private void callListeners() {
         for (BoardListener listener : listeners) {
-            listener.boardChange();
+            listener.boardChange(this);
         }
     }
 

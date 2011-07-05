@@ -361,7 +361,7 @@ public class BoardPanel extends JComponent
     }
 
     @Override
-    public final void boardChange() {
+    public final void boardChange(final Board b) {
         repaint();
     }
 

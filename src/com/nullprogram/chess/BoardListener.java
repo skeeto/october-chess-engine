@@ -8,6 +8,8 @@ public interface BoardListener {
 
     /**
      * Called when the board has changed.
+     *
+     * @param board  the board that changed
      */
-    void boardChange();
+    void boardChange(Board board);
 }

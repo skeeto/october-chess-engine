@@ -1,5 +1,7 @@
 package com.nullprogram.chess.gui;
 
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -214,10 +216,18 @@ public class ChessFrame extends JFrame implements ComponentListener {
         }
         double ratio = display.getRatio();
         double barh = progress.getPreferredSize().getHeight();
-        if (getWidth() * ratio < (getHeight() - barh)) {
-            setSize((int) ((getHeight() - barh) * ratio), getHeight());
-        } else if (getWidth() * ratio > (getHeight() - barh)) {
-            setSize(getWidth(), (int) (getWidth() / ratio + barh));
+        Container p = getContentPane();
+        Dimension d = null;
+        if (p.getWidth() * ratio < (p.getHeight() - barh)) {
+            d = new Dimension((int) ((p.getHeight() - barh) * ratio),
+                              p.getHeight());
+        } else if (p.getWidth() * ratio > (p.getHeight() - barh)) {
+            d = new Dimension(p.getWidth(),
+                              (int) (p.getWidth() / ratio + barh));
+        }
+        if (d != null) {
+            p.setPreferredSize(d);
+            pack();
         }
     }
 

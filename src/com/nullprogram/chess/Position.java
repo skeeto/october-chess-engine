@@ -3,13 +3,13 @@ package com.nullprogram.chess;
 /**
  * Represents a position on a Chess board.
  */
-public class Position implements Comparable<Position> {
+public final class Position implements Comparable<Position> {
 
     /**
      * The board coordinates of this position, starting at the white
      * queenside rook.
      */
-    private int x, y;
+    private final int x, y;
 
     /**
      * Create a new position with given coordinates.
@@ -38,7 +38,7 @@ public class Position implements Comparable<Position> {
      *
      * @return the x coordinate
      */
-    public final int getX() {
+    public int getX() {
         return x;
     }
 
@@ -47,7 +47,7 @@ public class Position implements Comparable<Position> {
      *
      * @return the y coordinate
      */
-    public final int getY() {
+    public int getY() {
         return y;
     }
 
@@ -56,7 +56,7 @@ public class Position implements Comparable<Position> {
      *
      * @return string form of position
      */
-    public final String toString() {
+    public String toString() {
         return "" + ((char) ('a' + (char) x)) + (y + 1);
     }
 
@@ -66,7 +66,7 @@ public class Position implements Comparable<Position> {
      * @param pos position to be compared
      * @return    true if the positions are equal
      */
-    public final boolean equals(final Position pos) {
+    public boolean equals(final Position pos) {
         return (pos != null) && (pos.x == x) && (pos.y == y);
     }
 
@@ -76,7 +76,7 @@ public class Position implements Comparable<Position> {
      * @param o position to be compared
      * @return  true if the positions are equal
      */
-    public final boolean equals(final Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -91,7 +91,7 @@ public class Position implements Comparable<Position> {
      *
      * @return hash code of this object.
      */
-    public final int hashCode() {
+    public int hashCode() {
         return ((new Integer(x)).hashCode() ^ (new Integer(y)).hashCode());
     }
 
@@ -101,7 +101,7 @@ public class Position implements Comparable<Position> {
      * @param pos position to be compared
      * @return    positive if more, negative if less, zero if equal
      */
-    public final int compareTo(final Position pos) {
+    public int compareTo(final Position pos) {
         if (pos.y == y) {
             return x - pos.x;
         } else {

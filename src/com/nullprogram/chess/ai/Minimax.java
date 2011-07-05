@@ -29,8 +29,6 @@ import com.nullprogram.chess.pieces.King;
 import com.nullprogram.chess.pieces.Chancellor;
 import com.nullprogram.chess.pieces.Archbishop;
 
-import com.nullprogram.chess.gui.StatusBar;
-
 /**
  * Minimax Chess AI player.
  *
@@ -57,9 +55,6 @@ public class Minimax implements Player {
 
     /** Best move, the selected move. */
     private volatile Move bestMove;
-
-    /** Used to display AI's progress. */
-    private StatusBar progress;
 
     /** Time AI turns. */
     private long startTime;
@@ -89,40 +84,28 @@ public class Minimax implements Player {
     private double wMobility;
 
     /**
-     * Hidden constructor.
+     * Create the default Minimax.
      */
-    protected Minimax() {
-    }
-
-    /**
-     * Create a new AI for the given board.
-     *
-     * @param statusBar GUI progress bar
-     */
-    public Minimax(final StatusBar statusBar) {
-        this(statusBar, "default");
+    public Minimax() {
+        this("default");
     }
 
     /**
      * Create a new AI from a given properties name.
      *
-     * @param statusBar GUI progress bar
      * @param name      name of configuration to use
      */
-    public Minimax(final StatusBar statusBar, final String name) {
-        this(statusBar, getConfig(name));
+    public Minimax(final String name) {
+        this(getConfig(name));
     }
 
     /**
      * Create a new AI for the given board.
      *
-     * @param statusBar GUI progress bar
      * @param props     properties for this player
      */
-    public Minimax(final StatusBar statusBar, final Properties props) {
+    public Minimax(final Properties props) {
         values = new HashMap<Class, Double>();
-        progress = statusBar;
-
         config = props;
 
         /* Piece values */
@@ -182,15 +165,13 @@ public class Minimax implements Player {
         Collections.shuffle(moves);
 
         /* Initialize the shared structures. */
-        if (progress != null) {
-            progress.setValue(0);
-            progress.setMaximum(moves.size() - 1);
-            progress.setStatus("Thinking ...");
+        if (game != null) {
+            game.setProgress(0);
+            game.setStatus("Thinking ...");
         }
         startTime = System.currentTimeMillis();
 
         /* Spin off threads to evaluate each move's tree. */
-        LOG.info("AI using " + NTHREADS + " threads.");
         CompletionService<Move> service
         = new ExecutorCompletionService<Move>(executor);
         int submitted = 0;
@@ -225,13 +206,14 @@ public class Minimax implements Player {
                 /* This move was unevaluated. */
                 LOG.warning("move went unevaluated");
             }
-            if (progress != null) {
-                progress.setValue(i);
+            if (game != null) {
+                game.setProgress(i / (1.0f * (submitted - 1)));
             }
         }
 
         long time = (System.currentTimeMillis() - startTime);
-        LOG.info("Took " + (time / MILLI) + " seconds.");
+        LOG.info("AI took " + (time / MILLI) + " seconds ("
+                 + NTHREADS + " threads)");
         game.move(bestMove);
     }
 

@@ -119,7 +119,7 @@ public class NewGame extends JDialog implements ActionListener {
         if ("human".equals(name)) {
             return parent.getPlayer();
         } else if ("computer".equals(name)) {
-            return new Minimax(parent.getProgress());
+            return new Minimax();
         } else {
             return null;
         }
@@ -150,6 +150,6 @@ public class NewGame extends JDialog implements ActionListener {
         if ((white == null) || (black == null)) {
             return null;
         }
-        return new Game(parent, board, white, black);
+        return new Game(board, white, black);
     }
 }

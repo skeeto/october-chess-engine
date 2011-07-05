@@ -8,24 +8,20 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.RenderingHints;
 
-import javax.swing.JPanel;
+import javax.swing.JComponent;
+
+import com.nullprogram.chess.Game;
 
 /**
  * Progress bar and status bar combined as one.
  */
-public class StatusBar extends JPanel {
+public class StatusBar extends JComponent {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
 
-    /** Maximum value of progress bar. */
-    private int maximum = 1;
-
-    /** Current value of progress bar. */
-    private int value = 0;
-
-    /** Status string to be displayed. */
-    private String status;
+    /** The current game being observed. */
+    private Game game;
 
     /** Panel's background color. */
     static final Color BACKGROUND = new Color(0xAA, 0xAA, 0xAA);
@@ -47,13 +43,25 @@ public class StatusBar extends JPanel {
 
     /**
      * Create a new status bar.
+     *
+     * @param observed  the game to be observed by this component
      */
-    public StatusBar() {
+    public StatusBar(final Game observed) {
         super();
         setBackground(BACKGROUND);
         setPreferredSize(null);
         setMinimumSize(null);
         setMaximumSize(null);
+        game = observed;
+    }
+
+    /**
+     * Set the game to be observed by this component.
+     *
+     * @param observed  game to be observed
+     */
+    public final void setGame(final Game observed) {
+        game = observed;
     }
 
     @Override
@@ -78,71 +86,28 @@ public class StatusBar extends JPanel {
                              (int) getPreferredSize().getHeight());
     }
 
-    /**
-     * Return the maximum value of the progress bar.
-     *
-     * @return maximum value
-     */
-    public final int getMaximum() {
-        return maximum;
-    }
-
-    /**
-     * Set the maximum value of the progress bar.
-     *
-     * @param val new maximum value
-     */
-    public final void setMaximum(final int val) {
-        maximum = Math.max(val, 1);
-    }
-
-    /**
-     * Get the current value of the progress bar.
-     *
-     * @return current progress bar value
-     */
-    public final int getValue() {
-        return value;
-    }
-
-    /**
-     * Set the value of the progress bar.
-     *
-     * @param val the new value
-     */
-    public final void setValue(final int val) {
-        value = Math.min(maximum, val);
-        repaint();
-    }
-
-    /**
-     * Set the status string of the status bar.
-     *
-     * @param message the new status string
-     */
-    public final void setStatus(final String message) {
-        status = message;
-        repaint();
-    }
-
     @Override
     public final void paintComponent(final Graphics g) {
         super.paintComponent(g);
+        if (game == null) {
+            return;
+        }
+
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
-
         FontMetrics fm = g.getFontMetrics();
         int fh = fm.getAscent();
 
         /* Draw the progress bar. */
         g.setColor(BAR_COLOR);
         int barWidth = getWidth() - BAR_PADDING_X * 2;
-        int progress = (barWidth * value) / maximum;
+        int progress = (int) (game.getProgress() * barWidth);
         g.fillRect(BAR_PADDING_X, fh + BAR_PADDING_Y,
                    progress, BAR_HEIGHT);
 
         /* Draw the string. */
+        String status = game.getStatus();
         g.setColor(STATUS_COLOR);
         int width = fm.stringWidth(status);
         int height = fm.getHeight();

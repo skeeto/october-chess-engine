@@ -18,12 +18,14 @@ import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Game;
 
+import com.nullprogram.chess.GameListener;
 import com.nullprogram.chess.boards.EmptyBoard;
 
 /**
  * The JFrame that contains all GUI elements.
  */
-public class ChessFrame extends JFrame implements ComponentListener {
+public class ChessFrame extends JFrame
+            implements ComponentListener, GameListener {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
@@ -54,8 +56,7 @@ public class ChessFrame extends JFrame implements ComponentListener {
         handler.setUpMenu();
 
         display = new BoardPanel(new EmptyBoard());
-        progress = new StatusBar();
-        setStatus("Ready.");
+        progress = new StatusBar(null);
         add(display);
         add(progress);
         pack();
@@ -85,14 +86,10 @@ public class ChessFrame extends JFrame implements ComponentListener {
         display.invalidate();
         setSize(getPreferredSize());
         handler.gameMode(true);
-        game.begin();
-    }
 
-    /**
-     * Tells the display that the game has finished.
-     */
-    public final void endGame() {
-        handler.gameMode(false);
+        progress.setGame(game);
+        game.addListener(this);
+        game.begin();
     }
 
     /**
@@ -109,24 +106,6 @@ public class ChessFrame extends JFrame implements ComponentListener {
      */
     public final Player getPlayer() {
         return display;
-    }
-
-    /**
-     * Return the progress bar in the display.
-     *
-     * @return the progress bar
-     */
-    public final StatusBar getProgress() {
-        return progress;
-    }
-
-    /**
-     * Set the display's status string to the human.
-     *
-     * @param status string to display
-     */
-    public final void setStatus(final String status) {
-        progress.setStatus(status);
     }
 
     /**
@@ -229,6 +208,12 @@ public class ChessFrame extends JFrame implements ComponentListener {
             p.setPreferredSize(d);
             pack();
         }
+    }
+
+    @Override
+    public final void gameEvent(final Game e) {
+        progress.repaint();
+        display.repaint();
     }
 
     @Override

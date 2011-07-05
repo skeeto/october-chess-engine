@@ -2,8 +2,7 @@ package com.nullprogram.chess;
 
 import java.util.List;
 import java.util.ArrayList;
-
-import com.nullprogram.chess.gui.ChessFrame;
+import java.util.logging.Logger;
 
 /**
  * Drives a game of chess, given players and a board.
@@ -12,9 +11,8 @@ import com.nullprogram.chess.gui.ChessFrame;
  * to respond with a move.
  */
 public class Game implements Runnable {
-
-    /** Display frame. */
-    private ChessFrame frame;
+    /** This class's Logger. */
+    private static final Logger LOG = Logger.getLogger("Game");
 
     /** The board being used for this game. */
     private Board board;
@@ -27,6 +25,12 @@ public class Game implements Runnable {
 
     /** Whose turn it is right now. */
     private Piece.Side turn;
+
+    /** Current status message. */
+    private String status = "";
+
+    /** Current progress (AI). */
+    private float progress;
 
     /** Set to true when the board is in a completed state. */
     private volatile Boolean done;
@@ -46,17 +50,14 @@ public class Game implements Runnable {
     /**
      * Create a new game with the given board and players.
      *
-     * @param display     display for this game
      * @param gameBoard   the game board
      * @param whitePlayer the player playing white
      * @param blackPlayer the player playing black
      */
-    public Game(final ChessFrame display,
-                final Board gameBoard,
+    public Game(final Board gameBoard,
                 final Player whitePlayer,
                 final Player blackPlayer) {
         done = false;
-        frame = display;
         board = gameBoard;
         white = whitePlayer;
         black = blackPlayer;
@@ -98,24 +99,16 @@ public class Game implements Runnable {
         Piece.Side opp = Piece.opposite(turn);
         if (board.checkmate(opp) || board.stalemate(opp)) {
             if (opp == Piece.Side.BLACK) {
-                if (frame != null) {
-                    frame.setStatus("White wins!");
-                }
+                setStatus("White wins!");
                 winner = Piece.Side.WHITE;
             } else if (opp == Piece.Side.WHITE) {
-                if (frame != null) {
-                    frame.setStatus("Black wins!");
-                }
+                setStatus("Black wins!");
                 winner = Piece.Side.BLACK;
             } else {
-                if (frame != null) {
-                    frame.setStatus("Stalemate!");
-                }
+                setStatus("Stalemate!");
                 winner = null;
             }
-            if (frame != null) {
-                frame.endGame();
-            }
+            setProgress(0);
             done = true;
             white.setBoard(board);
             black.setBoard(board);
@@ -163,16 +156,12 @@ public class Game implements Runnable {
      * Display the current turn status.
      */
     private void turnStatus() {
-        String status;
         if (turn == Piece.Side.WHITE) {
-            status = "White's turn.";
+            setStatus("White's turn.");
         } else {
-            status = "Black's turn.";
+            setStatus("Black's turn.");
         }
-        if (frame != null) {
-            frame.getProgress().setValue(0);
-            frame.setStatus(status);
-        }
+        setProgress(0);
     }
 
     /**
@@ -218,5 +207,48 @@ public class Game implements Runnable {
      */
     public final Piece.Side getWinner() {
         return winner;
+    }
+
+    /**
+     * Set the Game's current status message.
+     *
+     * @param message  new status message
+     */
+    public final void setStatus(final String message) {
+        LOG.info("status: " + message);
+        if (message == null) {
+            throw new NullPointerException();
+        }
+        status = message;
+        callListeners();
+    }
+
+    /**
+     * Get the Game's current status message.
+     *
+     * @return the current status message
+     */
+    public final String getStatus() {
+        return status;
+    }
+
+    /**
+     * Set the Game's current progress status.
+     *
+     * @param value  current progress (0.0-1.0)
+     */
+    public final void setProgress(final float value) {
+        LOG.finest("Game progress: " + value);
+        progress = value;
+        callListeners();
+    }
+
+    /**
+     * Return the Game's current progress.
+     *
+     * @return the current progress (0.0-1.0)
+     */
+    public final float getProgress() {
+        return progress;
     }
 }

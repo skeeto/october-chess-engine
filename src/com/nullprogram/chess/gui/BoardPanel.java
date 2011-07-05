@@ -35,7 +35,7 @@ import com.nullprogram.chess.BoardListener;
  * player as needed.
  */
 public class BoardPanel extends JComponent
-    implements MouseListener, Player, BoardListener {
+            implements MouseListener, Player, BoardListener {
     /** This class's Logger. */
     private static final Logger LOG = Logger.getLogger("gui.BoardPanel");
 

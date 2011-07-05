@@ -30,6 +30,12 @@ public final class Chess {
     public static void main(final String[] args) {
         /* Set up logger. */
         Logger root = Logger.getLogger("");
+        Level level = Level.WARNING;
+        String plevel = System.getProperty(".level");
+        if (plevel != null) {
+            level = Level.parse(plevel);
+        }
+        root.setLevel(level);
         for (Handler h : root.getHandlers()) {
             h.setFormatter(new java.util.logging.SimpleFormatter() {
                 @Override
@@ -37,11 +43,7 @@ public final class Chess {
                     return r.getLevel() + ": " + r.getMessage() + "\n";
                 }
             });
-        }
-        root.setLevel(Level.WARNING);
-        String plevel = System.getProperty(".level");
-        if (plevel != null) {
-            root.setLevel(Level.parse(plevel));
+            h.setLevel(level);
         }
 
         try {

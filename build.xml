@@ -45,7 +45,7 @@
 
   <target name="run" depends="jar" description="Run the application.">
     <java jar="${jar.file}" fork="true">
-      <sysproperty key=".level" value="FINE"/>
+      <sysproperty key=".level" value="INFO"/>
       <jvmarg value="-server"/>
     </java>
   </target>

@@ -12,6 +12,8 @@ import com.nullprogram.chess.MoveList;
  * rook.
  */
 public class Rook extends Piece {
+    /** Serial version. */
+    private static final long serialVersionUID = 1618121375106739616l;
 
     /**
      * Create a new rook on the given side.

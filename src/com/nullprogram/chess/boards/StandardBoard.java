@@ -14,6 +14,8 @@ import com.nullprogram.chess.pieces.King;
  * The board for a standard game of chess.
  */
 public class StandardBoard extends Board {
+    /** Version for object serialization. */
+    private static final long serialVersionUID = 2010865959427068945l;
 
     /** The standard board width. */
     static final int WIDTH = 8;

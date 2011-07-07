@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import java.io.Serializable;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -15,7 +17,7 @@ import com.nullprogram.chess.boards.BoardFactory;
  * through move transaction. This allows undo() and copy(), which many
  * other things depends on, to work properly.
  */
-public abstract class Board {
+public abstract class Board implements Serializable {
 
     /** The internal board array. */
     private Piece[][] board;

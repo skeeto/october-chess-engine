@@ -1,5 +1,6 @@
 package com.nullprogram.chess;
 
+import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.Handler;
@@ -7,6 +8,8 @@ import java.util.logging.LogRecord;
 
 import javax.swing.UIManager;
 
+import com.nullprogram.chess.ai.Minimax;
+import com.nullprogram.chess.ai.HelperSocket;
 import com.nullprogram.chess.gui.ChessFrame;
 
 /**
@@ -15,6 +18,8 @@ import com.nullprogram.chess.gui.ChessFrame;
 public final class Chess {
     /** This class's Logger. */
     private static final Logger LOG = Logger.getLogger("Chess");
+
+    private static boolean listen = true;
 
     /**
      * Hidden constructor.
@@ -28,6 +33,37 @@ public final class Chess {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
+        init();
+        try {
+            String lnf = UIManager.getSystemLookAndFeelClassName();
+            UIManager.setLookAndFeel(lnf);
+        } catch (Exception e) {
+            LOG.warning("Failed to set 'Look and Feel'");
+        }
+        ChessFrame frame = new ChessFrame();
+
+        if (listen) {
+            new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            ServerSocket listen =
+                                new ServerSocket(Assist.ASSIST_PORT);
+                            while (true) {
+                                HelperSocket h
+                                    = new HelperSocket(listen.accept());
+                                Minimax.addHelper(h);
+                                LOG.info("added new helper");
+                            }
+                        } catch (Exception e) {
+                            LOG.warning("no longer listening for helpers");
+                        }
+                    }
+                }).start();
+        }
+    }
+
+    public static void init() {
         /* Set up logger. */
         Logger root = Logger.getLogger("");
         Level level = Level.WARNING;
@@ -45,13 +81,5 @@ public final class Chess {
             });
             h.setLevel(level);
         }
-
-        try {
-            String lnf = UIManager.getSystemLookAndFeelClassName();
-            UIManager.setLookAndFeel(lnf);
-        } catch (Exception e) {
-            LOG.warning("Failed to set 'Look and Feel'");
-        }
-        ChessFrame frame = new ChessFrame();
     }
 }

@@ -14,6 +14,8 @@ import com.nullprogram.chess.pieces.Archbishop;
  * Board for the game of Gothic Chess.
  */
 public class Gothic extends StandardBoard {
+    /** Version for object serialization. */
+    private static final long serialVersionUID = 590900715630630619l;
 
     /** The standard board width. */
     static final int WIDTH = 10;

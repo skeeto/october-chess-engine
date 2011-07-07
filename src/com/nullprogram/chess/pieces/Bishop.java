@@ -12,6 +12,8 @@ import com.nullprogram.chess.Position;
  * bishop.
  */
 public class Bishop extends Piece {
+    /** Serial version. */
+    private static final long serialVersionUID = 1976700752832999531l;
 
     /**
      * Create bishop with given side.

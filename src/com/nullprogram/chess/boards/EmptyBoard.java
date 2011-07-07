@@ -4,6 +4,8 @@ package com.nullprogram.chess.boards;
  * An empty Chess board.
  */
 public class EmptyBoard extends StandardBoard {
+    /** Version for object serialization. */
+    private static final long serialVersionUID = 1842718946347214095l;
 
     /**
      * Default board width.

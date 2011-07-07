@@ -1,17 +1,18 @@
 package com.nullprogram.chess;
 
+import java.io.Serializable;
 import java.awt.image.BufferedImage;
 import com.nullprogram.chess.pieces.ImageServer;
 
 /**
  * An abstract Chess piece.
  */
-public abstract class Piece {
+public abstract class Piece implements Serializable {
 
     /**
      * The side of the piece: white or black.
      */
-    public enum Side {
+    public enum Side implements Serializable {
         /**
          * The lighter colored side of the board.
          */

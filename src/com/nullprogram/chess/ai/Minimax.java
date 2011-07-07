@@ -1,5 +1,12 @@
 package com.nullprogram.chess.ai;
 
+import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.net.Socket;
+import java.io.ObjectOutputStream;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
@@ -41,8 +48,13 @@ public class Minimax implements Player {
     private static final Logger LOG = Logger.getLogger("ai.Minimax");
 
     /** The number of threads to use. */
-    private static final int NTHREADS
+    public static final int NTHREADS
     = Runtime.getRuntime().availableProcessors();
+
+    private static final HelperSocket CPU = new HelperSocket(null);
+
+    private static final LinkedBlockingQueue<HelperSocket> helpers
+        = new LinkedBlockingQueue<HelperSocket>();
 
     /** Board the AI will be playing on. */
     private Board board;
@@ -60,7 +72,7 @@ public class Minimax implements Player {
     private long startTime;
 
     /** Thread manager. */
-    private final Executor executor = Executors.newFixedThreadPool(NTHREADS);
+    private final Executor executor = Executors.newCachedThreadPool();
 
     /** Values of each piece. */
     private Map<Class, Double> values;
@@ -105,6 +117,12 @@ public class Minimax implements Player {
      * @param props     properties for this player
      */
     public Minimax(final Properties props) {
+        if (helpers.size() == 0) {
+            for (int i = 0; i < NTHREADS; i++) {
+                helpers.add(CPU);
+            }
+        }
+
         values = new HashMap<Class, Double>();
         config = props;
 
@@ -180,15 +198,44 @@ public class Minimax implements Player {
             final Board callboard = board.copy();
             service.submit(new Callable<Move>() {
                 public Move call() {
-                    callboard.move(move);
-                    double beta = Double.POSITIVE_INFINITY;
-                    if (bestMove != null) {
-                        beta = -bestMove.getScore();
+                    HelperSocket socket = null;
+                    try {
+                        socket = helpers.take();
+                    } catch (InterruptedException e) {
+                        LOG.warning("move evaluation interupted");
+                        return move;
                     }
-                    double v = search(callboard, maxDepth - 1,
-                                      Piece.opposite(side),
-                                      Double.NEGATIVE_INFINITY, beta);
-                    move.setScore(-v);
+                    if (socket == CPU) {
+                        /* Special dummy CPU "socket". */
+                        LOG.fine("CPU evaluation");
+                        callboard.move(move);
+                        double beta = Double.POSITIVE_INFINITY;
+                        if (bestMove != null) {
+                            beta = -bestMove.getScore();
+                        }
+                        double v = search(callboard, maxDepth - 1,
+                                          Piece.opposite(side),
+                                          Double.NEGATIVE_INFINITY, beta);
+                        move.setScore(-v);
+                        helpers.add(CPU);
+                        return move;
+                    } else {
+                        try {
+                            ObjectOutputStream out = socket.getOut();
+                            out.writeObject(callboard);
+                            out.writeObject(move);
+                            out.writeObject(side);
+                            out.flush();
+                            ObjectInputStream in = socket.getIn();
+                            Move ret = (Move) in.readObject();
+                            helpers.add(socket);
+                            return ret;
+                        } catch (Exception e) {
+                            helpers.add(socket);
+                            LOG.severe("helper search failed");
+                        }
+                    }
+                    move.setScore(Double.POSITIVE_INFINITY);
                     return move;
                 }
             });
@@ -204,7 +251,7 @@ public class Minimax implements Player {
                 }
             } catch (Exception e) {
                 /* This move was unevaluated. */
-                LOG.warning("move went unevaluated");
+                LOG.severe("move went unevaluated: " + e);
             }
             if (game != null) {
                 game.setProgress(i / (1.0f * (submitted - 1)));
@@ -227,8 +274,8 @@ public class Minimax implements Player {
      * @param beta  upper bound to check
      * @return      best valuation found at lowest depth
      */
-    private double search(final Board b, final int depth, final Piece.Side s,
-                          final double alpha, final double beta) {
+    protected double search(final Board b, final int depth, final Piece.Side s,
+                            final double alpha, final double beta) {
         if (depth == 0) {
             return valuate(b);
         }
@@ -328,5 +375,17 @@ public class Minimax implements Player {
     @Override
     public final void setBoard(final Board b) {
         board = b;
+    }
+
+    public int getMaxDepth() {
+        return maxDepth;
+    }
+
+    public void setSide(Piece.Side s) {
+        side = s;
+    }
+
+    public static void addHelper(HelperSocket socket) {
+        helpers.add(socket);
     }
 }

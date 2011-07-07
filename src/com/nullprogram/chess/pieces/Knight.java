@@ -12,6 +12,8 @@ import com.nullprogram.chess.MoveList;
  * knight.
  */
 public class Knight extends Piece {
+    /** Serial version. */
+    private static final long serialVersionUID = 183338497180109389l;
 
     /**
      * Short segment of movement.

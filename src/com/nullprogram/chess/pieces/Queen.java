@@ -10,6 +10,8 @@ import com.nullprogram.chess.MoveList;
  * queen.
  */
 public class Queen extends Piece {
+    /** Serial version. */
+    private static final long serialVersionUID = 930467415971657276l;
 
     /**
      * Create a new queen on the given side.

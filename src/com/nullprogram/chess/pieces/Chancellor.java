@@ -11,7 +11,7 @@ import com.nullprogram.chess.MoveList;
  */
 public class Chancellor extends Piece {
     /** Serial version. */
-    private static final long serialVersionUID = 1769000361525074266l;
+    private static final long serialVersionUID = 1769000361525074266L;
 
     /**
      * Create a new chancellor on the given side.

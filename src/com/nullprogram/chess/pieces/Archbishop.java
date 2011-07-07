@@ -11,7 +11,7 @@ import com.nullprogram.chess.MoveList;
  */
 public class Archbishop extends Piece {
     /** Serial version. */
-    private static final long serialVersionUID = 1707197603274279387l;
+    private static final long serialVersionUID = 1707197603274279387L;
 
     /**
      * Create a new archbishop on the given side.

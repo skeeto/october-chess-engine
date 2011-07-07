@@ -1,17 +1,14 @@
 package com.nullprogram.chess.ai;
 
-import java.io.OutputStream;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.net.Socket;
 import java.io.ObjectOutputStream;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
@@ -51,9 +48,11 @@ public class Minimax implements Player {
     public static final int NTHREADS
     = Runtime.getRuntime().availableProcessors();
 
+    /** Dummy helper that indicates local CPU use. */
     private static final HelperSocket CPU = new HelperSocket(null);
 
-    private static final LinkedBlockingQueue<HelperSocket> helpers
+    /** A queue of helpers to perform board evaluations. */
+    private static final LinkedBlockingQueue<HelperSocket> HELPERS
         = new LinkedBlockingQueue<HelperSocket>();
 
     /** Board the AI will be playing on. */
@@ -117,9 +116,9 @@ public class Minimax implements Player {
      * @param props     properties for this player
      */
     public Minimax(final Properties props) {
-        if (helpers.size() == 0) {
+        if (HELPERS.size() == 0) {
             for (int i = 0; i < NTHREADS; i++) {
-                helpers.add(CPU);
+                HELPERS.add(CPU);
             }
         }
 
@@ -200,7 +199,7 @@ public class Minimax implements Player {
                 public Move call() {
                     HelperSocket socket = null;
                     try {
-                        socket = helpers.take();
+                        socket = HELPERS.take();
                     } catch (InterruptedException e) {
                         LOG.warning("move evaluation interupted");
                         return move;
@@ -217,7 +216,7 @@ public class Minimax implements Player {
                                           Piece.opposite(side),
                                           Double.NEGATIVE_INFINITY, beta);
                         move.setScore(-v);
-                        helpers.add(CPU);
+                        HELPERS.add(CPU);
                         return move;
                     } else {
                         try {
@@ -228,10 +227,10 @@ public class Minimax implements Player {
                             out.flush();
                             ObjectInputStream in = socket.getIn();
                             Move ret = (Move) in.readObject();
-                            helpers.add(socket);
+                            HELPERS.add(socket);
                             return ret;
                         } catch (Exception e) {
-                            helpers.add(socket);
+                            HELPERS.add(socket);
                             LOG.severe("helper search failed");
                         }
                     }
@@ -274,8 +273,9 @@ public class Minimax implements Player {
      * @param beta  upper bound to check
      * @return      best valuation found at lowest depth
      */
-    protected double search(final Board b, final int depth, final Piece.Side s,
-                            final double alpha, final double beta) {
+    protected final double search(final Board b, final int depth,
+                                  final Piece.Side s, final double alpha,
+                                  final double beta) {
         if (depth == 0) {
             return valuate(b);
         }
@@ -377,15 +377,30 @@ public class Minimax implements Player {
         board = b;
     }
 
-    public int getMaxDepth() {
+    /**
+     * Returns the maximum search depth.
+     *
+     * @return maximum search depth
+     */
+    public final int getMaxDepth() {
         return maxDepth;
     }
 
-    public void setSide(Piece.Side s) {
+    /**
+     * Set this AI's side.
+     *
+     * @param s the new side
+     */
+    public final void setSide(final Piece.Side s) {
         side = s;
     }
 
-    public static void addHelper(HelperSocket socket) {
-        helpers.add(socket);
+    /**
+     * Provide a new helper.
+     *
+     * @param socket a helper
+     */
+    public static void addHelper(final HelperSocket socket) {
+        HELPERS.add(socket);
     }
 }

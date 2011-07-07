@@ -15,7 +15,7 @@ import com.nullprogram.chess.pieces.King;
  */
 public class StandardBoard extends Board {
     /** Version for object serialization. */
-    private static final long serialVersionUID = 2010865959427068945l;
+    private static final long serialVersionUID = 2010865959427068945L;
 
     /** The standard board width. */
     static final int WIDTH = 8;

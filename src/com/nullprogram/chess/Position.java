@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public final class Position implements Comparable<Position>, Serializable {
     /** Serial version. */
-    private static final long serialVersionUID = 748152365096441310l;
+    private static final long serialVersionUID = 748152365096441310L;
 
     /**
      * The board coordinates of this position, starting at the white

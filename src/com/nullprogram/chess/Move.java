@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 public final class Move implements Serializable {
     /** Version for object serialization. */
-    private static final long serialVersionUID = 1324328283619896814l;
+    private static final long serialVersionUID = 1324328283619896814L;
 
     /** Originating position. */
     private final Position origin;

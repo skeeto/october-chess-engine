@@ -14,7 +14,7 @@ import com.nullprogram.chess.MoveList;
  */
 public class Pawn extends Piece {
     /** Serial version. */
-    private static final long serialVersionUID = 1840684196034760407l;
+    private static final long serialVersionUID = 1840684196034760407L;
 
     /**
      * Create a new pawn on the given side.

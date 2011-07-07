@@ -13,7 +13,7 @@ import com.nullprogram.chess.MoveList;
  */
 public class King extends Piece {
     /** Serial version. */
-    private static final long serialVersionUID = 688448974482960188l;
+    private static final long serialVersionUID = 688448974482960188L;
 
     /** List of enemy moves (cahced). */
     private MoveList enemy;

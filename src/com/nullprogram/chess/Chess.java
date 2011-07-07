@@ -19,6 +19,7 @@ public final class Chess {
     /** This class's Logger. */
     private static final Logger LOG = Logger.getLogger("Chess");
 
+    /** Option to listen for distributed helpers. */
     private static boolean listen = true;
 
     /**
@@ -47,11 +48,10 @@ public final class Chess {
                     @Override
                     public void run() {
                         try {
-                            ServerSocket listen =
-                                new ServerSocket(Assist.ASSIST_PORT);
+                            ServerSocket s = new ServerSocket(Assist.PORT);
                             while (true) {
                                 HelperSocket h
-                                    = new HelperSocket(listen.accept());
+                                    = new HelperSocket(s.accept());
                                 Minimax.addHelper(h);
                                 LOG.info("added new helper");
                             }
@@ -63,6 +63,9 @@ public final class Chess {
         }
     }
 
+    /**
+     * Perform some general initialization (logging).
+     */
     public static void init() {
         /* Set up logger. */
         Logger root = Logger.getLogger("");

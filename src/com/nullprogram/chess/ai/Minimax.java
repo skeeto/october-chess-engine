@@ -156,7 +156,13 @@ public class Minimax implements Player {
      * @return the configuration
      */
     public static Properties getConfig(final String name) {
-        Properties props = new Properties();
+        Properties props;
+        if ("default".equals(name)) {
+            props = new Properties();
+        } else {
+            props = new Properties(getConfig("default"));
+        }
+
         String filename = name + ".properties";
         try {
             props.load(Minimax.class.getResourceAsStream(filename));

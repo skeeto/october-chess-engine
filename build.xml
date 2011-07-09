@@ -3,16 +3,32 @@
   <property name="jar.file" value="${ant.project.name}.jar"/>
   <property name="src.dir" value="src"/>
   <property name="build.dir" value="build"/>
+  <property name="dist.dir" value="dist"/>
   <property name="test.dir" value="test"/>
-  <property name="doc.dir" value="doc"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="test.classes.dir" value="${build.dir}/test"/>
-  <property name="applet.html" value="index.html"/>
+  <property name="applet.html" value="applet.html"/>
+
+  <property file="local.properties"/>
+
   <taskdef resource="checkstyletask.properties"/>
-  <taskdef resource="proguard/ant/task.properties"/>
+  <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
 
   <target name="init">
+    <mkdir dir="${dist.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
+    <exec executable="git" outputproperty="version"
+	  resultproperty="git.status" failifexecutionfails="false">
+      <arg value="describe"/>
+    </exec>
+    <condition property="append.version" value="-${version}" else="">
+      <and>
+        <isset property="version"/>
+        <equals arg1="${git.status}" arg2="0"/>
+      </and>
+    </condition>
+    <property name="version" value=""/>
+    <echo file="${build.classes.dir}/version.txt" message="${version}"/>
   </target>
 
   <target name="compile" depends="init"
@@ -29,22 +45,21 @@
 
   <target name="jar" depends="compile"
 	  description="Generate the jarfile distributable.">
-    <jar destfile="${jar.file}">
+    <jar destfile="${dist.dir}/${jar.file}">
       <fileset dir="${build.classes.dir}"/>
-      <fileset dir="${src.dir}" includes="**/*.java"/>
       <fileset file="UNLICENSE"/>
-      <fileset file="build.xml"/>
-      <fileset file="HACKING"/>
-      <fileset file="AUTHORS"/>
       <fileset file="README"/>
       <manifest>
         <attribute name="Main-Class" value="com.nullprogram.chess.Chess"/>
       </manifest>
     </jar>
+    <copy file="${applet.html}" todir="${dist.dir}"/>
+    <replace file="${dist.dir}/${applet.html}"
+	     token="$VERSION" value="${version}"/>
   </target>
 
   <target name="run" depends="jar" description="Run the application.">
-    <java jar="${jar.file}" fork="true">
+    <java jar="${dist.dir}/${jar.file}" fork="true">
       <sysproperty key=".level" value="INFO"/>
       <jvmarg value="-server"/>
     </java>
@@ -59,8 +74,7 @@
 
   <target name="clean" description="Delete all generated files.">
     <delete dir="${build.dir}"/>
-    <delete dir="${doc.dir}/javadoc"/>
-    <delete file="${jar.file}"/>
+    <delete dir="${dist.dir}"/>
   </target>
 
   <target name="format" description="Run the indenter on all source files.">
@@ -73,15 +87,16 @@
   </target>
 
   <target name="check">
-    <checkstyle config="doc/sun_checks.xml">
+    <checkstyle config="sun_checks.xml">
       <fileset dir="src" includes="**/*.java"/>
     </checkstyle>
   </target>
 
   <target name="javadoc" description="Generate Javadoc HTML.">
-    <javadoc destdir="${doc.dir}/javadoc">
+    <javadoc destdir="${dist.dir}/javadoc">
       <fileset dir="src" includes="**/*.java"/>
     </javadoc>
+    <zip destfile="${dist.dir}/javadoc.zip" basedir="${dist.dir}/javadoc"/>
   </target>
 
   <target name="tags" description="Generate a TAGS file for your editor.">
@@ -95,23 +110,36 @@
 
   <target name="applet" depends="jar" description="Run the applet version.">
     <exec executable="appletviewer">
-      <arg value="${applet.html}"/>
+      <arg value="${dist.dir}/${applet.html}"/>
     </exec>
   </target>
 
-  <target name="optimize" depends="jar">
-    <proguard>
-      <libraryjar path="${java.home}/lib/rt.jar"/>
-      <injar file="${jar.file}"/>
-      <outjar file="out.${jar.file}"/>
-      <keepclasseswithmembers access="public" type="class">
-	<method access="public" type="void" name="main"
-		parameters="java.lang.String[]"/>
-      </keepclasseswithmembers>
-      <keep access="public" type="class" extends="javax.swing.JApplet"/>
-    </proguard>
-    <delete file="${jar.file}"/>
-    <move file="out.${jar.file}" tofile="${jar.file}"/>
+  <target name="exe" depends="jar"
+	  description="Create a Windows .exe wrapper.">
+    <launch4j configFile="launch4j.xml"/>
+  </target>
+
+  <target name="dist" depends="exe,javadoc">
+    <exec executable="git">
+      <arg value="archive"/>
+      <arg value="--prefix=Chess-src${append.version}/"/>
+      <arg value="--output=${dist.dir}/Chess-src${append.version}.zip"/>
+      <arg value="HEAD"/>
+    </exec>
+    <exec executable="makensis">
+      <arg value="-DVERSION=${version}"/>
+      <arg value="chess.nsi"/>
+    </exec>
+  </target>
+
+  <target name="deploy" depends="dist">
+    <!-- Ant's SCP task is a piece of shit. -->
+    <exec executable="scp" dir="${dist.dir}">
+      <arg value="${jar.file}"/>
+      <arg value="${applet.html}"/>
+      <arg value="october-chess-${version}-installer.exe"/>
+      <arg value="${deploy.dir}"/>
+    </exec>
   </target>
 
   <!-- JUnit -->

@@ -18,14 +18,16 @@ import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Game;
 
+import com.nullprogram.chess.Chess;
 import com.nullprogram.chess.GameListener;
 import com.nullprogram.chess.boards.EmptyBoard;
+import com.nullprogram.chess.pieces.ImageServer;
 
 /**
  * The JFrame that contains all GUI elements.
  */
 public class ChessFrame extends JFrame
-            implements ComponentListener, GameListener {
+    implements ComponentListener, GameListener {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
@@ -46,10 +48,11 @@ public class ChessFrame extends JFrame
      * Create a new ChessFrame for the given board.
      */
     public ChessFrame() {
-        super("Chess");
+        super(Chess.getTitle());
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(ImageServer.getTile("King-WHITE"));
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         handler = new MenuHandler(this);
@@ -116,9 +119,6 @@ public class ChessFrame extends JFrame
         /** The "Game" menu. */
         private JMenu game;
 
-        /** The "Action" menu. */
-        private JMenu action;
-
         /** The parent chess frame, for callbacks. */
         private ChessFrame frame;
 
@@ -164,15 +164,6 @@ public class ChessFrame extends JFrame
             game.add(exitGame);
             menuBar.add(game);
 
-            action = new JMenu("Action");
-            action.setMnemonic('A');
-            action.setEnabled(false);
-            JMenuItem undo = new JMenuItem("Undo");
-            undo.setMnemonic('U');
-            undo.addActionListener(this);
-            action.add(undo);
-            menuBar.add(action);
-
             setJMenuBar(menuBar);
         }
 
@@ -182,7 +173,6 @@ public class ChessFrame extends JFrame
          * @param mode tell menu which mode it's in
          */
         public void gameMode(final boolean mode) {
-            action.setEnabled(mode);
             gameMode = mode;
         }
     }

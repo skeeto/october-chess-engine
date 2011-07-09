@@ -118,10 +118,8 @@ public class NewGame extends JDialog implements ActionListener {
     private Player createPlayer(final String name) {
         if ("human".equals(name)) {
             return parent.getPlayer();
-        } else if ("computer".equals(name)) {
-            return new Minimax();
         } else {
-            return null;
+            return new Minimax(name);
         }
     }
 

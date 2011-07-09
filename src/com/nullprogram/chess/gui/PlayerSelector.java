@@ -23,11 +23,13 @@ public class PlayerSelector extends JPanel {
     /** JList labels for the user. */
     private static final String[] LABELS_AI = {
         "Easy (2 plies)", "Medium (4 plies)", "Hard (6 plies)",
-        "Challenging (8 plies)"};
+        "Challenging (8 plies)"
+    };
 
     /** Configuration names corresponding to LABELS_AI. */
     private static final String[] NAMES_AI = {
-        "easy", "medium", "hard", "challenge"};
+        "easy", "medium", "hard", "challenge"
+    };
 
     /** Selection for a human player. */
     private JRadioButton human = new JRadioButton("Human");;
@@ -65,15 +67,15 @@ public class PlayerSelector extends JPanel {
         ai.setEnabled(!humanSet);
 
         human.addActionListener(new ActionListener() {
-                public final void actionPerformed(final ActionEvent e) {
-                    ai.setEnabled(!human.isSelected());
-                }
-            });
+            public final void actionPerformed(final ActionEvent e) {
+                ai.setEnabled(!human.isSelected());
+            }
+        });
         minimax.addActionListener(new ActionListener() {
-                public final void actionPerformed(final ActionEvent e) {
-                    ai.setEnabled(minimax.isSelected());
-                }
-            });
+            public final void actionPerformed(final ActionEvent e) {
+                ai.setEnabled(minimax.isSelected());
+            }
+        });
 
         add(human);
         add(minimax);

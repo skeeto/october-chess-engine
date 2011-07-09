@@ -27,7 +27,7 @@ import com.nullprogram.chess.pieces.ImageServer;
  * The JFrame that contains all GUI elements.
  */
 public class ChessFrame extends JFrame
-            implements ComponentListener, GameListener {
+    implements ComponentListener, GameListener {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;

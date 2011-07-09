@@ -47,13 +47,7 @@
 	  description="Generate the jarfile distributable.">
     <jar destfile="${dist.dir}/${jar.file}">
       <fileset dir="${build.classes.dir}"/>
-      <fileset dir="${src.dir}" includes="**/*.java"/>
       <fileset file="UNLICENSE"/>
-      <fileset file="build.xml"/>
-      <fileset file="launch4j.xml"/>
-      <fileset file="sun_checks.xml"/>
-      <fileset file="HACKING"/>
-      <fileset file="AUTHORS"/>
       <fileset file="README"/>
       <manifest>
         <attribute name="Main-Class" value="com.nullprogram.chess.Chess"/>

@@ -18,6 +18,7 @@ import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Game;
 
+import com.nullprogram.chess.Chess;
 import com.nullprogram.chess.GameListener;
 import com.nullprogram.chess.boards.EmptyBoard;
 import com.nullprogram.chess.pieces.ImageServer;
@@ -47,7 +48,7 @@ public class ChessFrame extends JFrame
      * Create a new ChessFrame for the given board.
      */
     public ChessFrame() {
-        super("Chess");
+        super(Chess.getTitle());
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

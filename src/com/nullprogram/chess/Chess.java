@@ -1,5 +1,9 @@
 package com.nullprogram.chess;
 
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.Handler;
@@ -15,6 +19,9 @@ import com.nullprogram.chess.gui.ChessFrame;
 public final class Chess {
     /** This class's Logger. */
     private static final Logger LOG = Logger.getLogger("Chess");
+
+    /** The program's running title, prefix only. */
+    private static final String TITLE_PREFIX = "October Chess";
 
     /**
      * Hidden constructor.
@@ -53,5 +60,23 @@ public final class Chess {
             LOG.warning("Failed to set 'Look and Feel'");
         }
         ChessFrame frame = new ChessFrame();
+    }
+
+    /**
+     * Returns the full title for the program, including version number.
+     *
+     * @return the title of the program
+     */
+    public static String getTitle() {
+        String version = "";
+        try {
+            InputStream s = Chess.class.getResourceAsStream("/version.txt");
+            BufferedReader in = new BufferedReader(new InputStreamReader(s));
+            version = in.readLine();
+        } catch (java.io.IOException e) {
+            LOG.warning("failed to read version info");
+            version = "";
+        }
+        return TITLE_PREFIX + " " + version;
     }
 }

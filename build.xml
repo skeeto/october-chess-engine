@@ -111,7 +111,13 @@
     <launch4j configFile="launch4j.xml"/>
   </target>
 
-  <target name="deploy" depends="jar">
+  <target name="dist" depends="exe">
+    <exec executable="makensis">
+      <arg value="chess.nsi"/>
+    </exec>
+  </target>
+
+  <target name="deploy" depends="dist">
     <!-- Ant's SCP task is a piece of shit. -->
     <exec executable="scp" dir="${dist.dir}">
       <arg value="${jar.file}"/>

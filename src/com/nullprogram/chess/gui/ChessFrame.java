@@ -20,6 +20,7 @@ import com.nullprogram.chess.Game;
 
 import com.nullprogram.chess.GameListener;
 import com.nullprogram.chess.boards.EmptyBoard;
+import com.nullprogram.chess.pieces.ImageServer;
 
 /**
  * The JFrame that contains all GUI elements.
@@ -50,6 +51,7 @@ public class ChessFrame extends JFrame
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setIconImage(ImageServer.getTile("King-WHITE"));
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         handler = new MenuHandler(this);

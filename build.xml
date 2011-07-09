@@ -38,6 +38,7 @@
       <fileset file="UNLICENSE"/>
       <fileset file="build.xml"/>
       <fileset file="launch4j.xml"/>
+      <fileset file="sun_checks.xml"/>
       <fileset file="HACKING"/>
       <fileset file="AUTHORS"/>
       <fileset file="README"/>

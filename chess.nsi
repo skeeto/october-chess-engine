@@ -20,6 +20,7 @@ section
   setOutPath $INSTDIR
   file dist/Chess.exe
   file dist/Chess-src*.zip
+  file dist/javadoc.zip
   writeUninstaller $INSTDIR\uninstall.exe
   createShortCut "$SMPROGRAMS\October Chess.lnk" "$INSTDIR\Chess.exe"
   createShortCut "$DESKTOP\October Chess.lnk" "$INSTDIR\Chess.exe"

@@ -5,7 +5,6 @@
   <property name="build.dir" value="build"/>
   <property name="dist.dir" value="dist"/>
   <property name="test.dir" value="test"/>
-  <property name="doc.dir" value="doc"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="test.classes.dir" value="${build.dir}/test"/>
   <property name="applet.html" value="applet.html"/>
@@ -92,9 +91,10 @@
   </target>
 
   <target name="javadoc" description="Generate Javadoc HTML.">
-    <javadoc destdir="${doc.dir}/javadoc">
+    <javadoc destdir="${dist.dir}/javadoc">
       <fileset dir="src" includes="**/*.java"/>
     </javadoc>
+    <zip destfile="${dist.dir}/javadoc.zip" basedir="${dist.dir}/javadoc"/>
   </target>
 
   <target name="tags" description="Generate a TAGS file for your editor.">
@@ -117,7 +117,7 @@
     <launch4j configFile="launch4j.xml"/>
   </target>
 
-  <target name="dist" depends="exe">
+  <target name="dist" depends="exe,javadoc">
     <exec executable="git">
       <arg value="archive"/>
       <arg value="--prefix=Chess-src${append.version}/"/>

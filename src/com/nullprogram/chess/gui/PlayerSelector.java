@@ -1,5 +1,6 @@
 package com.nullprogram.chess.gui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -57,6 +58,7 @@ public class PlayerSelector extends JPanel {
         JLabel label = new JLabel(title);
         add(label);
 
+        /* Set up widgets. */
         ButtonGroup group = new ButtonGroup();
         group.add(human);
         group.add(minimax);
@@ -66,6 +68,12 @@ public class PlayerSelector extends JPanel {
         ai.setSelectedIndex(1);
         ai.setEnabled(!humanSet);
 
+        /* Set up widget alignment. */
+        human.setAlignmentX(Component.LEFT_ALIGNMENT);
+        minimax.setAlignmentX(Component.LEFT_ALIGNMENT);
+        ai.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        /* Set up list enable/disable. */
         human.addActionListener(new ActionListener() {
             public final void actionPerformed(final ActionEvent e) {
                 ai.setEnabled(!human.isSelected());
@@ -80,7 +88,6 @@ public class PlayerSelector extends JPanel {
         add(human);
         add(minimax);
         add(ai);
-
         setBorder(BorderFactory.createEmptyBorder(H_PADDING, V_PADDING,
                   H_PADDING, V_PADDING));
     }

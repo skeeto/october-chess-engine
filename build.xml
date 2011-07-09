@@ -10,6 +10,8 @@
   <property name="test.classes.dir" value="${build.dir}/test"/>
   <property name="applet.html" value="applet.html"/>
 
+  <property file="local.properties"/>
+
   <taskdef resource="checkstyletask.properties"/>
   <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
 
@@ -107,6 +109,15 @@
   <target name="exe" depends="jar"
 	  description="Create a Windows .exe wrapper.">
     <launch4j configFile="launch4j.xml"/>
+  </target>
+
+  <target name="deploy" depends="jar">
+    <!-- Ant's SCP task is a piece of shit. -->
+    <exec executable="scp" dir="${dist.dir}">
+      <arg value="${jar.file}"/>
+      <arg value="${applet.html}"/>
+      <arg value="${deploy.dir}"/>
+    </exec>
   </target>
 
   <!-- JUnit -->

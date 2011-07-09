@@ -6,6 +6,7 @@ Name "October Chess Engine"
 Outfile "dist/october-chess-${VERSION}-installer.exe"
 XPStyle on
 
+!insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH

@@ -28,6 +28,7 @@
         <equals arg1="${git.status}" arg2="0"/>
       </and>
     </condition>
+    <property name="version" value=""/>
     <echo file="${build.classes.dir}/version.txt" message="${version}"/>
   </target>
 

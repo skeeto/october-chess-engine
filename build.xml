@@ -54,6 +54,8 @@
       </manifest>
     </jar>
     <copy file="${applet.html}" todir="${dist.dir}"/>
+    <replace file="${dist.dir}/${applet.html}"
+	     token="$VERSION" value="${version}"/>
   </target>
 
   <target name="run" depends="jar" description="Run the application.">
@@ -135,6 +137,7 @@
     <exec executable="scp" dir="${dist.dir}">
       <arg value="${jar.file}"/>
       <arg value="${applet.html}"/>
+      <arg value="october-chess-${version}-installer.exe"/>
       <arg value="${deploy.dir}"/>
     </exec>
   </target>

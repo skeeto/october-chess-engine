@@ -1,5 +1,3 @@
-!define INST "October Chess"
-
 !include "MUI2.nsh"
 
 Name "October Chess Engine"
@@ -11,9 +9,11 @@ XPStyle on
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
-InstallDir "$PROGRAMFILES\${INST}"
+InstallDir "$PROGRAMFILES\October Chess"
 
 !insertmacro MUI_LANGUAGE "English"
+
+!define ADDREM "Software\Microsoft\Windows\CurrentVersion\Uninstall"
 
 section
   SetShellVarContext all
@@ -21,16 +21,21 @@ section
   file dist/Chess.exe
   file dist/Chess-src*.zip
   writeUninstaller $INSTDIR\uninstall.exe
-  CreateDirectory "$SMPROGRAMS\${INST}"
-  createShortCut "$SMPROGRAMS\${INST}\October Chess.lnk" "$INSTDIR\Chess.exe"
-  createShortCut "$SMPROGRAMS\${INST}\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+  createShortCut "$SMPROGRAMS\October Chess.lnk" "$INSTDIR\Chess.exe"
   createShortCut "$DESKTOP\October Chess.lnk" "$INSTDIR\Chess.exe"
+  WriteRegStr HKLM "${ADDREM}\OctoberChess" \
+                   "DisplayName" "October Chess"
+  WriteRegStr HKLM "${ADDREM}\OctoberChess" \
+  	           "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
+  WriteRegStr HKLM "${ADDREM}\OctoberChess" \
+                   "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
 sectionEnd
 
 section "Uninstall"
   SetShellVarContext all
   delete $INSTDIR\uninstall.exe
   RMDir /r $INSTDIR
-  RMDir /r "$SMPROGRAMS\${INST}"
+  delete "$SMPROGRAMS\October Chess.lnk"
   delete "$DESKTOP\October Chess.lnk"
+  DeleteRegKey HKLM "${ADDREM}\OctoberChess"
 sectionEnd

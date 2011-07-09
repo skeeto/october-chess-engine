@@ -18,6 +18,17 @@
   <target name="init">
     <mkdir dir="${dist.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
+    <exec executable="git" outputproperty="version"
+	  resultproperty="git.status" failifexecutionfails="false">
+      <arg value="describe"/>
+    </exec>
+    <condition property="append.version" value="-${version}" else="">
+      <and>
+        <isset property="version"/>
+        <equals arg1="${git.status}" arg2="0"/>
+      </and>
+    </condition>
+    <echo file="${build.classes.dir}/version.txt" message="${version}"/>
   </target>
 
   <target name="compile" depends="init"
@@ -112,7 +123,14 @@
   </target>
 
   <target name="dist" depends="exe">
+    <exec executable="git">
+      <arg value="archive"/>
+      <arg value="--prefix=Chess-src${append.version}/"/>
+      <arg value="--output=${dist.dir}/Chess-src${append.version}.zip"/>
+      <arg value="HEAD"/>
+    </exec>
     <exec executable="makensis">
+      <arg value="-DVERSION=${version}"/>
       <arg value="chess.nsi"/>
     </exec>
   </target>

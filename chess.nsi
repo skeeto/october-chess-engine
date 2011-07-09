@@ -1,4 +1,3 @@
-!define VERSION "1.0.1"
 !define INST "October Chess"
 
 !include "MUI2.nsh"
@@ -19,6 +18,7 @@ section
   SetShellVarContext all
   setOutPath $INSTDIR
   file dist/Chess.exe
+  file dist/Chess-src*.zip
   writeUninstaller $INSTDIR\uninstall.exe
   CreateDirectory "$SMPROGRAMS\${INST}"
   createShortCut "$SMPROGRAMS\${INST}\October Chess.lnk" "$INSTDIR\Chess.exe"
@@ -30,8 +30,6 @@ section "Uninstall"
   SetShellVarContext all
   delete $INSTDIR\uninstall.exe
   RMDir /r $INSTDIR
-  delete "$SMPROGRAMS\${INST}\October Chess.lnk"
-  delete "$SMPROGRAMS\${INST}\Uninstall.lnk"
-  RMDir "$SMPROGRAMS\${INST}"
+  RMDir /r "$SMPROGRAMS\${INST}"
   delete "$DESKTOP\October Chess.lnk"
 sectionEnd

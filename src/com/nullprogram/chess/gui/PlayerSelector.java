@@ -37,6 +37,9 @@ public class PlayerSelector extends JPanel {
         "depth2", "depth3", "depth4", "depth5", "depth6", "depth7", "depth8",
     };
 
+    /** The default AI selection in the JList. */
+    private static final int DEFAULT_AI = 2;
+
     /** Selection for a human player. */
     private JRadioButton human = new JRadioButton("Human");;
 
@@ -70,7 +73,7 @@ public class PlayerSelector extends JPanel {
         human.setSelected(humanSet);
         minimax.setSelected(!humanSet);
         ai.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        ai.setSelectedIndex(1);
+        ai.setSelectedIndex(DEFAULT_AI);
         ai.setEnabled(!humanSet);
 
         /* Set up widget alignment. */

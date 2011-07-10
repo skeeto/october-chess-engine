@@ -31,15 +31,6 @@ public class NewGame extends JDialog implements ActionListener {
     /** Parent to this dialog. */
     private ChessFrame parent;
 
-    /** The selected white player. */
-    private Player white;
-
-    /** The selected black player. */
-    private Player black;
-
-    /** The selected board. */
-    private Board board;
-
     /** White player selector. */
     private PlayerSelector whitePanel;
 
@@ -54,6 +45,9 @@ public class NewGame extends JDialog implements ActionListener {
 
     /** Horizontal padding around this panel. */
     static final int H_PADDING = 10;
+
+    /** True if the dialog was cancelled away. */
+    private boolean cancelled = true;
 
     /**
      * Create a new dialog to ask the user for the game configuration.
@@ -96,14 +90,7 @@ public class NewGame extends JDialog implements ActionListener {
     @Override
     public final void actionPerformed(final ActionEvent e) {
         if ("OK".equals(e.getActionCommand())) {
-            /* Lock in selection. */
-            white = createPlayer(whitePanel.getPlayer());
-            black = createPlayer(blackPanel.getPlayer());
-            board = createBoard(boardPanel.getBoard());
-        } else {
-            white = null;
-            black = null;
-            board = null;
+            cancelled = false;
         }
         setVisible(false);
         dispose();
@@ -112,14 +99,15 @@ public class NewGame extends JDialog implements ActionListener {
     /**
      * Create a new Player instance based on the given string.
      *
+     * @param game the game the player will be playing
      * @param name name of type of player
      * @return player of named type
      */
-    private Player createPlayer(final String name) {
+    private Player createPlayer(final Game game, final String name) {
         if ("human".equals(name)) {
             return parent.getPlayer();
         } else {
-            return new Minimax(name);
+            return new Minimax(game, name);
         }
     }
 
@@ -145,9 +133,13 @@ public class NewGame extends JDialog implements ActionListener {
      * @return the new game
      */
     public final Game getGame() {
-        if ((white == null) || (black == null)) {
+        if (cancelled) {
             return null;
         }
-        return new Game(board, white, black);
+        Game game = new Game(createBoard(boardPanel.getBoard()));
+        Player white = createPlayer(game, whitePanel.getPlayer());
+        Player black = createPlayer(game, blackPanel.getPlayer());
+        game.seat(white, black);
+        return game;
     }
 }

@@ -44,11 +44,8 @@ public class Minimax implements Player {
     private static final int NTHREADS
     = Runtime.getRuntime().availableProcessors();
 
-    /** Board the AI will be playing on. */
-    private Board board;
-
     /** Local friendly game controller. */
-    private Game game;
+    private final Game game;
 
     /** Side this AI plays. */
     private Piece.Side side;
@@ -85,26 +82,31 @@ public class Minimax implements Player {
 
     /**
      * Create the default Minimax.
+     *
+     * @param active the game this AI is being seated at
      */
-    public Minimax() {
-        this("default");
+    public Minimax(final Game active) {
+        this(active, "default");
     }
 
     /**
      * Create a new AI from a given properties name.
      *
+     * @param active the game this AI is being seated at
      * @param name      name of configuration to use
      */
-    public Minimax(final String name) {
-        this(getConfig(name));
+    public Minimax(final Game active, final String name) {
+        this(active, getConfig(name));
     }
 
     /**
      * Create a new AI for the given board.
      *
+     * @param active the game this AI is being seated at
      * @param props     properties for this player
      */
-    public Minimax(final Properties props) {
+    public Minimax(final Game active, final Properties props) {
+        game = active;
         values = new HashMap<Class, Double>();
         config = props;
 
@@ -156,14 +158,8 @@ public class Minimax implements Player {
     }
 
     @Override
-    public final void setGame(final Game currentGame) {
-        game = currentGame;
-    }
-
-    @Override
-    public final void setActive(final Board curBoard,
-                                final Piece.Side currentSide) {
-        board = curBoard;
+    public final Move takeTurn(final Board board,
+                               final Piece.Side currentSide) {
         side = currentSide;
 
         /* Gather up every move. */
@@ -220,7 +216,7 @@ public class Minimax implements Player {
         long time = (System.currentTimeMillis() - startTime);
         LOG.info("AI took " + (time / MILLI) + " seconds ("
                  + NTHREADS + " threads, " + maxDepth + " plies)");
-        game.move(bestMove);
+        return bestMove;
     }
 
     /**
@@ -330,10 +326,5 @@ public class Minimax implements Player {
     private double mobilityValue(final Board b) {
         return b.allMoves(side, false).size()
                - b.allMoves(Piece.opposite(side), false).size();
-    }
-
-    @Override
-    public final void setBoard(final Board b) {
-        board = b;
     }
 }

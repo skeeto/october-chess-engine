@@ -1,8 +1,8 @@
 package com.nullprogram.chess;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Logger;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Drives a game of chess, given players and a board.
@@ -33,13 +33,14 @@ public class Game implements Runnable {
     private float progress;
 
     /** Set to true when the board is in a completed state. */
-    private volatile Boolean done;
+    private volatile Boolean done = false;
 
     /** When the game is done, this is the winner. */
     private Piece.Side winner;
 
     /** List of event listeners. */
-    private List<GameListener> listeners;
+    private Collection<GameListener> listeners
+    = new CopyOnWriteArraySet<GameListener>();
 
     /**
      * Hidden constructor.
@@ -51,31 +52,21 @@ public class Game implements Runnable {
      * Create a new game with the given board and players.
      *
      * @param gameBoard   the game board
-     * @param whitePlayer the player playing white
-     * @param blackPlayer the player playing black
      */
-    public Game(final Board gameBoard,
-                final Player whitePlayer,
-                final Player blackPlayer) {
-        done = false;
+    public Game(final Board gameBoard) {
         board = gameBoard;
-        white = whitePlayer;
-        black = blackPlayer;
-        white.setGame(this);
-        black.setGame(this);
-        listeners = new ArrayList<GameListener>();
     }
 
     /**
-     * Begin the game.
+     * Seat the given players at this game.
+     *
+     * @param whitePlayer the player playing white
+     * @param blackPlayer the player playing black
      */
-    public final void begin() {
-        done = false;
-        turn = Piece.Side.BLACK;
-        callListeners();
-        if (!done) {
-            (new Thread(this)).start();
-        }
+    public final void seat(final Player whitePlayer,
+                           final Player blackPlayer) {
+        white = whitePlayer;
+        black = blackPlayer;
     }
 
     /**
@@ -87,81 +78,56 @@ public class Game implements Runnable {
     }
 
     /**
-     * Perform a turn of the game.
-     *
-     * @param move the move action to take
+     * Begin the game.
      */
-    public final void move(final Move move) {
-        if (done) {
-            return;
-        }
-        board.move(move);
-        Piece.Side opp = Piece.opposite(turn);
-        if (board.checkmate(opp) || board.stalemate(opp)) {
-            if (opp == Piece.Side.BLACK) {
-                setStatus("White wins!");
-                winner = Piece.Side.WHITE;
-            } else if (opp == Piece.Side.WHITE) {
-                setStatus("Black wins!");
-                winner = Piece.Side.BLACK;
-            } else {
-                setStatus("Stalemate!");
-                winner = null;
-            }
-            setProgress(0);
-            done = true;
-            white.setBoard(board);
-            black.setBoard(board);
-            callListeners();
-            return;
-        }
-        callListeners();
-        if (!done) {
-            (new Thread(this)).start();
-        }
+    public final void begin() {
+        done = false;
+        turn = Piece.Side.BLACK;
+        callGameListeners();
+        new Thread(this).start();
     }
 
-    /**
-     * The thread that fires off the next player.
-     */
+    @Override
     public final void run() {
-        switchTurns();
-    }
+        while (!done) {
+            setProgress(0);
 
-    /**
-     * Switch the turn variable and inform the player.
-     */
-    private void switchTurns() {
-        if (turn == Piece.Side.WHITE) {
-            turn = Piece.Side.BLACK;
-            turnStatus();
-            black.setActive(board.copy(), turn);
-        } else {
-            turn = Piece.Side.WHITE;
-            turnStatus();
-            white.setActive(board.copy(), turn);
+            /* Determine who's turn it is. */
+            Player player;
+            if (turn == Piece.Side.WHITE) {
+                turn = Piece.Side.BLACK;
+                setStatus("Black's turn.");
+                player = black;
+            } else {
+                turn = Piece.Side.WHITE;
+                setStatus("White's turn.");
+                player = white;
+            }
+
+            /* Fetch the move from the player. */
+            Move move = player.takeTurn(getBoard(), turn);
+            board.move(move);
+
+            /* Check for the end of the game. */
+            Piece.Side opp = Piece.opposite(turn);
+            if (board.checkmate(opp) || board.stalemate(opp)) {
+                if (opp == Piece.Side.BLACK) {
+                    setStatus("White wins!");
+                    winner = Piece.Side.WHITE;
+                } else if (opp == Piece.Side.WHITE) {
+                    setStatus("Black wins!");
+                    winner = Piece.Side.BLACK;
+                } else {
+                    setStatus("Stalemate!");
+                    winner = null;
+                }
+                setProgress(0);
+                done = true;
+                callGameListeners();
+                return;
+            }
+            callGameListeners();
         }
-    }
-
-    /**
-     * Try to undo the last move in the game.
-     */
-    public final void undo() {
-        board.undo();
-        switchTurns();
-        /* Still need to inform active player of this! */
-    }
-
-    /**
-     * Display the current turn status.
-     */
-    private void turnStatus() {
-        if (turn == Piece.Side.WHITE) {
-            setStatus("White's turn.");
-        } else {
-            setStatus("Black's turn.");
-        }
-        setProgress(0);
     }
 
     /**
@@ -170,7 +136,7 @@ public class Game implements Runnable {
      * @return the game's board
      */
     public final Board getBoard() {
-        return board;
+        return board.copy();
     }
 
     /**
@@ -178,14 +144,14 @@ public class Game implements Runnable {
      *
      * @param listener the new event listener
      */
-    public final void addListener(final GameListener listener) {
+    public final void addGameListener(final GameListener listener) {
         listeners.add(listener);
     }
 
     /**
      * Call all of the game event listeners.
      */
-    private void callListeners() {
+    private void callGameListeners() {
         for (GameListener listener : listeners) {
             listener.gameEvent(this);
         }
@@ -220,7 +186,7 @@ public class Game implements Runnable {
             throw new NullPointerException();
         }
         status = message;
-        callListeners();
+        callGameListeners();
     }
 
     /**
@@ -240,7 +206,7 @@ public class Game implements Runnable {
     public final void setProgress(final float value) {
         LOG.finest("Game progress: " + value);
         progress = value;
-        callListeners();
+        callGameListeners();
     }
 
     /**

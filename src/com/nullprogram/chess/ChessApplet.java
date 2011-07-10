@@ -35,8 +35,10 @@ public final class ChessApplet extends JApplet implements GameListener {
         StandardBoard board = new StandardBoard();
         BoardPanel panel = new BoardPanel(board);
         add(panel);
-        Game game = new Game(board, panel, new Minimax());
-        game.addListener(this);
+        Game game = new Game(board);
+        game.seat(panel, new Minimax(game));
+        game.addGameListener(this);
+        game.addGameListener(panel);
         game.begin();
     }
 

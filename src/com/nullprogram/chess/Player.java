@@ -3,14 +3,8 @@ package com.nullprogram.chess;
 /**
  * A Player is a class that can take a turn.
  *
- * The game driver will call setActive() on a player when it is the
- * player's turn. The player performs a move by calling move() on the
- * game engine, which will inform the next player with setActive().
- *
- * Players should execute their moves from a different thread than the
- * thread that called setActive(). For example, in an AI player's
- * setActive() it would fire off a new thread to begin calculating the
- * move and <i>that</i> thread calls move() on the game.
+ * The game driver will call takeTurn() on a player when it is the
+ * player's turn. The player returns the desired move.
  */
 public interface Player {
 
@@ -19,20 +13,7 @@ public interface Player {
      *
      * @param board the current board
      * @param side  the player's side
+     * @return the selected move for this player
      */
-    void setActive(Board board, Piece.Side side);
-
-    /**
-     * Set the game the player belongs to.
-     *
-     * @param game the player's game
-     */
-    void setGame(Game game);
-
-    /**
-     * Give the player the current board without beginning a turn.
-     *
-     * @param board the current game board
-     */
-    void setBoard(Board board);
+    Move takeTurn(Board board, Piece.Side side);
 }

@@ -1,5 +1,6 @@
 package com.nullprogram.chess.gui;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 import java.awt.Shape;
 import java.awt.Color;
@@ -26,7 +27,7 @@ import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.MoveList;
 import com.nullprogram.chess.Position;
-import com.nullprogram.chess.BoardListener;
+import com.nullprogram.chess.GameListener;
 
 /**
  * Displays a board and exposes local players.
@@ -35,7 +36,7 @@ import com.nullprogram.chess.BoardListener;
  * player as needed.
  */
 public class BoardPanel extends JComponent
-    implements MouseListener, Player, BoardListener {
+    implements MouseListener, Player, GameListener {
     /** This class's Logger. */
     private static final Logger LOG = Logger.getLogger("gui.BoardPanel");
 
@@ -68,9 +69,6 @@ public class BoardPanel extends JComponent
 
     /** Indicate flipped status. */
     private boolean flipped = true;
-
-    /** The game engine used when the board is behaving as a player. */
-    private Game game;
 
     /** The currently selected tile. */
     private Position selected = null;
@@ -112,6 +110,12 @@ public class BoardPanel extends JComponent
 
     /** Current player making a move, when interactive. */
     private Piece.Side side;
+
+    /** Latch to hold down the Game thread while the user makes a selection. */
+    private CountDownLatch latch;
+
+    /** The move selected by the player. */
+    private Move selectedMove;
 
     /**
      * Hidden constructor.
@@ -305,10 +309,10 @@ public class BoardPanel extends JComponent
                 /* Move selected piece */
                 mode = Mode.WAIT;
                 Move move = moves.getMoveByDest(pos);
-                board.move(move);
-                game.move(move);
                 selected = null;
                 moves = null;
+                selectedMove = move;
+                latch.countDown();
             } else {
                 /* Select this position */
                 Piece p = board.getPiece(pos);
@@ -343,25 +347,24 @@ public class BoardPanel extends JComponent
     }
 
     @Override
-    public final void setActive(final Board turnBoard,
-                                final Piece.Side currentSide) {
+    public final Move takeTurn(final Board turnBoard,
+                               final Piece.Side currentSide) {
+        latch = new CountDownLatch(1);
         board = turnBoard;
         side = currentSide;
-        mode = Mode.PLAYER;
         repaint();
-    }
-
-    /**
-     * Set the current game for this player.
-     *
-     * @param currentGame the game for this player
-     */
-    public final void setGame(final Game currentGame) {
-        game = currentGame;
+        mode = Mode.PLAYER;
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            LOG.warning("BoardPanel interrupted during turn.");
+        }
+        return selectedMove;
     }
 
     @Override
-    public final void boardChange(final Board b) {
+    public final void gameEvent(final Game game) {
+        board = game.getBoard();
         repaint();
     }
 

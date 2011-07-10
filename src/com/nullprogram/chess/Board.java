@@ -1,8 +1,5 @@
 package com.nullprogram.chess;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import com.nullprogram.chess.pieces.King;
 import com.nullprogram.chess.pieces.PieceFactory;
 
@@ -25,9 +22,6 @@ public abstract class Board {
 
     /** Moves taken in this game so far. */
     private MoveList moves = new MoveList(this);
-
-    /** BoardListeners to be informed of board changes. */
-    private List<BoardListener> listeners = new ArrayList<BoardListener>();
 
     /**
      * Create a new Piece array, effectively clearing the board.
@@ -187,7 +181,6 @@ public abstract class Board {
     public final void move(final Move move) {
         moves.add(move);
         execMove(move);
-        callListeners();
     }
 
     /**
@@ -222,7 +215,6 @@ public abstract class Board {
      */
     public final void undo() {
         execUndo(moves.pop());
-        callListeners();
     }
 
     /**
@@ -326,24 +318,6 @@ public abstract class Board {
             fresh.move(new Move(move));
         }
         return fresh;
-    }
-
-    /**
-     * Add a new BoardListener.
-     *
-     * @param listener the new listener
-     */
-    public final void addBoardListener(final BoardListener listener) {
-        listeners.add(listener);
-    }
-
-    /**
-     * Call all of the BoardListeners.
-     */
-    private void callListeners() {
-        for (BoardListener listener : listeners) {
-            listener.boardChange(this);
-        }
     }
 
     /**

@@ -84,22 +84,15 @@ public class ChessFrame extends JFrame
         }
         game = newGame;
         Board board = game.getBoard();
-        board.addBoardListener(display);
         display.setBoard(board);
         display.invalidate();
         setSize(getPreferredSize());
         handler.gameMode(true);
 
         progress.setGame(game);
-        game.addListener(this);
+        game.addGameListener(this);
+        game.addGameListener(display);
         game.begin();
-    }
-
-    /**
-     * Call undo() on the game.
-     */
-    public final void undo() {
-        game.undo();
     }
 
     /**
@@ -138,8 +131,6 @@ public class ChessFrame extends JFrame
         public final void actionPerformed(final ActionEvent e) {
             if ("New Game".equals(e.getActionCommand())) {
                 frame.newGame();
-            } else if ("Undo".equals(e.getActionCommand())) {
-                frame.undo();
             } else if ("Exit".equals(e.getActionCommand())) {
                 System.exit(0);
             }
@@ -203,7 +194,6 @@ public class ChessFrame extends JFrame
     @Override
     public final void gameEvent(final Game e) {
         progress.repaint();
-        display.repaint();
     }
 
     @Override

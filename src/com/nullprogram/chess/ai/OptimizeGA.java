@@ -133,11 +133,12 @@ public class OptimizeGA implements GameListener {
     private void launch(final Config whiteConf, final Config blackConf) {
         System.out.println(whiteConf);
         System.out.println(blackConf);
-        Player white = new Minimax(whiteConf.getProperties());
-        Player black = new Minimax(whiteConf.getProperties());
         Board board = new StandardBoard();
-        Game game = new Game(board, white, black);
-        game.addListener(this);
+        Game game = new Game(board);
+        Player white = new Minimax(game, whiteConf.getProperties());
+        Player black = new Minimax(game, blackConf.getProperties());
+        game.seat(white, black);
+        game.addGameListener(this);
         game.begin();
     }
 

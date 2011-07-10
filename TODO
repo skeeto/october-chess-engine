@@ -1,6 +1,5 @@
 * features
   * network multiplayer
-  * difficulty selection
   * pondering
     * progressive searching
     * time constrained instead of depth constrained

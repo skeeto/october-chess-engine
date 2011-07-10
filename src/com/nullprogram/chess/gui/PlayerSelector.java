@@ -23,13 +23,18 @@ public class PlayerSelector extends JPanel {
 
     /** JList labels for the user. */
     private static final String[] LABELS_AI = {
-        "Easy (2 plies)", "Medium (4 plies)", "Hard (6 plies)",
+        "Fool (2 plies)",
+        "Very Easy (3 plies)",
+        "Easy (4 plies)",
+        "Medium (5 plies)",
+        "Hard (6 plies)",
+        "Harder (7 plies)",
         "Challenging (8 plies)"
     };
 
     /** Configuration names corresponding to LABELS_AI. */
     private static final String[] NAMES_AI = {
-        "easy", "medium", "hard", "challenge"
+        "depth2", "depth3", "depth4", "depth5", "depth6", "depth7", "depth8",
     };
 
     /** Selection for a human player. */

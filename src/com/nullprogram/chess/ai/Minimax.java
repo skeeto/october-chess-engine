@@ -219,7 +219,7 @@ public class Minimax implements Player {
 
         long time = (System.currentTimeMillis() - startTime);
         LOG.info("AI took " + (time / MILLI) + " seconds ("
-                 + NTHREADS + " threads)");
+                 + NTHREADS + " threads, " + maxDepth + " plies)");
         game.move(bestMove);
     }
 
@@ -236,7 +236,8 @@ public class Minimax implements Player {
     private double search(final Board b, final int depth, final Piece.Side s,
                           final double alpha, final double beta) {
         if (depth == 0) {
-            return valuate(b);
+            double v = valuate(b);
+            return (s != side) ? -v : v;
         }
         Piece.Side opps = Piece.opposite(s);  // opposite side
         double best = alpha;

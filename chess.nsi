@@ -1,7 +1,7 @@
 !include "MUI2.nsh"
 
 Name "October Chess Engine"
-Outfile "dist/october-chess-${VERSION}-installer.exe"
+Outfile "dist\october-chess-${VERSION}-installer.exe"
 XPStyle on
 
 !insertmacro MUI_PAGE_WELCOME
@@ -22,8 +22,8 @@ InstallDir "$PROGRAMFILES\October Chess"
 section
   SetShellVarContext all
   setOutPath $INSTDIR
-  file dist/Chess.exe
-  file dist/Chess.jar
+  file dist\Chess.exe
+  file dist\Chess.jar
   writeUninstaller $INSTDIR\uninstall.exe
   WriteRegStr HKLM "${ADDREM}\OctoberChess" \
                    "DisplayName" "October Chess"
@@ -42,8 +42,8 @@ section "Desktop shortcut" DesktopLnk
 sectionEnd
 
 section "Source code" SourceCode
-  file dist/Chess-src*.zip
-  file dist/javadoc.zip
+  file dist\Chess-src*.zip
+  file dist\javadoc.zip
 sectionEnd
 
 section "Uninstall"

@@ -1,5 +1,8 @@
 package com.nullprogram.chess.gui;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Dimension;
@@ -19,6 +22,12 @@ public class StatusBar extends JComponent {
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;
+
+    /** Milliseconds to wait between display updates. */
+    private static final long REPAINT_DELAY = 1000L;
+
+    /** Seconds in a minute. */
+    private static final int MIN = 60;
 
     /** The current game being observed. */
     private Game game;
@@ -41,6 +50,9 @@ public class StatusBar extends JComponent {
     /** Horizontal padding around the progress bar. */
     static final int BAR_PADDING_X = 10;
 
+    /** Display update timer. */
+    private final Timer timer = new Timer(true);
+
     /**
      * Create a new status bar.
      *
@@ -53,6 +65,12 @@ public class StatusBar extends JComponent {
         setMinimumSize(null);
         setMaximumSize(null);
         game = observed;
+        timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    repaint();
+                }
+            }, 0L, REPAINT_DELAY);
     }
 
     /**
@@ -106,8 +124,17 @@ public class StatusBar extends JComponent {
         g.fillRect(BAR_PADDING_X, fh + BAR_PADDING_Y,
                    progress, BAR_HEIGHT);
 
+        /* Create ETA string. */
+        double secs = game.getETA();
+        String eta = " ";
+        if (secs < Double.POSITIVE_INFINITY) {
+            int min = (int) (secs / MIN);
+            int sec = (int) (secs - min * MIN);
+            eta = String.format(" (est %d:%02d)", min, sec);
+        }
+
         /* Draw the string. */
-        String status = game.getStatus();
+        String status = game.getStatus() + eta;
         g.setColor(STATUS_COLOR);
         int width = fm.stringWidth(status);
         int height = fm.getHeight();

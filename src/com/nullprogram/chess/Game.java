@@ -14,6 +14,9 @@ public class Game implements Runnable {
     /** This class's Logger. */
     private static final Logger LOG = Logger.getLogger("Game");
 
+    /** Conversion from milliseconds to seconds. */
+    private static final double MSEC_TO_SEC = 1000.0;
+
     /** The board being used for this game. */
     private Board board;
 
@@ -31,6 +34,12 @@ public class Game implements Runnable {
 
     /** Current progress (AI). */
     private float progress;
+
+    /** Time when progress bar was restarted. */
+    private long progressStart;
+
+    /** Time of last progress bar update. */
+    private long progressUpdate;
 
     /** Set to true when the board is in a completed state. */
     private volatile Boolean done = false;
@@ -215,7 +224,32 @@ public class Game implements Runnable {
     public final void setProgress(final float value) {
         LOG.finest("Game progress: " + value);
         progress = value;
+        if (value == 0) {
+            progressStart = System.currentTimeMillis();
+        }
+        progressUpdate = System.currentTimeMillis();
         callGameListeners(GameEvent.STATUS);
+    }
+
+    /**
+     * Estimated time remaining on the progress bar.
+     *
+     * @return the estimated seconds remaining
+     */
+    public final double getETA() {
+        long now = System.currentTimeMillis();
+        if (progress > 0) {
+            double pdiff = (progressUpdate - progressStart) / MSEC_TO_SEC;
+            double ndiff = (now - progressUpdate) / MSEC_TO_SEC;
+            double t = (pdiff / progress * (1.0 - progress)) - ndiff;
+            if (t < 0) {
+                return 0;
+            } else {
+                return t;
+            }
+        } else {
+            return Double.POSITIVE_INFINITY;
+        }
     }
 
     /**

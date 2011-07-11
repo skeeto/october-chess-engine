@@ -41,6 +41,12 @@ public class Game implements Runnable {
     /** Time of last progress bar update. */
     private long progressUpdate;
 
+    /** Normalized ETA value. */
+    private double etaUnit;
+
+    /** Weighting of old value in timing estimates. */
+    private static final double ALPHA = 0.4;
+
     /** Set to true when the board is in a completed state. */
     private volatile Boolean done = false;
 
@@ -226,6 +232,15 @@ public class Game implements Runnable {
         progress = value;
         if (value == 0) {
             progressStart = System.currentTimeMillis();
+            etaUnit = 0;
+        } else {
+            long diff = System.currentTimeMillis() - progressStart;
+            double unit = diff / value / MSEC_TO_SEC;
+            if (etaUnit == 0) {
+                etaUnit = unit;
+            } else {
+                etaUnit = ALPHA * etaUnit + (1 - ALPHA) * unit;
+            }
         }
         progressUpdate = System.currentTimeMillis();
         callGameListeners(GameEvent.STATUS);
@@ -239,9 +254,8 @@ public class Game implements Runnable {
     public final double getETA() {
         long now = System.currentTimeMillis();
         if (progress > 0) {
-            double pdiff = (progressUpdate - progressStart) / MSEC_TO_SEC;
-            double ndiff = (now - progressUpdate) / MSEC_TO_SEC;
-            double t = (pdiff / progress * (1.0 - progress)) - ndiff;
+            double diff = (now - progressUpdate) / MSEC_TO_SEC;
+            double t = (etaUnit * (1.0 - progress)) - diff;
             if (t < 0) {
                 return 0;
             } else {

@@ -1,7 +1,8 @@
 package com.nullprogram.chess.gui;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
+import java.util.concurrent.CountDownLatch;
+
 import java.awt.Shape;
 import java.awt.Color;
 import java.awt.Stroke;
@@ -20,13 +21,13 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
-import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Move;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.MoveList;
 import com.nullprogram.chess.Position;
+import com.nullprogram.chess.GameEvent;
 import com.nullprogram.chess.GameListener;
 
 /**
@@ -363,9 +364,11 @@ public class BoardPanel extends JComponent
     }
 
     @Override
-    public final void gameEvent(final Game game) {
-        board = game.getBoard();
-        repaint();
+    public final void gameEvent(final GameEvent e) {
+        board = e.getGame().getBoard();
+        if (e.getType() != GameEvent.STATUS) {
+            repaint();
+        }
     }
 
     /**

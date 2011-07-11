@@ -83,7 +83,7 @@ public class Game implements Runnable {
     public final void begin() {
         done = false;
         turn = Piece.Side.BLACK;
-        callGameListeners();
+        callGameListeners(GameEvent.TURN);
         new Thread(this).start();
     }
 
@@ -123,10 +123,10 @@ public class Game implements Runnable {
                 }
                 setProgress(0);
                 done = true;
-                callGameListeners();
+                callGameListeners(GameEvent.GAME_END);
                 return;
             }
-            callGameListeners();
+            callGameListeners(GameEvent.TURN);
         }
     }
 
@@ -150,10 +150,12 @@ public class Game implements Runnable {
 
     /**
      * Call all of the game event listeners.
+     *
+     * @param type the type of event that occured
      */
-    private void callGameListeners() {
+    private void callGameListeners(final int type) {
         for (GameListener listener : listeners) {
-            listener.gameEvent(this);
+            listener.gameEvent(new GameEvent(this, type));
         }
     }
 
@@ -186,7 +188,7 @@ public class Game implements Runnable {
             throw new NullPointerException();
         }
         status = message;
-        callGameListeners();
+        callGameListeners(GameEvent.STATUS);
     }
 
     /**
@@ -206,7 +208,7 @@ public class Game implements Runnable {
     public final void setProgress(final float value) {
         LOG.finest("Game progress: " + value);
         progress = value;
-        callGameListeners();
+        callGameListeners(GameEvent.STATUS);
     }
 
     /**

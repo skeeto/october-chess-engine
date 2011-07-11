@@ -19,6 +19,7 @@ import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Game;
 
 import com.nullprogram.chess.Chess;
+import com.nullprogram.chess.GameEvent;
 import com.nullprogram.chess.GameListener;
 import com.nullprogram.chess.boards.EmptyBoard;
 import com.nullprogram.chess.pieces.ImageServer;
@@ -192,7 +193,7 @@ public class ChessFrame extends JFrame
     }
 
     @Override
-    public final void gameEvent(final Game e) {
+    public final void gameEvent(final GameEvent e) {
         progress.repaint();
     }
 

@@ -9,7 +9,7 @@ public interface GameListener {
     /**
      * Called when a game event has occured.
      *
-     * @param game game where event occurred
+     * @param event  object describing the event
      */
-    void gameEvent(Game game);
+    void gameEvent(GameEvent event);
 }

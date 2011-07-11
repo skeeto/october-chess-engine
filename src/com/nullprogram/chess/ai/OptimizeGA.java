@@ -4,11 +4,12 @@ import java.util.Random;
 import java.util.Arrays;
 import java.util.Collections;
 
-import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Game;
-import com.nullprogram.chess.GameListener;
+import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Player;
+import com.nullprogram.chess.GameEvent;
+import com.nullprogram.chess.GameListener;
 
 import com.nullprogram.chess.boards.StandardBoard;
 
@@ -143,10 +144,11 @@ public class OptimizeGA implements GameListener {
     }
 
     @Override
-    public final void gameEvent(final Game game) {
+    public final void gameEvent(final GameEvent e) {
         boolean doScore = false;
         int adir = 0;
         int bdir = 0;
+        Game game = e.getGame();
         if (game.isDone()) {
             System.out.println("Game complete: ");
             if (game.getWinner() == Piece.Side.WHITE) {

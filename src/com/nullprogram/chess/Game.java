@@ -73,6 +73,7 @@ public class Game implements Runnable {
      * End the running game.
      */
     public final void end() {
+        listeners.clear();
         winner = null;
         done = true;
     }
@@ -106,6 +107,11 @@ public class Game implements Runnable {
             Move move = player.takeTurn(getBoard(), turn);
             board.move(move);
             setProgress(0);
+            if (done) {
+                /* Game may have ended abruptly during the player's
+                 * potentially lengthy turn. */
+                return;
+            }
 
             /* Check for the end of the game. */
             Piece.Side opp = Piece.opposite(turn);

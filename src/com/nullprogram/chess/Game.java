@@ -90,8 +90,6 @@ public class Game implements Runnable {
     @Override
     public final void run() {
         while (!done) {
-            setProgress(0);
-
             /* Determine who's turn it is. */
             Player player;
             if (turn == Piece.Side.WHITE) {
@@ -107,22 +105,25 @@ public class Game implements Runnable {
             /* Fetch the move from the player. */
             Move move = player.takeTurn(getBoard(), turn);
             board.move(move);
+            setProgress(0);
 
             /* Check for the end of the game. */
             Piece.Side opp = Piece.opposite(turn);
-            if (board.checkmate(opp) || board.stalemate(opp)) {
+            if (board.checkmate(opp)) {
+                done = true;
                 if (opp == Piece.Side.BLACK) {
                     setStatus("White wins!");
                     winner = Piece.Side.WHITE;
-                } else if (opp == Piece.Side.WHITE) {
+                } else {
                     setStatus("Black wins!");
                     winner = Piece.Side.BLACK;
-                } else {
-                    setStatus("Stalemate!");
-                    winner = null;
                 }
-                setProgress(0);
+                callGameListeners(GameEvent.GAME_END);
+                return;
+            } else if (board.stalemate(opp)) {
                 done = true;
+                setStatus("Stalemate!");
+                winner = null;
                 callGameListeners(GameEvent.GAME_END);
                 return;
             }

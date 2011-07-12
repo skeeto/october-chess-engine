@@ -1,6 +1,6 @@
 package com.nullprogram.chess;
 
-import java.awt.image.BufferedImage;
+import java.awt.Image;
 import com.nullprogram.chess.pieces.ImageServer;
 
 /**
@@ -148,7 +148,7 @@ public abstract class Piece {
      *
      * @return     image for this piece
      */
-    public final BufferedImage getImage() {
+    public final Image getImage() {
         return ImageServer.getTile(name + "-" + side);
     }
 

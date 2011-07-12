@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import java.awt.image.BufferedImage;
+import java.awt.Image;
 
 import javax.imageio.ImageIO;
 
@@ -19,8 +19,8 @@ public class ImageServer {
     private static final Logger LOG = Logger.getLogger("pieces.ImageServer");
 
     /** The image cache. */
-    private static Map<String, BufferedImage> cache
-    = new HashMap<String, BufferedImage>();
+    private static Map<String, Image> cache
+    = new HashMap<String, Image>();
 
     /**
      * Hidden constructor.
@@ -34,15 +34,15 @@ public class ImageServer {
      * @param name name of the image
      * @return     the requested image
      */
-    public static BufferedImage getTile(final String name) {
-        BufferedImage cached = cache.get(name);
+    public static Image getTile(final String name) {
+        Image cached = cache.get(name);
         if (cached != null) {
             return cached;
         }
 
         String file = name + ".png";
         try {
-            BufferedImage i = ImageIO.read(ImageServer.class.getResource(file));
+            Image i = ImageIO.read(ImageServer.class.getResource(file));
             cache.put(name, i);
             return i;
         } catch (java.io.IOException e) {

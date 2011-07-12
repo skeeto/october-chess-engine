@@ -5,6 +5,7 @@ import java.util.concurrent.CountDownLatch;
 
 import java.awt.Shape;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Stroke;
 import java.awt.Graphics;
 import java.awt.Dimension;
@@ -17,7 +18,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
@@ -221,7 +221,7 @@ public class BoardPanel extends JComponent
             for (int x = 0; x < w; x++) {
                 Piece p = board.getPiece(new Position(x, y));
                 if (p != null) {
-                    BufferedImage tile = p.getImage();
+                    Image tile = p.getImage();
                     int yy = y;
                     if (flipped) {
                         yy = board.getHeight() - 1 - y;

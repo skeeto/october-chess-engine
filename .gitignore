@@ -2,3 +2,4 @@ build
 dist
 TAGS
 local.properties
+cache.properties

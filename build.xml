@@ -13,6 +13,7 @@
 
   <taskdef resource="checkstyletask.properties"/>
   <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
+  <taskdef name="hotswap" classname="dak.ant.taskdefs.Hotswap"/>
 
   <target name="init">
     <mkdir dir="${dist.dir}"/>
@@ -61,8 +62,17 @@
   <target name="run" depends="jar" description="Run the application.">
     <java jar="${dist.dir}/${jar.file}" fork="true">
       <sysproperty key=".level" value="INFO"/>
-      <jvmarg value="-server"/>
+      <jvmarg line="-server -Xdebug -Xrunjdwp:transport=dt_socket,address=9000,server=y,suspend=n"/>
     </java>
+  </target>
+
+  <target name="hotswap" depends="jar">
+    <antcall target="compile"/>
+    <hotswap verbose="true" port="9000">
+      <fileset dir="${build.classes.dir}" includes="**/*.class">
+	<modified/>
+      </fileset>
+    </hotswap>
   </target>
 
   <target name="ga" depends="compile" description="Run genetic algorithm.">

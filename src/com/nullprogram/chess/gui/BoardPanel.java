@@ -1,5 +1,7 @@
 package com.nullprogram.chess.gui;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 import java.util.concurrent.CountDownLatch;
 
@@ -133,6 +135,11 @@ public class BoardPanel extends JComponent
         board = displayBoard;
         updateSize();
         addMouseListener(this);
+        new Timer().schedule(new TimerTask() {
+                public void run() {
+                    repaint();
+                }
+            }, 1000L, 1000L);
     }
 
     /**

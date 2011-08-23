@@ -1,9 +1,15 @@
-To build, all you need is a Java 6 compiler and Ant, properly
-configured to find the Java compiler.
+To build, all you need is a Java 6 (or greater) compiler and Ant,
+properly configured to find the Java compiler.
 
 If you want to use the Checkstyle target "check", you'll need to drop
 a recent version of the Checkstyle -all.jar in your Ant's lib/
 directory.
+
+If you want to use hotswapping -- replacing code while the engine is
+still running -- you'll need to put hotswap
+(http://code.google.com/p/hotswap/) in your Ant lib/ directory. While
+the engine is running with the "run" target, you can run the "hotswap"
+target to update the running code.
 
 If you want to use the "format" target you'll need AStyle installed
 somewhere on your PATH.

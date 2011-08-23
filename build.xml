@@ -87,7 +87,7 @@
   </target>
 
   <target name="check">
-    <checkstyle config="sun_checks.xml">
+    <checkstyle config="checkstyle.xml">
       <fileset dir="src" includes="**/*.java"/>
     </checkstyle>
   </target>

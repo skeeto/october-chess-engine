@@ -9,8 +9,6 @@
   <property name="test.classes.dir" value="${build.dir}/test"/>
   <property name="applet.html" value="applet.html"/>
 
-  <property file="local.properties"/>
-
   <target name="init">
     <mkdir dir="${dist.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
@@ -138,16 +136,6 @@
     <exec executable="makensis">
       <arg value="-DVERSION=${version}"/>
       <arg value="chess.nsi"/>
-    </exec>
-  </target>
-
-  <target name="deploy" depends="dist">
-    <!-- Ant's SCP task is a piece of shit. -->
-    <exec executable="scp" dir="${dist.dir}">
-      <arg value="${jar.file}"/>
-      <arg value="${applet.html}"/>
-      <arg value="october-chess-${version}-installer.exe"/>
-      <arg value="${deploy.dir}"/>
     </exec>
   </target>
 

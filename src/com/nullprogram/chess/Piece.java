@@ -4,7 +4,16 @@ import java.awt.Image;
 import com.nullprogram.chess.pieces.ImageServer;
 
 /**
- * An abstract Chess piece.
+ * The abstract base class for implementing chess pieces. Implementing
+ * a new piece takes several steps. Subclass this class, making sure
+ * to override the constructor and provide two 200x200 PNG images for
+ * the piece using the names PieceName-BLACK.png and
+ * PieceName-WHITE.png. That's enough to cover non-AI games.
+ *
+ * To make it work with the AI, which you will certainly want to do,
+ * you need to add a piece weight to the default AI configuration
+ * (default.properies) and a parse entry in the Minimax constructor,
+ * right after all the other pieces.
  */
 public abstract class Piece {
 

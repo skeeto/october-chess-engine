@@ -60,7 +60,7 @@ public class Minimax implements Player {
     private final Executor executor = Executors.newFixedThreadPool(NTHREADS);
 
     /** Values of each piece. */
-    private Map<Class, Double> values;
+    private Map<Class<?>, Double> values;
 
     /** Divisor for milliseconds. */
     static final double MILLI = 1000.0;
@@ -107,7 +107,7 @@ public class Minimax implements Player {
      */
     public Minimax(final Game active, final Properties props) {
         game = active;
-        values = new HashMap<Class, Double>();
+        values = new HashMap<Class<?>, Double>();
         config = props;
 
         /* Piece values */

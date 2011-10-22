@@ -16,17 +16,17 @@ public class BoardFactory {
     /**
      * The Gothic chess board.
      */
-    private static Class gothic = (new Gothic()).getClass();
+    private static Class<?> gothic = (new Gothic()).getClass();
 
     /**
      * The standard chess board.
      */
-    private static Class standard = (new StandardBoard()).getClass();
+    private static Class<?> standard = (new StandardBoard()).getClass();
 
     /**
      * An empty chess board.
      */
-    private static Class empty = (new EmptyBoard()).getClass();
+    private static Class<?> empty = (new EmptyBoard()).getClass();
 
     /**
      * Create a new chess board of the given class.
@@ -34,7 +34,7 @@ public class BoardFactory {
      * @param board class to be created
      * @return a fresh board
      */
-    public static Board create(final Class board) {
+    public static Board create(final Class<?> board) {
         if (board.equals(standard)) {
             return new StandardBoard();
         } else if (board.equals(gothic)) {

@@ -1,0 +1,35 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.nullprogram</groupId>
+  <artifactId>october-chess-engine</artifactId>
+  <version>1.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>Chess</name>
+  <description>Pure-Java chess engine..</description>
+  <url>http://nullprogram.com/blog/2010/10/17/</url>
+
+  <licenses>
+    <license>
+      <name>The Unlicense</name>
+      <url>http://unlicense.org/UNLICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>
+      scm:git:https://github.com/skeeto/october-chess-engine.git
+    </connection>
+    <url>https://github.com/skeeto/october-chess-engine</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <name>Christopher Wellons</name>
+      <email>mosquitopsu@gmail.com</email>
+      <url>http://nullprogram.com</url>
+      <timezone>-5</timezone>
+    </developer>
+  </developers>
+</project>

@@ -131,9 +131,10 @@ public class StandardBoard extends Board {
         for (int y = 0; y < getHeight(); y++) {
             for (int x = 0; x < getWidth(); x++) {
                 Piece p = getPiece(new Position(x, y));
-                if ((p != null)
-                        && (p.getSide() == attacker)
-                        && p.getMoves(false).containsDest(kingPos)) {
+                if ((p != null) &&
+                    (p.getSide() == attacker) &&
+                    p.getMoves(false).containsDest(kingPos)) {
+
                     return true;
                 }
             }

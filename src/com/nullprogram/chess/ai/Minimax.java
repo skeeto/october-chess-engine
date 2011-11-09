@@ -41,8 +41,8 @@ public class Minimax implements Player {
     private static final Logger LOG = Logger.getLogger("ai.Minimax");
 
     /** The number of threads to use. */
-    private static final int NTHREADS
-    = Runtime.getRuntime().availableProcessors();
+    private static final int NTHREADS =
+        Runtime.getRuntime().availableProcessors();
 
     /** Local friendly game controller. */
     private final Game game;
@@ -174,8 +174,8 @@ public class Minimax implements Player {
         startTime = System.currentTimeMillis();
 
         /* Spin off threads to evaluate each move's tree. */
-        CompletionService<Move> service
-        = new ExecutorCompletionService<Move>(executor);
+        CompletionService<Move> service =
+            new ExecutorCompletionService<Move>(executor);
         int submitted = 0;
         bestMove = null;
         for (final Move move : moves) {
@@ -214,8 +214,8 @@ public class Minimax implements Player {
         }
 
         long time = (System.currentTimeMillis() - startTime);
-        LOG.info("AI took " + (time / MILLI) + " seconds ("
-                 + NTHREADS + " threads, " + maxDepth + " plies)");
+        LOG.info("AI took " + (time / MILLI) + " seconds (" +
+                 NTHREADS + " threads, " + maxDepth + " plies)");
         return bestMove;
     }
 
@@ -260,9 +260,9 @@ public class Minimax implements Player {
         double material = materialValue(b);
         double kingSafety = kingInsafetyValue(b);
         double mobility = mobilityValue(b);
-        return material * wMaterial
-               + kingSafety * wSafety
-               + mobility * wMobility;
+        return material * wMaterial +
+               kingSafety * wSafety +
+               mobility * wMobility;
     }
 
     /**
@@ -292,8 +292,8 @@ public class Minimax implements Player {
      * @return  king insafety score
      */
     private double kingInsafetyValue(final Board b) {
-        return kingInsafetyValue(b, Piece.opposite(side))
-               - kingInsafetyValue(b, side);
+        return kingInsafetyValue(b, Piece.opposite(side)) -
+               kingInsafetyValue(b, side);
     }
 
     /**
@@ -324,7 +324,7 @@ public class Minimax implements Player {
      * @return  score for this board
      */
     private double mobilityValue(final Board b) {
-        return b.allMoves(side, false).size()
-               - b.allMoves(Piece.opposite(side), false).size();
+        return b.allMoves(side, false).size() -
+               b.allMoves(Piece.opposite(side), false).size();
     }
 }

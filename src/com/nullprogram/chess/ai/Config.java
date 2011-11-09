@@ -9,10 +9,10 @@ import java.util.Properties;
 public class Config extends HashMap<String, Double> {
 
     /** List of all currently existing properties. */
-    static final String[] PLIST = {"depth", "Pawn", "Knight", "Bishop", "Rook",
-                                   "Queen", "King", "Chancellor", "Archbishop",
-                                   "material", "safety", "mobility"
-                                  };
+    static final String[] PLIST = {
+        "depth", "Pawn", "Knight", "Bishop", "Rook", "Queen", "King",
+        "Chancellor", "Archbishop", "material", "safety", "mobility"
+    };
 
     /** Version for object serialization. */
     private static final long serialVersionUID = 1L;

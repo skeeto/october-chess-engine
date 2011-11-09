@@ -92,9 +92,10 @@ public abstract class Board {
             for (int x = 0; x < getWidth(); x++) {
                 Position pos = new Position(x, y);
                 Piece p = getPiece(pos);
-                if (p != null
-                        && (p instanceof King)
-                        && (p.getSide() == side)) {
+                if (p != null &&
+                    (p instanceof King) &&
+                    (p.getSide() == side)) {
+
                     return pos;
                 }
             }
@@ -282,8 +283,8 @@ public abstract class Board {
      * @return    validity of position
      */
     public final Boolean inRange(final Position pos) {
-        return (pos.getX() >= 0) && (pos.getY() >= 0)
-               && (pos.getX() < boardWidth) && (pos.getY() < boardHeight);
+        return (pos.getX() >= 0) && (pos.getY() >= 0) &&
+               (pos.getX() < boardWidth) && (pos.getY() < boardHeight);
     }
 
     /**

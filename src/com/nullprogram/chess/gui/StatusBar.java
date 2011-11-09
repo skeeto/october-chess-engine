@@ -66,11 +66,11 @@ public class StatusBar extends JComponent {
         setMaximumSize(null);
         game = observed;
         timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    repaint();
-                }
-            }, 0L, REPAINT_DELAY);
+            @Override
+            public void run() {
+                repaint();
+            }
+        }, 0L, REPAINT_DELAY);
     }
 
     /**

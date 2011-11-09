@@ -54,8 +54,8 @@ public class Game implements Runnable {
     private Piece.Side winner;
 
     /** List of event listeners. */
-    private Collection<GameListener> listeners
-    = new CopyOnWriteArraySet<GameListener>();
+    private Collection<GameListener> listeners =
+        new CopyOnWriteArraySet<GameListener>();
 
     /**
      * Hidden constructor.

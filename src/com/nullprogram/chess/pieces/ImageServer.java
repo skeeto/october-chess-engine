@@ -19,8 +19,8 @@ public class ImageServer {
     private static final Logger LOG = Logger.getLogger("pieces.ImageServer");
 
     /** The image cache. */
-    private static Map<String, Image> cache
-    = new HashMap<String, Image>();
+    private static Map<String, Image> cache =
+        new HashMap<String, Image>();
 
     /**
      * Hidden constructor.

@@ -103,8 +103,9 @@ public class King extends Piece {
                              final int max) {
         for (int i = start.getX() + dir; i != max; i += dir) {
             Position pos = new Position(i, start.getY());
-            if (getBoard().getPiece(pos) != null
-                    || enemyMoves().containsDest(pos)) {
+            if (getBoard().getPiece(pos) != null ||
+                enemyMoves().containsDest(pos)) {
+
                 return false;
             }
         }

@@ -81,9 +81,10 @@ public class MoveList extends ArrayList<Move> {
      */
     public final boolean addCaptureOnly(final Move move) {
         Piece p = board.getPiece(move.getOrigin());
-        if (board.isFree(move.getDest(), p.getSide())
-                && !board.isFree(move.getDest())
-                && !causesCheck(move)) {
+        if (board.isFree(move.getDest(), p.getSide()) &&
+            !board.isFree(move.getDest()) &&
+            !causesCheck(move)) {
+
             super.add(move);
             return true;
         }

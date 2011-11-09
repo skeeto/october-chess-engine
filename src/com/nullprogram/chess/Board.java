@@ -1,9 +1,8 @@
 package com.nullprogram.chess;
 
+import com.nullprogram.chess.boards.BoardFactory;
 import com.nullprogram.chess.pieces.King;
 import com.nullprogram.chess.pieces.PieceFactory;
-
-import com.nullprogram.chess.boards.BoardFactory;
 
 /**
  * Board data structure.

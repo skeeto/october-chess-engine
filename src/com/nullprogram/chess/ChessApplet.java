@@ -1,16 +1,12 @@
 package com.nullprogram.chess;
 
+import com.nullprogram.chess.ai.Minimax;
+import com.nullprogram.chess.boards.StandardBoard;
+import com.nullprogram.chess.gui.BoardPanel;
 import java.util.logging.Logger;
-
-import javax.swing.UIManager;
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
-
-import com.nullprogram.chess.gui.BoardPanel;
-
-import com.nullprogram.chess.boards.StandardBoard;
-
-import com.nullprogram.chess.ai.Minimax;
+import javax.swing.UIManager;
 
 /**
  * Applet that runs a game versus the computer, no other options.

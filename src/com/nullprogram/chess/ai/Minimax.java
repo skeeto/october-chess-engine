@@ -1,33 +1,30 @@
 package com.nullprogram.chess.ai;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.Properties;
-import java.util.logging.Logger;
-
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutorCompletionService;
-
-import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Board;
+import com.nullprogram.chess.Game;
+import com.nullprogram.chess.Move;
+import com.nullprogram.chess.MoveList;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Player;
 import com.nullprogram.chess.Position;
-import com.nullprogram.chess.Move;
-import com.nullprogram.chess.MoveList;
-
-import com.nullprogram.chess.pieces.Pawn;
-import com.nullprogram.chess.pieces.Rook;
-import com.nullprogram.chess.pieces.Knight;
-import com.nullprogram.chess.pieces.Bishop;
-import com.nullprogram.chess.pieces.Queen;
-import com.nullprogram.chess.pieces.King;
-import com.nullprogram.chess.pieces.Chancellor;
 import com.nullprogram.chess.pieces.Archbishop;
+import com.nullprogram.chess.pieces.Bishop;
+import com.nullprogram.chess.pieces.Chancellor;
+import com.nullprogram.chess.pieces.King;
+import com.nullprogram.chess.pieces.Knight;
+import com.nullprogram.chess.pieces.Pawn;
+import com.nullprogram.chess.pieces.Queen;
+import com.nullprogram.chess.pieces.Rook;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 /**
  * Minimax Chess AI player.
@@ -37,6 +34,7 @@ import com.nullprogram.chess.pieces.Archbishop;
  * present, not their positions.
  */
 public class Minimax implements Player {
+
     /** This class's Logger. */
     private static final Logger LOG =
         Logger.getLogger("com.nullprogram.chess.ai.Minimax");

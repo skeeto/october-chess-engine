@@ -1,10 +1,10 @@
 package com.nullprogram.chess.pieces;
 
-import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Board;
-import com.nullprogram.chess.Position;
 import com.nullprogram.chess.Move;
 import com.nullprogram.chess.MoveList;
+import com.nullprogram.chess.Piece;
+import com.nullprogram.chess.Position;
 
 /**
  * The Chess pawn.

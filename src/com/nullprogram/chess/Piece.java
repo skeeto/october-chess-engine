@@ -1,7 +1,7 @@
 package com.nullprogram.chess;
 
-import java.awt.Image;
 import com.nullprogram.chess.pieces.ImageServer;
+import java.awt.Image;
 
 /**
  * The abstract base class for implementing chess pieces. Implementing

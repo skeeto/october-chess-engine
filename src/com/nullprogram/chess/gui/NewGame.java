@@ -1,24 +1,20 @@
 package com.nullprogram.chess.gui;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JDialog;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.BorderFactory;
-
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Game;
 import com.nullprogram.chess.Player;
-
+import com.nullprogram.chess.ai.Minimax;
 import com.nullprogram.chess.boards.Gothic;
 import com.nullprogram.chess.boards.StandardBoard;
-
-import com.nullprogram.chess.ai.Minimax;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
 
 /**
  * Presents the "New Game" dialog to let the user set up a game.

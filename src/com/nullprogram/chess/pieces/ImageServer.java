@@ -1,11 +1,9 @@
 package com.nullprogram.chess.pieces;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.logging.Logger;
-
 import java.awt.Image;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -15,6 +13,7 @@ import javax.imageio.ImageIO;
  * every time the display needs an image.
  */
 public class ImageServer {
+
     /** This class's Logger. */
     private static final Logger LOG =
         Logger.getLogger("com.nullprogram.chess.pieces.ImageServer");

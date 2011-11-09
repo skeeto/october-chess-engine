@@ -1,8 +1,8 @@
 package com.nullprogram.chess;
 
 import java.util.Collection;
-import java.util.logging.Logger;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.logging.Logger;
 
 /**
  * Drives a game of chess, given players and a board.
@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * to respond with a move.
  */
 public class Game implements Runnable {
+
     /** This class's Logger. */
     private static final Logger LOG =
         Logger.getLogger("com.nullprogram.chess.Game");

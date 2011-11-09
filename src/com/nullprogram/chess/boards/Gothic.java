@@ -1,14 +1,14 @@
 package com.nullprogram.chess.boards;
 
 import com.nullprogram.chess.Piece;
-import com.nullprogram.chess.pieces.Pawn;
-import com.nullprogram.chess.pieces.Rook;
-import com.nullprogram.chess.pieces.Knight;
-import com.nullprogram.chess.pieces.Bishop;
-import com.nullprogram.chess.pieces.Queen;
-import com.nullprogram.chess.pieces.King;
-import com.nullprogram.chess.pieces.Chancellor;
 import com.nullprogram.chess.pieces.Archbishop;
+import com.nullprogram.chess.pieces.Bishop;
+import com.nullprogram.chess.pieces.Chancellor;
+import com.nullprogram.chess.pieces.King;
+import com.nullprogram.chess.pieces.Knight;
+import com.nullprogram.chess.pieces.Pawn;
+import com.nullprogram.chess.pieces.Queen;
+import com.nullprogram.chess.pieces.Rook;
 
 /**
  * Board for the game of Gothic Chess.

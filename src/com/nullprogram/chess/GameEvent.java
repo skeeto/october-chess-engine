@@ -4,6 +4,7 @@ package com.nullprogram.chess;
  * A semantic event that indicated an event occured in a Game.
  */
 public class GameEvent {
+
     /** An event where a turn was taken. */
     public static final int TURN = 0;
 

@@ -1,28 +1,25 @@
 package com.nullprogram.chess.gui;
 
+import com.nullprogram.chess.Board;
+import com.nullprogram.chess.Chess;
+import com.nullprogram.chess.Game;
+import com.nullprogram.chess.GameEvent;
+import com.nullprogram.chess.GameListener;
+import com.nullprogram.chess.Player;
+import com.nullprogram.chess.boards.EmptyBoard;
+import com.nullprogram.chess.pieces.ImageServer;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
-
-import com.nullprogram.chess.Board;
-import com.nullprogram.chess.Player;
-import com.nullprogram.chess.Game;
-
-import com.nullprogram.chess.Chess;
-import com.nullprogram.chess.GameEvent;
-import com.nullprogram.chess.GameListener;
-import com.nullprogram.chess.boards.EmptyBoard;
-import com.nullprogram.chess.pieces.ImageServer;
 
 /**
  * The JFrame that contains all GUI elements.

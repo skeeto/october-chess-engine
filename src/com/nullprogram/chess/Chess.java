@@ -1,17 +1,11 @@
 package com.nullprogram.chess;
 
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
-import javax.swing.UIManager;
-
 import com.nullprogram.chess.gui.ChessFrame;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
 
 /**
  * Main class for the Chess game application.

@@ -1,17 +1,15 @@
 package com.nullprogram.chess.ai;
 
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Collections;
-
-import com.nullprogram.chess.Game;
-import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Board;
-import com.nullprogram.chess.Player;
+import com.nullprogram.chess.Game;
 import com.nullprogram.chess.GameEvent;
 import com.nullprogram.chess.GameListener;
-
+import com.nullprogram.chess.Piece;
+import com.nullprogram.chess.Player;
 import com.nullprogram.chess.boards.StandardBoard;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Alternate main class for optimizing AI parameters via genetic algorithm.

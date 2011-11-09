@@ -1,34 +1,31 @@
 package com.nullprogram.chess.gui;
 
-import java.util.logging.Logger;
-import java.util.concurrent.CountDownLatch;
-
-import java.awt.Shape;
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.Stroke;
-import java.awt.Graphics;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.BasicStroke;
-import java.awt.RenderingHints;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.JComponent;
-
-import com.nullprogram.chess.Move;
 import com.nullprogram.chess.Board;
-import com.nullprogram.chess.Piece;
-import com.nullprogram.chess.Player;
-import com.nullprogram.chess.MoveList;
-import com.nullprogram.chess.Position;
 import com.nullprogram.chess.GameEvent;
 import com.nullprogram.chess.GameListener;
+import com.nullprogram.chess.Move;
+import com.nullprogram.chess.MoveList;
+import com.nullprogram.chess.Piece;
+import com.nullprogram.chess.Player;
+import com.nullprogram.chess.Position;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
+import java.util.concurrent.CountDownLatch;
+import java.util.logging.Logger;
+import javax.swing.JComponent;
 
 /**
  * Displays a board and exposes local players.
@@ -38,6 +35,7 @@ import com.nullprogram.chess.GameListener;
  */
 public class BoardPanel extends JComponent
     implements MouseListener, Player, GameListener {
+
     /** This class's Logger. */
     private static final Logger LOG =
         Logger.getLogger("com.nullprogram.chess.gui.BoardPanel");

@@ -1,19 +1,16 @@
 package com.nullprogram.chess.gui;
 
+import com.nullprogram.chess.Game;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Graphics;
+import java.awt.RenderingHints;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Dimension;
-import java.awt.FontMetrics;
-import java.awt.Font;
-import java.awt.Color;
-import java.awt.RenderingHints;
-
 import javax.swing.JComponent;
-
-import com.nullprogram.chess.Game;
 
 /**
  * Progress bar and status bar combined as one.

@@ -1,11 +1,11 @@
 package com.nullprogram.chess.gui;
 
-import javax.swing.ButtonGroup;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 
 /**
  * Creates a panel for selecting a player type.

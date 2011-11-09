@@ -3,12 +3,12 @@ package com.nullprogram.chess.boards;
 import com.nullprogram.chess.Board;
 import com.nullprogram.chess.Piece;
 import com.nullprogram.chess.Position;
-import com.nullprogram.chess.pieces.Pawn;
-import com.nullprogram.chess.pieces.Rook;
-import com.nullprogram.chess.pieces.Knight;
 import com.nullprogram.chess.pieces.Bishop;
-import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.King;
+import com.nullprogram.chess.pieces.Knight;
+import com.nullprogram.chess.pieces.Pawn;
+import com.nullprogram.chess.pieces.Queen;
+import com.nullprogram.chess.pieces.Rook;
 
 /**
  * The board for a standard game of chess.

@@ -16,7 +16,8 @@ import javax.imageio.ImageIO;
  */
 public class ImageServer {
     /** This class's Logger. */
-    private static final Logger LOG = Logger.getLogger("pieces.ImageServer");
+    private static final Logger LOG =
+        Logger.getLogger("com.nullprogram.chess.pieces.ImageServer");
 
     /** The image cache. */
     private static Map<String, Image> cache =

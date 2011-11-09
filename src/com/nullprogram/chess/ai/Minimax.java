@@ -38,7 +38,8 @@ import com.nullprogram.chess.pieces.Archbishop;
  */
 public class Minimax implements Player {
     /** This class's Logger. */
-    private static final Logger LOG = Logger.getLogger("ai.Minimax");
+    private static final Logger LOG =
+        Logger.getLogger("com.nullprogram.chess.ai.Minimax");
 
     /** The number of threads to use. */
     private static final int NTHREADS =

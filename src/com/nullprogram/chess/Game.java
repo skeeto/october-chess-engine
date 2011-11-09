@@ -12,7 +12,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 public class Game implements Runnable {
     /** This class's Logger. */
-    private static final Logger LOG = Logger.getLogger("Game");
+    private static final Logger LOG =
+        Logger.getLogger("com.nullprogram.chess.Game");
 
     /** Conversion from milliseconds to seconds. */
     private static final double MSEC_TO_SEC = 1000.0;

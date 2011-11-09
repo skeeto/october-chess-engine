@@ -17,8 +17,10 @@ import com.nullprogram.chess.gui.ChessFrame;
  * Main class for the Chess game application.
  */
 public final class Chess {
+
     /** This class's Logger. */
-    private static final Logger LOG = Logger.getLogger("Chess");
+    private static final Logger LOG =
+        Logger.getLogger("com.nullprogram.chess.Chess");
 
     /** The program's running title, prefix only. */
     private static final String TITLE_PREFIX = "October Chess";
@@ -35,24 +37,6 @@ public final class Chess {
      * @param args command line arguments
      */
     public static void main(final String[] args) {
-        /* Set up logger. */
-        Logger root = Logger.getLogger("");
-        Level level = Level.WARNING;
-        String plevel = System.getProperty(".level");
-        if (plevel != null) {
-            level = Level.parse(plevel);
-        }
-        root.setLevel(level);
-        for (Handler h : root.getHandlers()) {
-            h.setFormatter(new java.util.logging.SimpleFormatter() {
-                @Override
-                public String format(final LogRecord r) {
-                    return r.getLevel() + ": " + r.getMessage() + "\n";
-                }
-            });
-            h.setLevel(level);
-        }
-
         try {
             String lnf = UIManager.getSystemLookAndFeelClassName();
             UIManager.setLookAndFeel(lnf);

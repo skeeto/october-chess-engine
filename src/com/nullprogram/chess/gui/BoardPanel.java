@@ -39,7 +39,8 @@ import com.nullprogram.chess.GameListener;
 public class BoardPanel extends JComponent
     implements MouseListener, Player, GameListener {
     /** This class's Logger. */
-    private static final Logger LOG = Logger.getLogger("gui.BoardPanel");
+    private static final Logger LOG =
+        Logger.getLogger("com.nullprogram.chess.gui.BoardPanel");
 
     /** Size of a tile in working coordinates. */
     private static final double TILE_SIZE = 200.0;

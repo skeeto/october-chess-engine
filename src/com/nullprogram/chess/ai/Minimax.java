@@ -15,7 +15,6 @@ import com.nullprogram.chess.pieces.Knight;
 import com.nullprogram.chess.pieces.Pawn;
 import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.Rook;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -163,7 +162,7 @@ public class Minimax implements Player {
 
         /* Gather up every move. */
         MoveList moves = board.allMoves(side, true);
-        Collections.shuffle(moves);
+        moves.shuffle();
 
         /* Initialize the shared structures. */
         if (game != null) {

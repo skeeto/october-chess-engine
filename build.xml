@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
-<project name="Chess" default="jar">
+<project name="Chess" default="jar"
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+
   <property name="jar.file" value="${ant.project.name}.jar"/>
   <property name="src.dir" value="src"/>
   <property name="build.dir" value="build"/>
@@ -13,7 +15,7 @@
     <mkdir dir="${dist.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
     <exec executable="git" outputproperty="version"
-	  resultproperty="git.status" failifexecutionfails="false">
+          resultproperty="git.status" failifexecutionfails="false">
       <arg value="describe"/>
     </exec>
     <condition property="append.version" value="-${version}" else="">
@@ -26,11 +28,20 @@
     <echo file="${build.classes.dir}/version.txt" message="${version}"/>
   </target>
 
-  <target name="compile" depends="init"
-	  description="Compile all source files.">
+  <target name="resolve" description="Retrieve dependencies with Ivy.">
+    <ivy:resolve log="quiet"/>
+    <ivy:cachepath conf="build" pathid="build.classpath"/>
+    <ivy:cachepath conf="default" pathid="runtime.classpath"/>
+    <ivy:cachefileset conf="default" setid="runtime.fileset"/>
+    <ivy:cachepath conf="test" pathid="test.classpath"/>
+  </target>
+
+  <target name="compile" depends="init,resolve"
+          description="Compile all source files.">
     <javac srcdir="${src.dir}" destdir="${build.classes.dir}"
-	   optimize="on" debug="on" deprecation="on"
-	   includeantruntime="false">
+           optimize="on" debug="on" deprecation="on"
+           includeantruntime="false">
+      <classpath refid="build.classpath"/>
       <compilerarg value="-Xlint"/>
     </javac>
     <copy todir="${build.classes.dir}">
@@ -39,18 +50,19 @@
   </target>
 
   <target name="jar" depends="compile"
-	  description="Generate the jarfile distributable.">
+          description="Generate the jarfile distributable.">
     <jar destfile="${dist.dir}/${jar.file}">
       <fileset dir="${build.classes.dir}"/>
       <fileset file="UNLICENSE"/>
       <fileset file="README"/>
+      <zipgroupfileset refid="runtime.fileset"/>
       <manifest>
         <attribute name="Main-Class" value="com.nullprogram.chess.Chess"/>
       </manifest>
     </jar>
     <copy file="${applet.html}" todir="${dist.dir}"/>
     <replace file="${dist.dir}/${applet.html}"
-	     token="$VERSION" value="${version}"/>
+             token="$VERSION" value="${version}"/>
   </target>
 
   <target name="run" depends="jar" description="Run the application.">
@@ -63,14 +75,14 @@
     <taskdef name="hotswap" classname="dak.ant.taskdefs.Hotswap"/>
     <hotswap verbose="true" port="9000">
       <fileset dir="${build.classes.dir}" includes="**/*.class">
-	<modified/>
+        <modified/>
       </fileset>
     </hotswap>
   </target>
 
   <target name="ga" depends="compile" description="Run genetic algorithm.">
     <java classpath="${build.classes.dir}" fork="true"
-	  classname="com.nullprogram.chess.ai.OptimizeGA">
+          classname="com.nullprogram.chess.ai.OptimizeGA">
       <jvmarg value="-server"/>
     </java>
   </target>
@@ -89,10 +101,11 @@
     </apply>
   </target>
 
-  <target name="check">
-    <taskdef resource="checkstyletask.properties"/>
+  <target name="check" depends="resolve">
+    <taskdef resource="checkstyletask.properties"
+             classpathref="test.classpath"/>
     <checkstyle config="checkstyle.xml">
-      <fileset dir="src" includes="**/*.java"/>
+      <fileset dir="${src.dir}" includes="**/*.java"/>
     </checkstyle>
   </target>
 
@@ -119,7 +132,7 @@
   </target>
 
   <target name="exe" depends="jar"
-	  description="Create a Windows .exe wrapper.">
+          description="Create a Windows .exe wrapper.">
     <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask"/>
     <launch4j configFile="launch4j.xml"/>
   </target>
@@ -139,26 +152,25 @@
 
   <!-- JUnit -->
 
-  <target name="test-init" depends="init">
+  <target name="test-compile" depends="compile">
     <mkdir dir="${test.classes.dir}"/>
-  </target>
-
-  <target name="test-compile" depends="test-init,compile">
     <javac srcdir="${test.dir}" destdir="${test.classes.dir}"
-	   classpath="${build.classes.dir}" includeantruntime="yes">
+           classpath="${build.classes.dir}" includeantruntime="yes">
+      <classpath refid="build.classpath"/>
       <compilerarg value="-Xlint"/>
     </javac>
   </target>
 
   <target name="test" depends="test-compile" description="Run all tests.">
-    <junit>
+    <junit fork="true">
       <classpath>
-	<pathelement path="${build.classes.dir}"/>
-	<pathelement path="${test.classes.dir}"/>
+        <pathelement path="${build.classes.dir}"/>
+        <pathelement path="${test.classes.dir}"/>
+        <path refid="test.classpath"/>
       </classpath>
       <batchtest>
-	<formatter type="brief" usefile="false"/>
-	<fileset dir="${test.classes.dir}"/>
+        <formatter type="brief" usefile="false"/>
+        <fileset dir="${test.classes.dir}"/>
       </batchtest>
     </junit>
   </target>

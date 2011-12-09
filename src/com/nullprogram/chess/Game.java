@@ -107,6 +107,7 @@ public class Game implements Runnable {
 
     @Override
     public final void run() {
+        Move lastMove = null;
         while (!done) {
             /* Determine who's turn it is. */
             Player player;
@@ -121,8 +122,8 @@ public class Game implements Runnable {
             }
 
             /* Fetch the move from the player. */
-            Move move = player.takeTurn(getBoard(), turn);
-            board.move(move);
+            lastMove = player.takeTurn(lastMove);
+            board.move(lastMove);
             setProgress(0);
             if (done) {
                 /* Game may have ended abruptly during the player's

@@ -347,10 +347,9 @@ public class BoardPanel extends JComponent
     }
 
     @Override
-    public final Move takeTurn(final Board turnBoard,
-                               final Piece.Side currentSide) {
+    public final Move takeTurn(final Move move) {
         latch = new CountDownLatch(1);
-        board = turnBoard;
+        board.move(move);
         side = currentSide;
         repaint();
         mode = Mode.PLAYER;

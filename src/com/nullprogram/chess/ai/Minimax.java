@@ -46,7 +46,10 @@ public class Minimax implements Player {
     private final Game game;
 
     /** Side this AI plays. */
-    private Piece.Side side;
+    private final Piece.Side side;
+
+    /** The game board being played on. */
+    private final Board board;
 
     /** Best move, the selected move. */
     private volatile Move bestMove;
@@ -80,30 +83,38 @@ public class Minimax implements Player {
 
     /**
      * Create the default Minimax.
-     *
+     * @param color  the side for this player
+     * @param state   the game's board
      * @param active the game this AI is being seated at
      */
-    public Minimax(final Game active) {
-        this(active, "default");
+    public Minimax(final Piece.Side color, final Board state,
+                   final Game active) {
+        this(color, state, active, "default");
     }
 
     /**
      * Create a new AI from a given properties name.
-     *
+     * @param color  the side for this player
+     * @param state  the game's board
      * @param active the game this AI is being seated at
      * @param name      name of configuration to use
      */
-    public Minimax(final Game active, final String name) {
-        this(active, getConfig(name));
+    public Minimax(final Piece.Side color, final Board state,
+                   final Game active, final String name) {
+        this(color, state, active, getConfig(name));
     }
 
     /**
      * Create a new AI for the given board.
-     *
+     * @param color  the side for this player
+     * @param state  the game's board
      * @param active the game this AI is being seated at
      * @param props     properties for this player
      */
-    public Minimax(final Game active, final Properties props) {
+    public Minimax(final Piece.Side color, final Board state,
+                   final Game active, final Properties props) {
+        side = color;
+        board = state;
         game = active;
         values = new HashMap<Class, Double>();
         config = props;
@@ -156,11 +167,9 @@ public class Minimax implements Player {
     }
 
     @Override
-    public final Move takeTurn(final Board board,
-                               final Piece.Side currentSide) {
-        side = currentSide;
-
+    public final Move takeTurn(final Move move) {
         /* Gather up every move. */
+        board.move(move);
         MoveList moves = board.allMoves(side, true);
         moves.shuffle();
 
@@ -176,11 +185,11 @@ public class Minimax implements Player {
             new ExecutorCompletionService<Move>(executor);
         int submitted = 0;
         bestMove = null;
-        for (final Move move : moves) {
+        for (final Move m : moves) {
             final Board callboard = board.copy();
             service.submit(new Callable<Move>() {
                 public Move call() {
-                    callboard.move(move);
+                    callboard.move(m);
                     double beta = Double.POSITIVE_INFINITY;
                     if (bestMove != null) {
                         beta = -bestMove.getScore();
@@ -188,8 +197,8 @@ public class Minimax implements Player {
                     double v = search(callboard, maxDepth - 1,
                                       Piece.opposite(side),
                                       Double.NEGATIVE_INFINITY, beta);
-                    move.setScore(-v);
-                    return move;
+                    m.setScore(-v);
+                    return m;
                 }
             });
             submitted++;

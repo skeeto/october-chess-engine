@@ -11,9 +11,8 @@ public interface Player {
     /**
      * Inform the player it is time to take its turn.
      *
-     * @param board the current board
-     * @param side  the player's side
+     * @param move the other player's move, null for the first turn
      * @return the selected move for this player
      */
-    Move takeTurn(Board board, Piece.Side side);
+    Move takeTurn(Move move);
 }

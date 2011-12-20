@@ -85,7 +85,6 @@ public class ChessFrame extends JFrame
         display.setBoard(board);
         display.invalidate();
         setSize(getPreferredSize());
-        handler.gameMode(true);
 
         progress.setGame(game);
         game.addGameListener(this);
@@ -112,9 +111,6 @@ public class ChessFrame extends JFrame
 
         /** The parent chess frame, for callbacks. */
         private ChessFrame frame;
-
-        /** Is the menu in game mode? */
-        private boolean gameMode;
 
         /**
          * Create the menu handler.
@@ -154,15 +150,6 @@ public class ChessFrame extends JFrame
             menuBar.add(game);
 
             setJMenuBar(menuBar);
-        }
-
-        /**
-         * Put the menu in or out of game made.
-         *
-         * @param mode tell menu which mode it's in
-         */
-        public void gameMode(final boolean mode) {
-            gameMode = mode;
         }
     }
 

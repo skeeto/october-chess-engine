@@ -13,6 +13,9 @@ import com.nullprogram.chess.Position;
  */
 public class Rook extends Piece {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = 239867335L;
+
     /**
      * Create a new rook on the given side.
      *

@@ -2,6 +2,7 @@ package com.nullprogram.chess;
 
 import com.nullprogram.chess.pieces.ImageServer;
 import java.awt.Image;
+import java.io.Serializable;
 
 /**
  * The abstract base class for implementing chess pieces. Implementing
@@ -15,7 +16,10 @@ import java.awt.Image;
  * (default.properies) and a parse entry in the Minimax constructor,
  * right after all the other pieces.
  */
-public abstract class Piece {
+public abstract class Piece implements Serializable {
+
+    /** Versioning for object serialization. */
+    private static final long serialVersionUID = -214124732216708977L;
 
     /**
      * The side of the piece: white or black.

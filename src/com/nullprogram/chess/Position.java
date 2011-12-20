@@ -1,9 +1,14 @@
 package com.nullprogram.chess;
 
+import java.io.Serializable;
+
 /**
  * Represents a position on a Chess board.
  */
-public final class Position implements Comparable<Position> {
+public final class Position implements Comparable<Position>, Serializable {
+
+    /** Versioning for object serialization. */
+    private static final long serialVersionUID = 353870294332738196L;
 
     /**
      * The board coordinates of this position, starting at the white

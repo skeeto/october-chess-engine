@@ -3,6 +3,7 @@ package com.nullprogram.chess;
 import com.nullprogram.chess.boards.BoardFactory;
 import com.nullprogram.chess.pieces.King;
 import com.nullprogram.chess.pieces.PieceFactory;
+import java.io.Serializable;
 
 /**
  * Board data structure.
@@ -11,7 +12,10 @@ import com.nullprogram.chess.pieces.PieceFactory;
  * through move transaction. This allows undo() and copy(), which many
  * other things depends on, to work properly.
  */
-public abstract class Board {
+public abstract class Board implements Serializable {
+
+    /** Versioning for object serialization. */
+    private static final long serialVersionUID = 244162996302362607L;
 
     /** The internal board array. */
     private Piece[][] board;

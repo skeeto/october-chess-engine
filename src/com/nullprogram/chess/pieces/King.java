@@ -13,6 +13,9 @@ import com.nullprogram.chess.Position;
  */
 public class King extends Piece {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = 450219131L;
+
     /** List of enemy moves (cahced). */
     private MoveList enemy;
 

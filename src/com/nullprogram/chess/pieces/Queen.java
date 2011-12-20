@@ -11,6 +11,9 @@ import com.nullprogram.chess.Piece;
  */
 public class Queen extends Piece {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = -376604397L;
+
     /**
      * Create a new queen on the given side.
      *

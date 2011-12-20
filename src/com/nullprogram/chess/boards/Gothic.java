@@ -15,6 +15,9 @@ import com.nullprogram.chess.pieces.Rook;
  */
 public class Gothic extends StandardBoard {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = 277220873L;
+
     /** The standard board width. */
     static final int WIDTH = 10;
 

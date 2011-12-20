@@ -11,6 +11,9 @@ import com.nullprogram.chess.Piece;
  */
 public class Chancellor extends Piece {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = -421088543L;
+
     /**
      * Create a new chancellor on the given side.
      *

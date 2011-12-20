@@ -13,6 +13,9 @@ import com.nullprogram.chess.Position;
  */
 public class Knight extends Piece {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = -524621034L;
+
     /**
      * Short segment of movement.
      */

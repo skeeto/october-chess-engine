@@ -14,6 +14,9 @@ import com.nullprogram.chess.Position;
  */
 public class Pawn extends Piece {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = 456095470L;
+
     /**
      * Create a new pawn on the given side.
      *

@@ -11,6 +11,9 @@ import com.nullprogram.chess.Piece;
  */
 public class Archbishop extends Piece {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = -172677440L;
+
     /**
      * Create a new archbishop on the given side.
      *

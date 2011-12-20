@@ -1,5 +1,7 @@
 package com.nullprogram.chess;
 
+import java.io.Serializable;
+
 /**
  * Represents a single moves on a chess board.
  *
@@ -9,7 +11,10 @@ package com.nullprogram.chess;
  * If destination position is null, it means to remove the piece in
  * the origin position.
  */
-public final class Move {
+public final class Move implements Serializable {
+
+    /** Versioning for object serialization. */
+    private static final long serialVersionUID = 276216209410699761L;
 
     /** Originating position. */
     private final Position origin;

@@ -15,6 +15,9 @@ import com.nullprogram.chess.pieces.Rook;
  */
 public class StandardBoard extends Board {
 
+    /** Serialization identifier. */
+    private static final long serialVersionUID = -484123716L;
+
     /** The standard board width. */
     static final int WIDTH = 8;
 

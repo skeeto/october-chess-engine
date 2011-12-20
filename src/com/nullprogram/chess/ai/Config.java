@@ -1,5 +1,6 @@
 package com.nullprogram.chess.ai;
 
+import java.lang.StringBuilder;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -50,10 +51,10 @@ public class Config extends HashMap<String, Double> {
 
     @Override
     public final String toString() {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         for (String prop : PLIST) {
-            str += prop + "=" + get(prop) + ",";
+            str.append(prop + "=" + get(prop) + ",");
         }
-        return str;
+        return str.toString();
     }
 }

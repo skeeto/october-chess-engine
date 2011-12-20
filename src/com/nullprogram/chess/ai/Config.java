@@ -1,6 +1,5 @@
 package com.nullprogram.chess.ai;
 
-import java.lang.StringBuilder;
 import java.util.HashMap;
 import java.util.Properties;
 

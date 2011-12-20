@@ -97,7 +97,7 @@ public final class Position implements Comparable<Position>, Serializable {
      * @return hash code of this object.
      */
     public int hashCode() {
-        return ((new Integer(x)).hashCode() ^ (new Integer(y)).hashCode());
+        return x ^ y;
     }
 
     /**

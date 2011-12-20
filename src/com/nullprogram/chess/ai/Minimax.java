@@ -46,7 +46,7 @@ public class Minimax implements Player {
     private final Game game;
 
     /** Side this AI plays. */
-    private Piece.Side side;
+    private Piece.Side side = null;
 
     /** Best move, the selected move. */
     private volatile Move bestMove;

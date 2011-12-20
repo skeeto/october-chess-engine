@@ -37,7 +37,7 @@ public final class Chess {
         } catch (Exception e) {
             LOG.warning("Failed to set 'Look and Feel'");
         }
-        ChessFrame frame = new ChessFrame();
+        new ChessFrame();
     }
 
     /**

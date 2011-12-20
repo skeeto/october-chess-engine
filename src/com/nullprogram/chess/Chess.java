@@ -51,6 +51,7 @@ public final class Chess {
             InputStream s = Chess.class.getResourceAsStream("/version.txt");
             BufferedReader in = new BufferedReader(new InputStreamReader(s));
             version = in.readLine();
+            in.close();
         } catch (java.io.IOException e) {
             LOG.warning("failed to read version info");
             version = "";

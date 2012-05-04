@@ -15,6 +15,7 @@ import com.nullprogram.chess.pieces.Knight;
 import com.nullprogram.chess.pieces.Pawn;
 import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.Rook;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -147,10 +148,17 @@ public class Minimax implements Player {
         }
 
         String filename = name + ".properties";
+        InputStream in = Minimax.class.getResourceAsStream(filename);
         try {
-            props.load(Minimax.class.getResourceAsStream(filename));
+            props.load(in);
         } catch (java.io.IOException e) {
             LOG.warning("Failed to load AI config: " + name + ": " + e);
+        } finally {
+            try {
+                in.close();
+            } catch (Exception e) {
+                LOG.info("failed to close stream: " + e.getMessage());
+            }
         }
         return props;
     }

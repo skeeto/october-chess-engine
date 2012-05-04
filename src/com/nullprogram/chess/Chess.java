@@ -4,6 +4,7 @@ import com.nullprogram.chess.gui.ChessFrame;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
 
@@ -49,7 +50,8 @@ public final class Chess {
         String version = "";
         try {
             InputStream s = Chess.class.getResourceAsStream("/version.txt");
-            BufferedReader in = new BufferedReader(new InputStreamReader(s));
+            Reader isr = new InputStreamReader(s, "UTF-8");
+            BufferedReader in = new BufferedReader(isr);
             version = in.readLine();
             in.close();
         } catch (java.io.IOException e) {

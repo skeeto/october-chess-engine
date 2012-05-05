@@ -5,10 +5,10 @@ import com.nullprogram.chess.Piece;
 /**
  * Creates pieces based on their name strings.
  */
-public class PieceFactory {
+public final class PieceFactory {
 
     /** Hidden constructor. */
-    protected PieceFactory() {
+    private PieceFactory() {
     }
 
     /**

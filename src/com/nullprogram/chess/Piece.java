@@ -21,6 +21,21 @@ public abstract class Piece implements Serializable {
     /** Versioning for object serialization. */
     private static final long serialVersionUID = -214124732216708977L;
 
+    /** The side this piece belongs to. */
+    private Side side;
+
+    /** The position of this piece. */
+    private Position pos;
+
+    /** The board this piece is on. */
+    private Board board;
+
+    /** Movement counter. */
+    private int moved = 0;
+
+    /** Name of this piece. */
+    private String name;
+
     /**
      * The side of the piece: white or black.
      */
@@ -57,21 +72,6 @@ public abstract class Piece implements Serializable {
             return value;
         }
     }
-
-    /** The side this piece belongs to. */
-    private Side side;
-
-    /** The position of this piece. */
-    private Position pos;
-
-    /** The board this piece is on. */
-    private Board board;
-
-    /** Movement counter. */
-    private int moved = 0;
-
-    /** Name of this piece. */
-    private String name;
 
     /**
      * When creating a piece, you must always choose a side.

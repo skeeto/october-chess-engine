@@ -40,13 +40,13 @@ public class PlayerSelector extends JPanel {
     private static final int DEFAULT_AI = 2;
 
     /** Selection for a human player. */
-    private JRadioButton human = new JRadioButton("Human");;
+    private final JRadioButton human = new JRadioButton("Human");;
 
     /** Selection for a computer player. */
-    private JRadioButton minimax = new JRadioButton("Computer");
+    private final JRadioButton minimax = new JRadioButton("Computer");
 
     /** AI selector. */
-    private JList ai = new JList(LABELS_AI);
+    private final JList ai = new JList(LABELS_AI);
 
     /** Vertical padding around this panel. */
     static final int V_PADDING = 15;

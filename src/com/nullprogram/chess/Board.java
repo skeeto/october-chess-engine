@@ -24,7 +24,7 @@ public abstract class Board implements Serializable {
     private int boardWidth, boardHeight;
 
     /** Moves taken in this game so far. */
-    private MoveList moves = new MoveList(this);
+    private final MoveList moves = new MoveList(this);
 
     /**
      * Create a new Piece array, effectively clearing the board.
@@ -95,9 +95,8 @@ public abstract class Board implements Serializable {
             for (int x = 0; x < getWidth(); x++) {
                 Position pos = new Position(x, y);
                 Piece p = getPiece(pos);
-                if (p != null &&
-                    (p instanceof King) &&
-                    (p.getSide() == side)) {
+                if (p instanceof King &&
+                    p.getSide() == side) {
 
                     return pos;
                 }
@@ -261,7 +260,7 @@ public abstract class Board implements Serializable {
      * @return    emptiness of position
      */
     public final Boolean isEmpty(final Position pos) {
-        return (getPiece(pos) == null);
+        return getPiece(pos) == null;
     }
 
     /**

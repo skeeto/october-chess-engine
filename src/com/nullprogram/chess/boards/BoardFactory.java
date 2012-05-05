@@ -5,13 +5,7 @@ import com.nullprogram.chess.Board;
 /**
  * Creates a new board on demand, for use of board copying.
  */
-public class BoardFactory {
-
-    /**
-     * Hidden constructor.
-     */
-    protected BoardFactory() {
-    }
+public final class BoardFactory {
 
     /**
      * The Gothic chess board.
@@ -27,6 +21,12 @@ public class BoardFactory {
      * An empty chess board.
      */
     private static Class empty = (new EmptyBoard()).getClass();
+
+    /**
+     * Hidden constructor.
+     */
+    private BoardFactory() {
+    }
 
     /**
      * Create a new chess board of the given class.

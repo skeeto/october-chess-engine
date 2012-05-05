@@ -35,10 +35,8 @@ public class Pawn extends Piece {
         Position dest = new Position(pos, 0, 1 * dir);
         Move first = new Move(pos, dest);
         addUpgrade(first);
-        if (list.addMove(first)) {
-            if (!moved()) {
-                list.addMove(new Move(pos, new Position(pos, 0, 2 * dir)));
-            }
+        if (list.addMove(first) && !moved()) {
+            list.addMove(new Move(pos, new Position(pos, 0, 2 * dir)));
         }
         Move captureLeft = new Move(pos, new Position(pos, -1, 1 * dir));
         addUpgrade(captureLeft);

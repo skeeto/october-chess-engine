@@ -25,16 +25,16 @@ public class NewGame extends JDialog implements ActionListener {
     private static final long serialVersionUID = 1L;
 
     /** Parent to this dialog. */
-    private ChessFrame parent;
+    private final ChessFrame parent;
 
     /** White player selector. */
-    private PlayerSelector whitePanel;
+    private final PlayerSelector whitePanel;
 
     /** Black player selector. */
-    private PlayerSelector blackPanel;
+    private final PlayerSelector blackPanel;
 
     /** Black player selector. */
-    private BoardSelector boardPanel;
+    private final BoardSelector boardPanel;
 
     /** Vertical padding around this panel. */
     static final int V_PADDING = 15;

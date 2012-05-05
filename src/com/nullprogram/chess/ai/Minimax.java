@@ -52,9 +52,6 @@ public class Minimax implements Player {
     /** Best move, the selected move. */
     private volatile Move bestMove;
 
-    /** Time AI turns. */
-    private long startTime;
-
     /** Thread manager. */
     private final Executor executor = Executors.newFixedThreadPool(NTHREADS);
 
@@ -63,9 +60,6 @@ public class Minimax implements Player {
 
     /** Divisor for milliseconds. */
     static final double MILLI = 1000.0;
-
-    /** Current AI configuration. */
-    private Properties config;
 
     /** Maximum depth (configured). */
     private int maxDepth;
@@ -107,7 +101,7 @@ public class Minimax implements Player {
     public Minimax(final Game active, final Properties props) {
         game = active;
         values = new HashMap<Class, Double>();
-        config = props;
+        Properties config = props;
 
         /* Piece values */
         values.put((new Pawn(side)).getClass(),
@@ -177,7 +171,7 @@ public class Minimax implements Player {
             game.setProgress(0);
             game.setStatus("Thinking ...");
         }
-        startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
         /* Spin off threads to evaluate each move's tree. */
         CompletionService<Move> service =

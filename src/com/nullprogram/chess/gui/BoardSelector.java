@@ -16,10 +16,10 @@ public class BoardSelector extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /** Selection for a human player. */
-    private JRadioButton standard;
+    private final JRadioButton standard;
 
     /** Selection for a computer player. */
-    private JRadioButton gothic;
+    private final JRadioButton gothic;
 
     /** Vertical padding around this panel. */
     static final int V_PADDING = 15;
@@ -57,8 +57,10 @@ public class BoardSelector extends JPanel {
     public final String getBoard() {
         if (standard.isSelected()) {
             return "chess";
-        } else {
+        } else if (gothic.isSelected()) {
             return "gothic";
+        } else {
+            throw new AssertionError("Unknown board selected!");
         }
     }
 }

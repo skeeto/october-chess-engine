@@ -97,14 +97,6 @@ public class BoardPanel extends JComponent
     /** Preferred size of a tile, in pixels. */
     static final int PREF_SIZE = 75;
 
-    /** The interaction modes. */
-    private enum Mode {
-        /** Don't interact with the player. */
-        WAIT,
-        /** Interact with the player. */
-        PLAYER;
-    }
-
     /** The current interaction mode. */
     private Mode mode = Mode.WAIT;
 
@@ -116,6 +108,14 @@ public class BoardPanel extends JComponent
 
     /** The move selected by the player. */
     private Move selectedMove;
+
+    /** The interaction modes. */
+    private enum Mode {
+        /** Don't interact with the player. */
+        WAIT,
+        /** Interact with the player. */
+        PLAYER;
+    }
 
     /**
      * Hidden constructor.
@@ -377,6 +377,14 @@ public class BoardPanel extends JComponent
      */
     public final double getRatio() {
         return board.getWidth() / (1.0 * board.getHeight());
+    }
+
+    /**
+     * Set whether or not the board should be displayed flipped.
+     * @param value  the new flipped state
+     */
+    public final void setFlipped(final boolean value) {
+        flipped = value;
     }
 
     @Override

@@ -23,7 +23,7 @@ public final class Chess {
     /**
      * Hidden constructor.
      */
-    protected Chess() {
+    private Chess() {
     }
 
     /**

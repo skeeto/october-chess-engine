@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
  * This will cache the recent requests so it's not hitting the disk
  * every time the display needs an image.
  */
-public class ImageServer {
+public final class ImageServer {
 
     /** This class's Logger. */
     private static final Logger LOG =
@@ -25,7 +25,7 @@ public class ImageServer {
     /**
      * Hidden constructor.
      */
-    protected ImageServer() {
+    private ImageServer() {
     }
 
     /**

@@ -31,13 +31,10 @@ public class ChessFrame extends JFrame
     private static final long serialVersionUID = 1L;
 
     /** The board display. */
-    private BoardPanel display;
+    private final BoardPanel display;
 
     /** The progress bar on the display. */
-    private StatusBar progress;
-
-    /** Subclass instance for dealing with the menu. */
-    private MenuHandler handler;
+    private final StatusBar progress;
 
     /** The current game. */
     private Game game;
@@ -53,7 +50,7 @@ public class ChessFrame extends JFrame
         setIconImage(ImageServer.getTile("King-WHITE"));
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
-        handler = new MenuHandler(this);
+        MenuHandler handler = new MenuHandler(this);
         handler.setUpMenu();
 
         display = new BoardPanel(new EmptyBoard());
@@ -110,7 +107,7 @@ public class ChessFrame extends JFrame
         private JMenu game;
 
         /** The parent chess frame, for callbacks. */
-        private ChessFrame frame;
+        private final ChessFrame frame;
 
         /**
          * Create the menu handler.
@@ -183,13 +180,16 @@ public class ChessFrame extends JFrame
 
     @Override
     public void componentHidden(final ComponentEvent e) {
+        /* Do nothing. */
     }
 
     @Override
     public void componentMoved(final ComponentEvent e) {
+        /* Do nothing. */
     }
 
     @Override
     public void componentShown(final ComponentEvent e) {
+        /* Do nothing. */
     }
 }

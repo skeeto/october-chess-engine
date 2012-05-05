@@ -14,5 +14,7 @@
                 conf="analysis->default"/>
     <dependency org="com.google.code.findbugs" name="findbugs" rev="2.0.0"
                 conf="analysis->default"/>
+    <dependency org="net.sourceforge.pmd" name="pmd" rev="5.0.0"
+                conf="analysis->default"/>
   </dependencies>
 </ivy-module>

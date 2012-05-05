@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="custom-ruleset">
+  <description>Custom set of preferred, sane rules</description>
+  <rule ref="rulesets/java/design.xml">
+    <!-- This ignores any explanation in the Javadoc. Bad. -->
+    <exclude name="UncommentedEmptyConstructor"/>
+    <!-- I disagree. -->
+    <exclude name="ConfusingTernary"/>
+    <!-- I know what I'm doing so this is always wrong. -->
+    <exclude name="CompareObjectsWithEquals"/>
+    <!-- Maintainability is more important than a particular JVM's quirks. -->
+    <exclude name="TooFewBranchesForASwitchStatement"/>
+  </rule>
+  <rule ref="rulesets/java/basic.xml"/>
+  <rule ref="rulesets/java/clone.xml"/>
+</ruleset>

@@ -151,6 +151,18 @@
     </exec>
   </target>
 
+  <target name="pmd" depends="resolve">
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask"
+             classpathref="analysis.classpath"/>
+    <pmd>
+      <ruleset>pmd.xml</ruleset>
+      <formatter type="emacs" toConsole="true"/>
+      <fileset dir="${src.dir}">
+        <include name="**/*.java"/>
+      </fileset>
+    </pmd>
+  </target>
+
   <target name="findbugs" depends="compile" description="Run FindBugs.">
     <taskdef classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
              name="findbugs" classpathref="analysis.classpath"/>

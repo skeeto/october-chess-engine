@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.swing.JApplet;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * Applet that runs a game versus the computer, no other options.
@@ -25,8 +26,14 @@ public final class ChessApplet extends JApplet implements GameListener {
         try {
             String lnf = UIManager.getSystemLookAndFeelClassName();
             UIManager.setLookAndFeel(lnf);
-        } catch (Exception e) {
-            LOG.warning("Failed to set 'Look and Feel'.");
+        } catch (IllegalAccessException e) {
+            LOG.warning("Failed to access 'Look and Feel'");
+        } catch (InstantiationException e) {
+            LOG.warning("Failed to instantiate 'Look and Feel'");
+        } catch (ClassNotFoundException e) {
+            LOG.warning("Failed to find 'Look and Feel'");
+        } catch (UnsupportedLookAndFeelException e) {
+            LOG.warning("Failed to set 'Look and Feel'");
         }
 
         StandardBoard board = new StandardBoard();

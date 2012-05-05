@@ -209,7 +209,7 @@ public class Game implements Runnable {
     public final void setStatus(final String message) {
         LOG.info("status: " + message);
         if (message == null) {
-            throw new NullPointerException();
+            throw new IllegalArgumentException();
         }
         status = message;
         callGameListeners(GameEvent.STATUS);

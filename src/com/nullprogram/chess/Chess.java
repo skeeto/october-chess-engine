@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.logging.Logger;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * Main class for the Chess game application.
@@ -35,7 +36,13 @@ public final class Chess {
         try {
             String lnf = UIManager.getSystemLookAndFeelClassName();
             UIManager.setLookAndFeel(lnf);
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
+            LOG.warning("Failed to access 'Look and Feel'");
+        } catch (InstantiationException e) {
+            LOG.warning("Failed to instantiate 'Look and Feel'");
+        } catch (ClassNotFoundException e) {
+            LOG.warning("Failed to find 'Look and Feel'");
+        } catch (UnsupportedLookAndFeelException e) {
             LOG.warning("Failed to set 'Look and Feel'");
         }
         new ChessFrame();

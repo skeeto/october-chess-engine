@@ -10,11 +10,16 @@ import com.nullprogram.chess.boards.StandardBoard;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+import java.util.logging.Logger;
 
 /**
  * Alternate main class for optimizing AI parameters via genetic algorithm.
  */
 public class OptimizeGA implements GameListener {
+
+    /** This class's Logger. */
+    private static final Logger LOG =
+        Logger.getLogger(OptimizeGA.class.getName());
 
     /** Random number generator.  */
     private static Random rng;
@@ -130,8 +135,8 @@ public class OptimizeGA implements GameListener {
      * @param blackConf config for the black player
      */
     private void launch(final Config whiteConf, final Config blackConf) {
-        System.out.println(whiteConf);
-        System.out.println(blackConf);
+        LOG.info(whiteConf.toString());
+        LOG.info(blackConf.toString());
         Board board = new StandardBoard();
         Game game = new Game(board);
         Player white = new Minimax(game, whiteConf.getProperties());
@@ -148,23 +153,22 @@ public class OptimizeGA implements GameListener {
         int bdir = 0;
         Game game = e.getGame();
         if (game.isDone()) {
-            System.out.println("Game complete: ");
             if (game.getWinner() == Piece.Side.WHITE) {
-                System.out.println("White wins.");
+                LOG.info("White wins.");
                 adir = 1;
                 bdir = -1;
             } else if (game.getWinner() == Piece.Side.BLACK) {
-                System.out.println("Black wins.");
+                LOG.info("Black wins.");
                 adir = -1;
                 bdir = 1;
             } else {
-                System.out.println("Stalemate.");
+                LOG.info("Stalemate.");
                 adir = 0;
                 bdir = 0;
             }
             doScore = true;
         } else if (game.getBoard().moveCount() > MAX_MOVES) {
-            System.out.println("Game timeout!");
+            LOG.info("Game timeout!");
             game.end();
             doScore = true;
             adir = -1;

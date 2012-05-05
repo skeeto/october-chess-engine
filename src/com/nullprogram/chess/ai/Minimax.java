@@ -15,12 +15,14 @@ import com.nullprogram.chess.pieces.Knight;
 import com.nullprogram.chess.pieces.Pawn;
 import com.nullprogram.chess.pieces.Queen;
 import com.nullprogram.chess.pieces.Rook;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
@@ -150,7 +152,7 @@ public class Minimax implements Player {
         } finally {
             try {
                 in.close();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 LOG.info("failed to close stream: " + e.getMessage());
             }
         }
@@ -204,9 +206,10 @@ public class Minimax implements Player {
                 if (bestMove == null || m.getScore() > bestMove.getScore()) {
                     bestMove = m;
                 }
-            } catch (Exception e) {
-                /* This move was unevaluated. */
-                LOG.warning("move went unevaluated");
+            } catch (ExecutionException e) {
+                LOG.warning("move went unevaluated: " + e.getMessage());
+            } catch (InterruptedException e) {
+                LOG.warning("move went unevaluated: " + e.getMessage());
             }
             if (game != null) {
                 game.setProgress(i / (1.0f * (submitted - 1)));

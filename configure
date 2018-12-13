@@ -1,0 +1,124 @@
+#!/bin/sh
+
+set -e
+
+JAVA="java"
+JAVAC="javac"
+JAVADOC="javadoc"
+JAVACFLAGS="-Xlint"
+JAR="jar"
+
+option_entry="com.nullprogram.chess.Chess"
+option_jar="october-chess.jar"
+option_root="com.nullprogram.chess"
+
+cleanup() {
+    rm -f Makefile
+}
+trap cleanup INT QUIT TERM EXIT
+
+print_usage() {
+    cat << EOF >&2
+Usage: ./configure [OPTION]... [VAR=VALUE]...
+
+Configuration:
+  --entry <class>         class with the main() method
+  --jar <file>            file name for final .jar file
+  --root <package>        name of the root package
+  -h, --help              display this help and exit
+
+Influential environment variables:
+  JAVA        Java execution command
+  JAVAC       Java compiler command
+  JAVADOC     Javadoc generator command
+  JAVACFLAGS  Java compiler flags
+  JAR         .jar archive command
+
+Interesting targets:
+  all           build .jar file and documentation
+  jar           build a .jar file for distribution (default)
+  doc           build the documentation
+  run           run the program (without a .jar file)
+  clean         delete all build files
+  distclean     delete all generated files
+EOF
+    exit 0
+}
+
+unrecognized() {
+    printf  "configure: unrecognized option, %s\n" "$1" >&2
+    exit 1
+}
+
+for arg in "$@"; do
+    k=${arg%%=*}
+    v=${arg#*=}
+    case "$k" in
+        --entry)          option_entry="$v" ;;
+        --jar)            option_jar="$v" ;;
+        --root)           option_root="$v" ;;
+        JAVA)             JAVA="$v" ;;
+        JAVAC)            JAVAC="$v" ;;
+        JAVADOC)          JAVADOC="$v" ;;
+        JAR)              JAR="$v" ;;
+        JAVACFLAGS)       JAVACFLAGS="$v" ;;
+	--help | -h)      print_usage ;;
+	*)                unrecognized "$k" ;;
+    esac
+done
+
+printf '$ ./configure %s\n' "$*" > config.log
+
+printf "configure: clearing build files\n"
+rm -rf build
+
+printf "configure: creating Makefile\n" >&2
+exec 3>Makefile
+
+sources=$(find src/ -name '*.java' | \
+              sed -e 's/^/    /' -e 's/$/ \\/' -e '$s/ \\$//')
+
+cat <<EOF >&3
+.POSIX:
+JAVA       = $JAVA
+JAVAC      = $JAVAC
+JAVADOC    = $JAVADOC
+JAVACFLAGS = $JAVACFLAGS
+JAR        = $JAR
+
+main     = src/com/nullprogram/chess/Chess.java
+entry    = $option_entry 
+root     = $option_root
+sources  = \\
+$sources
+
+jar: $option_jar
+
+doc: build/doc
+
+all: jar doc
+
+$option_jar: build/last
+	\$(JAR) cfe \$@ \$(entry) -C build com
+
+build/last: \$(sources)
+	@mkdir -p build
+	\$(JAVAC) \$(JAVACFLAGS) -d build -cp src:build \$(main)
+	@(cd src/ && find . -type f -exec cp {} ../build/{} \;)
+	@date > \$@
+
+build/doc: \$(sources)
+	\$(JAVADOC) -d \$@ -sourcepath src -subpackages \$(root)
+
+run: build/last
+	\$(JAVA) -cp build \$(entry)
+
+clean:
+	rm -rf build $option_jar
+
+distclean:
+	rm -rf Makefile config.log
+EOF
+
+## Disable failure cleanup routine before exit
+trap - EXIT

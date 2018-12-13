@@ -1,5 +1,5 @@
+doc
 build
-dist
-TAGS
-local.properties
-cache.properties
+config.log
+Makefile
+october-chess.jar

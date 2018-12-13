@@ -54,17 +54,6 @@ public final class Chess {
      * @return the title of the program
      */
     public static String getTitle() {
-        String version = "";
-        try {
-            InputStream s = Chess.class.getResourceAsStream("/version.txt");
-            Reader isr = new InputStreamReader(s, "UTF-8");
-            BufferedReader in = new BufferedReader(isr);
-            version = in.readLine();
-            in.close();
-        } catch (java.io.IOException e) {
-            LOG.warning("failed to read version info");
-            version = "";
-        }
-        return TITLE_PREFIX + " " + version;
+        return TITLE_PREFIX;
     }
 }

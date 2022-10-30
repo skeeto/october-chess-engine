@@ -61,7 +61,7 @@ public final class Chess {
             BufferedReader in = new BufferedReader(isr);
             version = in.readLine();
             in.close();
-        } catch (java.io.IOException e) {
+        } catch (Exception e) {
             LOG.warning("failed to read version info");
             version = "";
         }

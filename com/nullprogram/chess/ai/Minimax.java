@@ -43,7 +43,8 @@ public class Minimax implements Player {
 
     /** The number of threads to use. */
     private static final int NTHREADS =
-        Runtime.getRuntime().availableProcessors();
+        Integer.getInteger("october.threads",
+                           Runtime.getRuntime().availableProcessors());
 
     /** Local friendly game controller. */
     private final Game game;

@@ -21,6 +21,12 @@ public final class PieceFactory {
     public static Piece create(final String name, final Piece.Side side) {
         if ("Queen".equals(name)) {
             return new Queen(side);
+        } else if ("Rook".equals(name)) {
+            return new Rook(side);
+        } else if ("Bishop".equals(name)) {
+            return new Bishop(side);
+        } else if ("Knight".equals(name)) {
+            return new Knight(side);
         } else {
             /* Maybe throw an exception here? */
             return null;

@@ -16,9 +16,6 @@ public class King extends Piece {
     /** Serialization identifier. */
     private static final long serialVersionUID = 450219131L;
 
-    /** List of enemy moves (cahced). */
-    private MoveList enemy;
-
     /** Cache the check check. */
     private Boolean inCheck;
 
@@ -44,7 +41,6 @@ public class King extends Piece {
         }
 
         /* check for castling */
-        enemy = null;
         inCheck = null;
         if (check && !moved()) {
             Move left = castle(-1);
@@ -82,7 +78,7 @@ public class King extends Piece {
             return null;
         }
 
-        if (emptyRow(getPosition(), dir, max) && !inCheck()) {
+        if (emptyRow(getPosition(), dir, max, dist) && !inCheck()) {
             /* generate the move */
             Position kpos = new Position(pos, dir * dist, 0);
             Move kingDest = new Move(pos, kpos);
@@ -95,20 +91,24 @@ public class King extends Piece {
     }
 
     /**
-     * Check for an empty, unthreatened castling row.
+     * Check for an empty castling row that the king crosses safely.
      *
      * @param start the starting position
      * @param dir direction to check
      * @param max maximum column for the board
+     * @param dist distance the king travels
      * @return true if row is safe
      */
     private boolean emptyRow(final Position start, final int dir,
-                             final int max) {
+                             final int max, final int dist) {
         for (int i = start.getX() + dir; i != max; i += dir) {
             Position pos = new Position(i, start.getY());
-            if (getBoard().getPiece(pos) != null ||
-                enemyMoves().containsDest(pos)) {
-
+            if (getBoard().getPiece(pos) != null) {
+                return false;
+            }
+        }
+        for (int i = 1; i <= dist; i++) {
+            if (attacked(new Position(start, dir * i, 0))) {
                 return false;
             }
         }
@@ -116,16 +116,19 @@ public class King extends Piece {
     }
 
     /**
-     * Cache of enemy moves.
+     * Determine if this king would be in check on the given square.
      *
-     * @return list of enemy moves
+     * @param pos the empty square to test
+     * @return true if the square is attacked
      */
-    private MoveList enemyMoves() {
-        if (enemy != null) {
-            return enemy;
-        }
-        enemy = getBoard().allMoves(opposite(getSide()), false);
-        return enemy;
+    private boolean attacked(final Position pos) {
+        Position home = getPosition();
+        getBoard().setPiece(home, null);
+        getBoard().setPiece(pos, this);
+        boolean ret = getBoard().check(getSide());
+        getBoard().setPiece(pos, null);
+        getBoard().setPiece(home, this);
+        return ret;
     }
 
     /**
